@@ -1,35 +1,21 @@
 const path = require("path");
 const { merge } = require("webpack-merge");
+const webpack = require('webpack');
 
 const base = require("./webpack.config.base.js");
 
-const webpackDevServerPort = 8081;
+module.exports = () => {
+  const output = {};
 
-module.exports = (env) => {
-  const platform = env.platform;
+  output.path = path.resolve(__dirname, "../amd/src");
+  output.filename = "app-lazy.js";
+  output.publicPath = "/dist/";
+  output.libraryTarget = "amd";
 
   return merge(base, {
     mode: "development",
     devtool: "source-map",
-    devServer: {
-      compress: true,
-      hot: true,
-      port: webpackDevServerPort,
-      historyApiFallback: true,
-      static: {
-        directory: path.join(__dirname, "dist"),
-      },
-      client: {
-        progress: true,
-      },
-      allowedHosts: "auto",
-    },
-    output: {
-      filename: "[name].js",
-      path: path.resolve(__dirname, "dist"),
-      publicPath: "/",
-      libraryTarget: "window",
-    },
+    output,
     module: {
       rules: [
         {
@@ -53,6 +39,10 @@ module.exports = (env) => {
         },
       ],
     },
-    plugins: [],
+    plugins: [
+      new webpack.DefinePlugin({
+        __VUE_PROD_DEVTOOLS__: true,
+      }),
+    ],
   });
 };
