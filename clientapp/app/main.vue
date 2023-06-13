@@ -10,10 +10,10 @@ import board from "@/app/components/board/board.vue"
 
 const boardState = reactive({
     boardData: [
-        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
-        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
-        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
-        [{ question: "Question" }, { question: "Question" }, { question: "Question" }]]
+        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }]]
 })
 let respData = ref([]);
 
@@ -28,6 +28,4 @@ const getData = async () => {
 };
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
