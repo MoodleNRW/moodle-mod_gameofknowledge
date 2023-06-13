@@ -1,11 +1,11 @@
 <template>
-    <div class="tile" :class="classObj">
-        {{ props.fieldData.question }}
+    <div class="tile" :class="classObj" @click.prevent="selectTile">
+        {{ fieldContentPlaceholder }}
     </div>
 </template>
 
 <script setup>
-import { defineProps, computed } from "vue";
+import { defineProps, defineEmits, computed } from "vue";
 
 const props = defineProps({
     fieldData: {
@@ -24,6 +24,14 @@ const props = defineProps({
     }
 })
 
+const emit = defineEmits(["selectTile"])
+
+const selectTile = (() => {
+    if (isMovementAvailable) {
+        emit("selectTile", props.posX, props.posY)
+    }
+});
+
 const fieldType = computed(() => {
     return props.fieldData.type
 })
@@ -32,8 +40,13 @@ const isMovementAvailable = computed(() => {
     const playerX = props.playerState.currentPosition.posX;
     const playerY = props.playerState.currentPosition.posY;
 
-    return (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
-        (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1))
+    return fieldType.value != 5 && ( 
+    (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
+        (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1)))
+});
+
+const fieldContentPlaceholder = computed(() => {
+    return fieldType.value == 1 ? "?" : "✓"
 });
 
 const classObj = computed(() => ({
@@ -53,20 +66,21 @@ const classObj = computed(() => ({
     align-items: center;
     justify-content: center;
     flex: 1 1 auto;
-    cursor: pointer;
+    cursor: not-allowed;
 
     &.inactive {
         opacity: 0;
-        cursor: not-allowed;
+        cursor: not-allowed !important;
     }
 
     &.solved {
         background-color: greenyellow;
-        cursor: not-allowed;
+        cursor: not-allowed !important;
     }
 
     &.is-available {
         background-color: #fae;
+        cursor: pointer;
     }
 }
 </style>
