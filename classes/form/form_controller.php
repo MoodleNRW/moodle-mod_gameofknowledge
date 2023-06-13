@@ -1,14 +1,14 @@
 <?php
 
-namespace mod_vuejsdemo\form;
+namespace mod_gameofknowledge\form;
 
-use \mod_vuejsdemo\vuejsdemo;
+use \mod_gameofknowledge\gameofknowledge;
 
 defined('MOODLE_INTERNAL') || die();
 
 abstract class form_controller {
-    /** @var vuejsdemo */
-    protected $vuejsdemo;
+    /** @var gameofknowledge */
+    protected $gameofknowledge;
 
     /** @var array */
     protected $formdata;
@@ -28,8 +28,8 @@ abstract class form_controller {
     /** @var string display a message instead of rendering the form */
     protected $message = '';
 
-    public function __construct(vuejsdemo $vuejsdemo, array $formdata, \stdClass $moreargs) {
-        $this->vuejsdemo = $vuejsdemo;
+    public function __construct(gameofknowledge $gameofknowledge, array $formdata, \stdClass $moreargs) {
+        $this->gameofknowledge = $gameofknowledge;
         $this->formdata = $formdata;
         $this->moreargs = $moreargs;
 
@@ -46,7 +46,7 @@ abstract class form_controller {
     }
 
     protected function construct_mform() {
-        $formclass = '\\mod_vuejsdemo\\form\\' . static::$formname;
+        $formclass = '\\mod_gameofknowledge\\form\\' . static::$formname;
         $this->mform = new $formclass(null, $this->customdata, 'post', '', null, true, $this->formdata);
     }
 
@@ -114,15 +114,15 @@ abstract class form_controller {
     /**
      * Get the specific controller for a form.
      */
-    static public function get_controller(string $formname, vuejsdemo $vuejsdemo, array $formdata, \stdClass $moreargs)
+    static public function get_controller(string $formname, gameofknowledge $gameofknowledge, array $formdata, \stdClass $moreargs)
         : form_controller {
 
         switch ($formname) {
             case 'room_edit':
-                return new room_edit_controller($vuejsdemo, $formdata, $moreargs);
+                return new room_edit_controller($gameofknowledge, $formdata, $moreargs);
 
             default:
-                throw new \moodle_exception('unknown_form', 'vuejsdemo');
+                throw new \moodle_exception('unknown_form', 'gameofknowledge');
         }
     }
 }

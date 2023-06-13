@@ -15,57 +15,57 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions for mod_vuejsdemo.
+ * Library of functions for mod_gameofknowledge.
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Saves a new vuejsdemo instance into the database.
+ * Saves a new gameofknowledge instance into the database.
  *
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param object $vuejsdemo an object from the form in mod_form.php
+ * @param object $gameofknowledge an object from the form in mod_form.php
  * @return int the id of the newly inserted record
  */
-function vuejsdemo_add_instance($vuejsdemo) {
+function gameofknowledge_add_instance($gameofknowledge) {
     global $DB;
 
-    $vuejsdemo->timecreated = time();
-    $vuejsdemo->timemodified = time();
+    $gameofknowledge->timecreated = time();
+    $gameofknowledge->timemodified = time();
 
-    $id = $DB->insert_record('vuejsdemo', $vuejsdemo);
+    $id = $DB->insert_record('gameofknowledge', $gameofknowledge);
     return $id;
 }
 
 /**
- * Updates a vuejsdemo instance.
+ * Updates a gameofknowledge instance.
  *
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param object $vuejsdemo an object from the form in mod_form.php
+ * @param object $gameofknowledge an object from the form in mod_form.php
  * @return boolean Success/Fail
  */
-function vuejsdemo_update_instance($vuejsdemo) {
+function gameofknowledge_update_instance($gameofknowledge) {
     global $DB;
 
-    $vuejsdemo->timemodified = time();
-    $vuejsdemo->id = $vuejsdemo->instance;
+    $gameofknowledge->timemodified = time();
+    $gameofknowledge->id = $gameofknowledge->instance;
 
-    $ret = $DB->update_record('vuejsdemo', $vuejsdemo);
+    $ret = $DB->update_record('gameofknowledge', $gameofknowledge);
     return $ret;
 }
 
 /**
- * Removes a vuejsdemo instance from the database.
+ * Removes a gameofknowledge instance from the database.
  *
  * Given an ID of an instance of this module,
  * this function will permanently delete the instance
@@ -74,16 +74,16 @@ function vuejsdemo_update_instance($vuejsdemo) {
  * @param int $id ID of the module instance.
  * @return boolean Success/Failure
  */
-function vuejsdemo_delete_instance($id) {
+function gameofknowledge_delete_instance($id) {
     global $DB;
 
     // Check if an instance with this id exists.
-    if (!$vuejsdemoinstance = $DB->get_record('vuejsdemo', array('id' => $id))) {
+    if (!$gameofknowledgeinstance = $DB->get_record('gameofknowledge', array('id' => $id))) {
         return false;
     }
 
-    $DB->delete_records('vuejsdemo', ['id' => $id]);
-    $DB->delete_records('vuejsdemo_rooms', ['vuejsdemoid' => $id]);
+    $DB->delete_records('gameofknowledge', ['id' => $id]);
+    $DB->delete_records('gameofknowledge_rooms', ['gameofknowledgeid' => $id]);
     return true;
 }
 
@@ -91,7 +91,7 @@ function vuejsdemo_delete_instance($id) {
  * @param string $feature FEATURE_xx constant for requested feature
  * @return bool True if feature is supported
  */
-function vuejsdemo_supports($feature) {
+function gameofknowledge_supports($feature) {
     switch ($feature) {
         case FEATURE_GROUPS:
             return false;
@@ -119,14 +119,14 @@ function vuejsdemo_supports($feature) {
  * @return string
  * @throws moodle_exception
  */
-function mod_vuejsdemo_output_fragment_mform($args) {
+function mod_gameofknowledge_output_fragment_mform($args) {
     $context = $args['context'];
     if ($context->contextlevel != CONTEXT_MODULE) {
-        throw new \moodle_exception('fragment_mform_wrong_context', 'vuejsdemo');
+        throw new \moodle_exception('fragment_mform_wrong_context', 'gameofknowledge');
     }
 
-    list($course, $coursemodule) = get_course_and_cm_from_cmid($context->instanceid, 'vuejsdemo');
-    $vuejsdemo = new \mod_vuejsdemo\vuejsdemo($coursemodule);
+    list($course, $coursemodule) = get_course_and_cm_from_cmid($context->instanceid, 'gameofknowledge');
+    $gameofknowledge = new \mod_gameofknowledge\gameofknowledge($coursemodule);
 
     $formdata = [];
     if (!empty($args['jsonformdata'])) {
@@ -139,7 +139,7 @@ function mod_vuejsdemo_output_fragment_mform($args) {
     $moreargs = (isset($args['moreargs'])) ? json_decode($args['moreargs']) : new stdClass;
     $formname = $args['form'] ?? '';
 
-    $form = \mod_vuejsdemo\form\form_controller::get_controller($formname, $vuejsdemo, $formdata, $moreargs);
+    $form = \mod_gameofknowledge\form\form_controller::get_controller($formname, $gameofknowledge, $formdata, $moreargs);
 
     if ($form->success()) {
         $ret = 'ok';

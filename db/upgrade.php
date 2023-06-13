@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file keeps track of upgrades to mod_vuejsdemo.
+ * This file keeps track of upgrades to mod_gameofknowledge.
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
@@ -25,11 +25,11 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Upgrade code for mod_vuejsdemo.
+ * Upgrade code for mod_gameofknowledge.
  *
  * @param int $oldversion the version we are upgrading from.
  */
-function xmldb_vuejsdemo_upgrade($oldversion = 0) {
+function xmldb_gameofknowledge_upgrade($oldversion = 0) {
     global $CFG, $DB;
 
     $dbman = $DB->get_manager();

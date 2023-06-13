@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019041600;
-$plugin->requires = 2017111302;
-$plugin->component = 'mod_vuejsdemo';
+$plugin->version = 2023061300;
+$plugin->requires = 2022112803;
+$plugin->component = 'mod_gameofknowledge';
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release = '0.1';

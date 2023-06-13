@@ -1,6 +1,6 @@
 <?php
 
-namespace mod_vuejsdemo\external\exporter;
+namespace mod_gameofknowledge\external\exporter;
 
 defined('MOODLE_INTERNAL') || die();
 

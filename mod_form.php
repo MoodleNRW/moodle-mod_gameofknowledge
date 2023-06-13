@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main vuejsdemo configuration form
+ * The main gameofknowledge configuration form
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 defined('MOODLE_INTERNAL') || die();
@@ -27,7 +27,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 /**
  * Module instance settings form
  */
-class mod_vuejsdemo_mod_form extends moodleform_mod {
+class mod_gameofknowledge_mod_form extends moodleform_mod {
     /**
      * Defines forms elements.
      */

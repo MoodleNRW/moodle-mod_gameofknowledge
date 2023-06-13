@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/vuejsdemo/db" VERSION="20171012" COMMENT="XMLDB file for Moodle mod/vuejsdemo"
+<XMLDB PATH="mod/gameofknowledge/db" VERSION="20171012" COMMENT="XMLDB file for Moodle mod/gameofknowledge"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
     <TABLES>
-        <TABLE NAME="vuejsdemo" COMMENT="vuejsdemo instances">
+        <TABLE NAME="gameofknowledge" COMMENT="gameofknowledge instances">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
@@ -19,16 +19,16 @@
                 <KEY NAME="course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="vuejsdemo_rooms" COMMENT="rooms in a vuejsdemo instances">
+        <TABLE NAME="gameofknowledge_rooms" COMMENT="rooms in a gameofknowledge instances">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-                <FIELD NAME="vuejsdemoid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="gameofknowledgeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="description" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-                <KEY NAME="vuejsdemoid_i" TYPE="foreign" FIELDS="vuejsdemoid" REFTABLE="vuejsdemo" REFFIELDS="id"/>
+                <KEY NAME="gameofknowledgeid_i" TYPE="foreign" FIELDS="gameofknowledgeid" REFTABLE="gameofknowledge" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
     </TABLES>

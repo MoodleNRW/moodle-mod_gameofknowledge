@@ -17,7 +17,7 @@
 /**
  * Plugin capabilities
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
@@ -25,7 +25,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'mod/vuejsdemo:addinstance' => array(
+    'mod/gameofknowledge:addinstance' => array(
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -34,7 +34,7 @@ $capabilities = array(
         ),
     ),
 
-    'mod/vuejsdemo:view' => array(
+    'mod/gameofknowledge:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(

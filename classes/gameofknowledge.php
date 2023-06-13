@@ -1,10 +1,10 @@
 <?php
 
-namespace mod_vuejsdemo;
+namespace mod_gameofknowledge;
 
 defined('MOODLE_INTERNAL') || die();
 
-class vuejsdemo {
+class gameofknowledge {
     /** @var int */
     private $instance;
 
@@ -18,8 +18,8 @@ class vuejsdemo {
     private $settings = null;
 
     public function __construct(\cm_info $coursemodule) {
-        if ($coursemodule->modname !== 'vuejsdemo') {
-            throw new \moodle_exception('wrong_cm_info_given', 'vuejsdemo');
+        if ($coursemodule->modname !== 'gameofknowledge') {
+            throw new \moodle_exception('wrong_cm_info_given', 'gameofknowledge');
         }
         $this->instance = $coursemodule->instance;
         $this->coursemodule = $coursemodule;
@@ -27,7 +27,7 @@ class vuejsdemo {
     }
 
     /**
-     * Get vuejsdemo instance id.
+     * Get gameofknowledge instance id.
      *
      * @return int
      */
@@ -46,7 +46,7 @@ class vuejsdemo {
     public function get_settings() {
         if ($this->settings === null) {
             global $DB;
-            $settings = $DB->get_record('vuejsdemo', ['id' => $this->instance], '*', MUST_EXIST);
+            $settings = $DB->get_record('gameofknowledge', ['id' => $this->instance], '*', MUST_EXIST);
 
             $this->settings = new \stdClass();
             $this->settings->name = $settings->name;
@@ -56,7 +56,7 @@ class vuejsdemo {
     }
 
     public function make_url(string $subpath, array $params = null) : \moodle_url {
-        $path = '/mod/vuejsdemo/view.php/' . $this->coursemodule->id . '/' . $subpath;
+        $path = '/mod/gameofknowledge/view.php/' . $this->coursemodule->id . '/' . $subpath;
         return new \moodle_url($path, $params);
     }
 

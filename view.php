@@ -17,7 +17,7 @@
 /**
  * This page is the entry page into the mod.
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
@@ -27,23 +27,23 @@ require_once('lib.php');
 // if url has form view.php?id=xy then redirect to to view.php/xy
 $coursemoduleid = optional_param('id', 0, PARAM_INT);
 if ($coursemoduleid > 0) {
-    $path = '/mod/vuejsdemo/view.php/' . $coursemoduleid . '/';
+    $path = '/mod/gameofknowledge/view.php/' . $coursemoduleid . '/';
     redirect(new \moodle_url($path));
 }
 // Support for Vue.js Router and its URL structure.
-// /mod/vuejsdemo/view.php/[course module id]/.../...
+// /mod/gameofknowledge/view.php/[course module id]/.../...
 $paths = explode('/', $_SERVER['REQUEST_URI']);
 $baseindex = array_search('view.php', $paths);
 if (count($paths) > $baseindex + 1) {
     $coursemoduleid = intval($paths[$baseindex + 1]);
 }
 
-list($course, $coursemodule) = get_course_and_cm_from_cmid($coursemoduleid, 'vuejsdemo');
+list($course, $coursemodule) = get_course_and_cm_from_cmid($coursemoduleid, 'gameofknowledge');
 
 require_login($course, true, $coursemodule);
 
-$title = get_string('modulename', 'mod_vuejsdemo');
-$url = new moodle_url('/mod/vuejsdemo/view.php', ['id' => $coursemoduleid]);
+$title = get_string('modulename', 'mod_gameofknowledge');
+$url = new moodle_url('/mod/gameofknowledge/view.php', ['id' => $coursemoduleid]);
 
 $PAGE->set_context($coursemodule->context);
 $PAGE->set_title($title);
@@ -51,7 +51,7 @@ $PAGE->set_heading($title);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('standard');
 
-$PAGE->requires->js_call_amd('mod_vuejsdemo/app-lazy', 'init', [
+$PAGE->requires->js_call_amd('mod_gameofknowledge/app-lazy', 'init', [
     'coursemoduleid' => $coursemodule->id,
     'contextid' => $coursemodule->context->id,
 ]);
@@ -59,7 +59,7 @@ $PAGE->requires->js_call_amd('mod_vuejsdemo/app-lazy', 'init', [
 echo $OUTPUT->header();
 
 echo <<<'EOT'
-<div id="mod-vuejsdemo-app">
+<div id="mod-gameofknowledge-app">
   <router-view></router-view>
 </div>
 EOT;

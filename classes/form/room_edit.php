@@ -1,6 +1,6 @@
 <?php
 
-namespace mod_vuejsdemo\form;
+namespace mod_gameofknowledge\form;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -10,14 +10,14 @@ class room_edit extends \moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        /** @var \mod_vuejsdemo\vuejsdemo $vuejsdemo */
-        $vuejsdemo = $this->_customdata['vuejsdemo'];
+        /** @var \mod_gameofknowledge\gameofknowledge $gameofknowledge */
+        $gameofknowledge = $this->_customdata['gameofknowledge'];
 
         /** @var int $roomid */
         $roomid = $this->_customdata['roomid'];
 
         // General section header.
-        $mform->addElement('header', 'general', get_string('room', 'mod_vuejsdemo'));
+        $mform->addElement('header', 'general', get_string('room', 'mod_gameofknowledge'));
 
         // Room id.
         $mform->addElement('hidden', 'roomid');
@@ -27,12 +27,12 @@ class room_edit extends \moodleform {
         }
 
         // Name.
-        $mform->addElement('text', 'name', get_string('room_name', 'mod_vuejsdemo'));
+        $mform->addElement('text', 'name', get_string('room_name', 'mod_gameofknowledge'));
         $mform->addRule('name', get_string('required'), 'required');
         $mform->setType('name', PARAM_TEXT);
 
         // Description.
-        $mform->addElement('text', 'description', get_string('room_description', 'mod_vuejsdemo'));
+        $mform->addElement('text', 'description', get_string('room_description', 'mod_gameofknowledge'));
         $mform->addRule('description', get_string('required'), 'required');
         $mform->setType('description', PARAM_TEXT);
 

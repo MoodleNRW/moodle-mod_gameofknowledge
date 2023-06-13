@@ -1,6 +1,6 @@
 <?php
 
-namespace mod_vuejsdemo\form;
+namespace mod_gameofknowledge\form;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -17,12 +17,12 @@ class room_edit_controller extends form_controller {
 
         $this->roomid = (isset($this->moreargs->roomid)) ? intval($this->moreargs->roomid) : null;
         $this->customdata = [
-            'vuejsdemo' => $this->vuejsdemo,
+            'gameofknowledge' => $this->gameofknowledge,
             'roomid' => $this->roomid,
         ];
 
         if ($this->roomid) {
-            $this->room = $DB->get_record('vuejsdemo_rooms', ['id' => $this->roomid]);
+            $this->room = $DB->get_record('gameofknowledge_rooms', ['id' => $this->roomid]);
         }
     }
 
@@ -34,14 +34,14 @@ class room_edit_controller extends form_controller {
         global $DB;
         $room = new \stdClass();
         $room->id = $this->roomid;
-        $room->vuejsdemoid = $this->vuejsdemo->get_id();
+        $room->gameofknowledgeid = $this->gameofknowledge->get_id();
         $room->name = $data->name;
         $room->description = $data->description;
 
         if ($room->id) {
-            $DB->update_record('vuejsdemo_rooms', $room);
+            $DB->update_record('gameofknowledge_rooms', $room);
         } else {
-            $DB->insert_record('vuejsdemo_rooms', $room);
+            $DB->insert_record('gameofknowledge_rooms', $room);
         }
 
         return true;
@@ -61,6 +61,6 @@ class room_edit_controller extends form_controller {
     }
 
     protected function check_capability() {
-        $this->vuejsdemo->require_user_has_capability('mod/vuejsdemo:view');
+        $this->gameofknowledge->require_user_has_capability('mod/gameofknowledge:view');
     }
 }

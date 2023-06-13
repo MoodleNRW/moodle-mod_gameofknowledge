@@ -1,6 +1,6 @@
 <?php
 
-namespace mod_vuejsdemo\external;
+namespace mod_gameofknowledge\external;
 
 use external_function_parameters;
 use external_multiple_structure;
@@ -33,7 +33,7 @@ class rooms extends \external_api {
         $params = ['coursemoduleid' => $coursemoduleid];
         $params = self::validate_parameters(self::get_rooms_parameters(), $params);
 
-        list($course, $coursemodule) = get_course_and_cm_from_cmid($params['coursemoduleid'], 'vuejsdemo');
+        list($course, $coursemodule) = get_course_and_cm_from_cmid($params['coursemoduleid'], 'gameofknowledge');
         self::validate_context($coursemodule->context);
 
         global $PAGE, $DB;
@@ -41,7 +41,7 @@ class rooms extends \external_api {
         $ctx = $coursemodule->context;
 
         $list = [];
-        $rooms = $DB->get_records('vuejsdemo_rooms', ['vuejsdemoid' => $coursemodule->instance]);
+        $rooms = $DB->get_records('gameofknowledge_rooms', ['gameofknowledgeid' => $coursemodule->instance]);
         foreach ($rooms as $room) {
             $exporter = new exporter\room($room, $ctx);
             $list[] = $exporter->export($renderer);
