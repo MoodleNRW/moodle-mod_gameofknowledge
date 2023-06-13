@@ -15,22 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for mod_vuejsdemo, language en
+ * Strings for mod_gameofknowledge, language en
  *
- * @package    mod_vuejsdemo
+ * @package    mod_gameofknowledge
  * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 // Required strings.
-$string['modulename'] = 'Vue.js Demonstration';
-$string['modulenameplural'] = 'Vue.js Demonstrations';
-$string['modulename_help'] = 'Vue.js Demonstration';
-$string['pluginadministration'] = 'Vue.js Demonstration Administration';
-$string['pluginname'] = 'Vue.js Demonstration';
+$string['modulename'] = 'Game of Knowledge';
+$string['modulenameplural'] = 'Games of Knowledge';
+$string['modulename_help'] = 'Game of Knowledge';
+$string['pluginadministration'] = 'Game of Knowledge Administration';
+$string['pluginname'] = 'Game of Knowledge';
 
 // Capabilities.
-$string['vuejsdemo:addinstance'] = 'Add a new Vue.js demonstration instance';
-$string['vuejsdemo:view'] = 'View Vue.js Demonstration';
+$string['gameofknowledge:addinstance'] = 'Add a new Game of Knowledge instance';
+$string['gameofknowledge:view'] = 'View Game of Knowledge';
 
 // Vue component route not found.
 $string['route_not_found'] = 'Error: Page (route) not found!';
