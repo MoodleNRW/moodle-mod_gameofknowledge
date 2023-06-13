@@ -24,6 +24,7 @@
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="gameofknowledgeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="status" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="players" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="maxplayers" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="state" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
@@ -46,6 +47,8 @@
                 <KEY NAME="userid_i" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
                 <KEY NAME="gameofknowledgeid_i" TYPE="foreign" FIELDS="gameofknowledgeid" REFTABLE="gameofknowledge" REFFIELDS="id"/>
                 <KEY NAME="gameid_i" TYPE="foreign" FIELDS="gameid" REFTABLE="gameofknowledge_games" REFFIELDS="id"/>
+                <KEY NAME="userid_gameofknowledgeid_u" TYPE="unique" FIELDS="userid, gameofknowledgeid"/>
+                <KEY NAME="gameid_number_u" TYPE="unique" FIELDS="gameid, number"/>
             </KEYS>
         </TABLE>
     </TABLES>

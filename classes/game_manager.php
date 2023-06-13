@@ -58,8 +58,11 @@ class game_manager {
         return $this->settings;
     }
 
-    public function create_game(): int {
-        // TODO
+    public function create_game(): state_based_game {
+        $type = 'game_of_knowledge';
+        $settings = $this->get_settings();
+
+        return state_based_game::create_game($type, $settings);
     }
 
     public function get_game(int $gameid): state_based_game {
@@ -71,9 +74,49 @@ class game_manager {
         return $game;
     }
 
-    public function get_current_game(int $userid = null): ?state_based_game {
-        global $DB, $USER;
+    public function get_open_gameid(): ?int {
+        global $DB;
 
+        $gameid = $DB->get_field_select('gameofknowledge_games', 'id',
+            'gameofknowledgeid = :gameofknowledgeid AND status = :status AND players < maxplayers',
+        [
+            'gameofknowledgeid' => $this->instance,
+            'status' => state_based_game::INITIALIZING,
+        ]);
+        if ($gameid === false) {
+            return null;
+        }
+        return $gameid;
+    }
+
+    public function join_game(int $gameid, int $userid = null): int {
+        global $DB, $USER;
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+
+        $game = $this->get_game($gameid);
+
+        $transaction = $DB->start_delegated_transaction();
+
+        $player = $game->add_player();
+        $game->save_game();
+
+        $record = new \stdClass();
+        $record->userid = $userid;
+        $record->gameofknowledgeid = $this->instance;
+        $record->gameid = $game->get_id();
+        $record->number = $player;
+
+        $DB->insert_record('gameofknowledge_players', $record);
+
+        $DB->commit_delegated_transaction($transaction);
+
+        return $player;
+    }
+
+    public function get_current_player_record(int $userid = null): ?\stdClass {
+        global $DB, $USER;
         if (is_null($userid)) {
             $userid = $USER->id;
         }
@@ -83,6 +126,14 @@ class game_manager {
             return null;
         }
 
+        return $record;
+    }
+
+    public function get_current_game(int $userid = null): ?state_based_game {
+        $record = $this->get_current_player_record($userid);
+        if (!$record) {
+            return null;
+        }
         return $this->get_game($record->gameid);
     }
 }
