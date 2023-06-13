@@ -83,7 +83,8 @@ function gameofknowledge_delete_instance($id) {
     }
 
     $DB->delete_records('gameofknowledge', ['id' => $id]);
-    $DB->delete_records('gameofknowledge_rooms', ['gameofknowledgeid' => $id]);
+    $DB->delete_records('gameofknowledge_games', ['gameofknowledgeid' => $id]);
+    $DB->delete_records('gameofknowledge_players', ['gameofknowledgeid' => $id]);
     return true;
 }
 
@@ -103,51 +104,9 @@ function gameofknowledge_supports($feature) {
             return true;
         case FEATURE_SHOW_DESCRIPTION:
             return true;
-
+        case FEATURE_MOD_PURPOSE:
+            return MOD_PURPOSE_OTHER; // TODO choose correct purpose
         default:
             return null;
-    }
-}
-
-/**
- * View or submit an mform.
- *
- * Returns the HTML to view an mform.
- * If form data is delivered and the data is valid, this returns 'ok'.
- *
- * @param $args
- * @return string
- * @throws moodle_exception
- */
-function mod_gameofknowledge_output_fragment_mform($args) {
-    $context = $args['context'];
-    if ($context->contextlevel != CONTEXT_MODULE) {
-        throw new \moodle_exception('fragment_mform_wrong_context', 'gameofknowledge');
-    }
-
-    list($course, $coursemodule) = get_course_and_cm_from_cmid($context->instanceid, 'gameofknowledge');
-    $gameofknowledge = new \mod_gameofknowledge\gameofknowledge($coursemodule);
-
-    $formdata = [];
-    if (!empty($args['jsonformdata'])) {
-        $serialiseddata = json_decode($args['jsonformdata']);
-        if (is_string($serialiseddata)) {
-            parse_str($serialiseddata, $formdata);
-        }
-    }
-
-    $moreargs = (isset($args['moreargs'])) ? json_decode($args['moreargs']) : new stdClass;
-    $formname = $args['form'] ?? '';
-
-    $form = \mod_gameofknowledge\form\form_controller::get_controller($formname, $gameofknowledge, $formdata, $moreargs);
-
-    if ($form->success()) {
-        $ret = 'ok';
-        if ($msg = $form->get_message()) {
-            $ret .= ' ' . $msg;
-        }
-        return $ret;
-    } else {
-        return $form->render();
     }
 }

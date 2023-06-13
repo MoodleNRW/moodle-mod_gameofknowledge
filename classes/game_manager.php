@@ -4,7 +4,8 @@ namespace mod_gameofknowledge;
 
 defined('MOODLE_INTERNAL') || die();
 
-class gameofknowledge {
+class game_manager {
+
     /** @var int */
     private $instance;
 
@@ -16,6 +17,8 @@ class gameofknowledge {
 
     /** @var \stdClass|null  */
     private $settings = null;
+
+    private $games = [];
 
     public function __construct(\cm_info $coursemodule) {
         if ($coursemodule->modname !== 'gameofknowledge') {
@@ -55,16 +58,31 @@ class gameofknowledge {
         return $this->settings;
     }
 
-    public function make_url(string $subpath, array $params = null) : \moodle_url {
-        $path = '/mod/gameofknowledge/view.php/' . $this->coursemodule->id . '/' . $subpath;
-        return new \moodle_url($path, $params);
+    public function create_game(): int {
+        // TODO
     }
 
-    public function user_has_capability(string $capability) : bool {
-        return \has_capability($capability, $this->context);
+    public function get_game(int $gameid): state_based_game {
+        if (array_key_exists($gameid, $this->games)) {
+            return $this->games[$gameid];
+        }
+        $game = state_based_game::load_game_by_id($gameid);
+        $this->games[$gameid] = $game;
+        return $game;
     }
 
-    public function require_user_has_capability(string $capability) {
-        \require_capability($capability, $this->context);
+    public function get_current_game(int $userid = null): ?state_based_game {
+        global $DB, $USER;
+
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+
+        $record = $DB->get_record('gameofknowledge_players', ['gameofknowledgeid' => $this->instance, 'userid' => $userid]);
+        if (!$record) {
+            return null;
+        }
+
+        return $this->get_game($record->gameid);
     }
 }
