@@ -2,7 +2,7 @@ const { merge } = require("webpack-merge");
 const base = require("./webpack.config.base.js");
 const path = require("path");
 
-module.exports = (env) => {
+module.exports = () => {
   const output = {};
 
   output.path = path.resolve(__dirname, "../amd/build");
