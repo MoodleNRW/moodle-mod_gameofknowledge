@@ -1,1 +1,3 @@
 /vue/node_modules/
+/clientapp/node_modules
+.DS_STORE
