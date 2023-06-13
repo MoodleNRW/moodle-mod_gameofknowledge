@@ -2,10 +2,17 @@
 
 $functions = array(
     'mod_gameofknowledge_get_rooms' => array(
-        'classname' => 'mod_gameofknowledge\external\rooms',
-        'methodname' => 'get_rooms',
-        'description' => 'Get all rooms.',
+        'classname' => 'mod_gameofknowledge\external\externallib',
+        'methodname' => 'get_state',
+        'description' => 'Get the current game state.',
         'type' => 'read',
         'ajax' => true,
     ),
+    'mod_gameofknowledge_get_rooms' => array(
+        'classname' => 'mod_gameofknowledge\external\externallib',
+        'methodname' => 'perform_action',
+        'description' => 'Input a new move.',
+        'type' => 'write',
+        'ajax' => true,
+    )
 );
