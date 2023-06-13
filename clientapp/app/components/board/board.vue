@@ -2,14 +2,15 @@
     <div class="board">
         <div class="board-x">
             <div class="board-y" v-for="(xrow, indexX) in data.boardData">
-                <tile v-for="(field, indexY) in xrow" :fieldData="field" :playerState="playerState" :posY="indexY" :posX="indexX"></tile>
+                <tile v-for="(field, indexY) in xrow" @selectTile="movePlayer" :fieldData="field" :playerState="playerState"
+                    :posY="indexY" :posX="indexX"></tile>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 import tile from "@/app/components/board/board-tile.vue"
 
 const data = defineProps({
@@ -23,6 +24,12 @@ const data = defineProps({
     }
 })
 
+const emit = defineEmits(["movePlayer"])
+
+const movePlayer = (posX, posY) => {
+    emit("movePlayer", posX, posY)
+}
+
 </script>
 
 <style lang="scss">
@@ -35,13 +42,13 @@ const data = defineProps({
     .board-x {
         display: flex;
         flex-direction: row;
-        flex: 1 1 auto;
+        flex: 1 1 0;
         gap: 0.25em;
 
         .board-y {
             display: flex;
             flex-direction: column;
-            flex: 1 1 auto;
+            flex: 1 1 0;
             gap: 0.25em;
         }
     }

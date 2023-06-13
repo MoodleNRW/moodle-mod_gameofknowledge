@@ -1,6 +1,6 @@
 <template>
     <div class="mod-gameofknowledge">
-        <board :boardData="boardState.boardData" :playerState="playerState"></board>
+        <board @movePlayer="movePlayer" :boardData="boardState.boardData" :playerState="playerState"></board>
     </div>
 </template>
 
@@ -17,7 +17,7 @@ const playerState = reactive({
 
 const boardState = reactive({
     boardData: [
-        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 2 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
         [{ question: "Question", type: 4 }, { question: "Question", type: 5 }, { question: "Question", type: 1 }],
         [{ question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }],
         [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }]]
@@ -27,6 +27,12 @@ let respData = ref([]);
 onMounted(async () => {
     await getData();
 });
+
+const movePlayer = (posX, posY) => {
+    const newPlayerState = { ...playerState, currentPosition: { posX: posX, posY: posY } }
+
+    Object.assign(playerState, newPlayerState)
+}
 
 const getData = async () => {
     try {
