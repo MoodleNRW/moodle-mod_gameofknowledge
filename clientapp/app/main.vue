@@ -1,48 +1,33 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="shadow rounded bg-white p-3">
-                    <h2>Vue Boilerplate</h2>
-                    <div>
-                        <ul>
-                            <li v-for="category in respData" :key="category.id">
-                                {{ category.name }}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary rounded">Schließen</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="mod-gameofknowledge">
+        <board :boardData="boardState.boardData"></board>
     </div>
 </template>
 
-<script>
-import { ref, inject, onMounted } from "vue";
+<script setup>
+import { ref, reactive, inject, onMounted } from "vue";
+import board from "@/app/components/board/board.vue"
 
-export default {
-    setup() {
-        let respData = ref([]);
+const boardState = reactive({
+    boardData: [
+        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
+        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
+        [{ question: "Question" }, { question: "Question" }, { question: "Question" }],
+        [{ question: "Question" }, { question: "Question" }, { question: "Question" }]]
+})
+let respData = ref([]);
 
-        onMounted(async () => {
-            await getData();
-        });
+onMounted(async () => {
+    await getData();
+});
 
-        const getData = async () => {
-            try {
-                respData.value = [{ id: 1, name: "Test" }];
-            } catch { }
-        };
-
-        return {
-            respData,
-            getData,
-        };
-    },
+const getData = async () => {
+    try {
+        respData.value = [{ id: 1, name: "Test" }];
+    } catch { }
 };
 </script>
 
-<style></style>
+<style lang="scss">
+
+</style>
