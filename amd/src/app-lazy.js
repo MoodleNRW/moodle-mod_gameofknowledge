@@ -11332,23 +11332,42 @@ __webpack_require__.r(__webpack_exports__);
     fieldData: {
       type: Object,
       "default": function _default() {}
+    },
+    posX: {
+      type: Number
+    },
+    posY: {
+      type: Number
+    },
+    playerState: {
+      type: Object,
+      "default": function _default() {}
     }
   },
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
-    var data = __props;
+    var props = __props;
     var fieldType = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return data.fieldData.type;
+      return props.fieldData.type;
+    });
+    var isMovementAvailable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      var playerX = props.playerState.currentPosition.posX;
+      var playerY = props.playerState.currentPosition.posY;
+      return props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1) || props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1);
     });
     var classObj = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return {
-        "inactive": fieldType.value == 4
+        "current": fieldType.value == 2,
+        "inactive": fieldType.value == 4,
+        "solved": fieldType.value == 5,
+        "is-available": isMovementAvailable.value
       };
     });
     var __returned__ = {
-      data: data,
+      props: props,
       fieldType: fieldType,
+      isMovementAvailable: isMovementAvailable,
       classObj: classObj,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed
     };
@@ -11383,6 +11402,10 @@ __webpack_require__.r(__webpack_exports__);
       "default": function _default() {
         return [];
       }
+    },
+    playerState: {
+      type: Object,
+      "default": function _default() {}
     }
   },
   setup: function setup(__props, _ref) {
@@ -11427,6 +11450,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
+    var playerState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
+      currentPosition: {
+        posX: 0,
+        posY: 0
+      }
+    });
     var boardState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
       boardData: [[{
         question: "Question",
@@ -11436,13 +11465,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         type: 1
       }, {
         question: "Question",
-        type: 1
+        type: 2
       }], [{
         question: "Question",
         type: 4
       }, {
         question: "Question",
-        type: 1
+        type: 5
       }, {
         question: "Question",
         type: 1
@@ -11501,6 +11530,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
     }();
     var __returned__ = {
+      playerState: playerState,
       boardState: boardState,
       get respData() {
         return respData;
@@ -11511,7 +11541,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getData: getData,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive,
-      inject: vue__WEBPACK_IMPORTED_MODULE_0__.inject,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted,
       board: _app_components_board_board_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
     };
@@ -11541,7 +11570,7 @@ __webpack_require__.r(__webpack_exports__);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["tile", $setup.classObj])
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.data.fieldData.question), 3 /* TEXT, CLASS */);
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.fieldData.question), 3 /* TEXT, CLASS */);
 }
 
 /***/ }),
@@ -11569,11 +11598,14 @@ var _hoisted_3 = {
   "class": "board-y"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.data.boardData, function (xrow) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(xrow, function (field) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.data.boardData, function (xrow, indexX) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(xrow, function (field, indexY) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["tile"], {
-        fieldData: field
-      }, null, 8 /* PROPS */, ["fieldData"]);
+        fieldData: field,
+        playerState: $props.playerState,
+        posY: indexY,
+        posX: indexX
+      }, null, 8 /* PROPS */, ["fieldData", "playerState", "posY", "posX"]);
     }), 256 /* UNKEYED_FRAGMENT */))]);
   }), 256 /* UNKEYED_FRAGMENT */))])]);
 }
@@ -11598,8 +11630,9 @@ var _hoisted_1 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["board"], {
-    boardData: $setup.boardState.boardData
-  }, null, 8 /* PROPS */, ["boardData"])]);
+    boardData: $setup.boardState.boardData,
+    playerState: $setup.playerState
+  }, null, 8 /* PROPS */, ["boardData", "playerState"])]);
 }
 
 /***/ }),
@@ -11638,7 +11671,14 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .tile {
     opacity: 0;
     cursor: not-allowed;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/board/board-tile.vue"],"names":[],"mappings":"AACA;EACI,uBAAuB;EACvB,qBAAqB;EACrB,eAAe;EACf,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,cAAc;EACd,eAAe;AAAA;AARnB;IAWQ,UAAU;IACV,mBAAmB;AAAA","sourcesContent":["\n.tile {\n    border: 1px solid black;\n    border-radius: 0.25em;\n    padding: 0.25em;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1 1 auto;\n    cursor: pointer;\n\n    &.inactive {\n        opacity: 0;\n        cursor: not-allowed;\n    }\n}\n"],"sourceRoot":""}]);
+.mod-gameofknowledge .tile.solved {
+    background-color: greenyellow;
+    cursor: not-allowed;
+}
+.mod-gameofknowledge .tile.is-available {
+    background-color: #fae;
+}
+`, "",{"version":3,"sources":["webpack://./app/components/board/board-tile.vue"],"names":[],"mappings":"AACA;EACI,uBAAuB;EACvB,qBAAqB;EACrB,eAAe;EACf,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,cAAc;EACd,eAAe;AAAA;AARnB;IAWQ,UAAU;IACV,mBAAmB;AAAA;AAZ3B;IAgBQ,6BAA6B;IAC7B,mBAAmB;AAAA;AAjB3B;IAqBQ,sBAAsB;AAAA","sourcesContent":["\n.tile {\n    border: 1px solid black;\n    border-radius: 0.25em;\n    padding: 0.25em;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1 1 auto;\n    cursor: pointer;\n\n    &.inactive {\n        opacity: 0;\n        cursor: not-allowed;\n    }\n\n    &.solved {\n        background-color: greenyellow;\n        cursor: not-allowed;\n    }\n\n    &.is-available {\n        background-color: #fae;\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

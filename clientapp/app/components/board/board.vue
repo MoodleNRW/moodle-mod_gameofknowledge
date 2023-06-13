@@ -1,8 +1,8 @@
 <template>
     <div class="board">
         <div class="board-x">
-            <div class="board-y" v-for="xrow in data.boardData">
-                <tile v-for="field in xrow" :fieldData="field"></tile>
+            <div class="board-y" v-for="(xrow, indexX) in data.boardData">
+                <tile v-for="(field, indexY) in xrow" :fieldData="field" :playerState="playerState" :posY="indexY" :posX="indexX"></tile>
             </div>
         </div>
     </div>
@@ -16,6 +16,10 @@ const data = defineProps({
     boardData: {
         type: Array,
         default: () => []
+    },
+    playerState: {
+        type: Object,
+        default: () => { }
     }
 })
 

@@ -1,25 +1,46 @@
 <template>
     <div class="tile" :class="classObj">
-        {{ data.fieldData.question }}
+        {{ props.fieldData.question }}
     </div>
 </template>
 
 <script setup>
 import { defineProps, computed } from "vue";
 
-const data = defineProps({
+const props = defineProps({
     fieldData: {
+        type: Object,
+        default: () => { }
+    },
+    posX: {
+        type: Number
+    },
+    posY: {
+        type: Number
+    },
+    playerState: {
         type: Object,
         default: () => { }
     }
 })
 
 const fieldType = computed(() => {
-    return data.fieldData.type
+    return props.fieldData.type
 })
 
+const isMovementAvailable = computed(() => {
+    const playerX = props.playerState.currentPosition.posX;
+    const playerY = props.playerState.currentPosition.posY;
+
+    return (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
+        (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1))
+});
+
 const classObj = computed(() => ({
-    "inactive": fieldType.value == 4
+    "current": fieldType.value == 2,
+    "inactive": fieldType.value == 4,
+    "solved": fieldType.value == 5,
+    "is-available": isMovementAvailable.value
 }))
 </script>
 
@@ -37,6 +58,15 @@ const classObj = computed(() => ({
     &.inactive {
         opacity: 0;
         cursor: not-allowed;
+    }
+
+    &.solved {
+        background-color: greenyellow;
+        cursor: not-allowed;
+    }
+
+    &.is-available {
+        background-color: #fae;
     }
 }
 </style>
