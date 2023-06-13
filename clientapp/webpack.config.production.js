@@ -23,13 +23,16 @@ module.exports = () => {
               loader: "css-loader",
               options: {
                 sourceMap: false,
-                importLoaders: 1,
+                importLoaders: 2,
               },
+            },
+            {
+              loader: "postcss-loader",
             },
             {
               loader: "sass-loader",
               options: {
-                sourceMap: true,
+                sourceMap: false,
               },
             },
           ],
