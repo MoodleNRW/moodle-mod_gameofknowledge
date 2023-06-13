@@ -27,7 +27,7 @@ const props = defineProps({
 const emit = defineEmits(["selectTile"])
 
 const selectTile = (() => {
-    if (isMovementAvailable) {
+    if (isMovementAvailable.value) {
         emit("selectTile", props.posX, props.posY)
     }
 });
@@ -40,7 +40,7 @@ const isMovementAvailable = computed(() => {
     const playerX = props.playerState.currentPosition.posX;
     const playerY = props.playerState.currentPosition.posY;
 
-    return fieldType.value != 5 && ( 
+    return fieldType.value == 1 && ( 
     (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
         (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1)))
 });

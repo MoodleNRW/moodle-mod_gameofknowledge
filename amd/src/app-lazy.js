@@ -11351,7 +11351,7 @@ __webpack_require__.r(__webpack_exports__);
     __expose();
     var props = __props;
     var selectTile = function selectTile() {
-      if (isMovementAvailable) {
+      if (isMovementAvailable.value) {
         emit("selectTile", props.posX, props.posY);
       }
     };
@@ -11361,7 +11361,7 @@ __webpack_require__.r(__webpack_exports__);
     var isMovementAvailable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       var playerX = props.playerState.currentPosition.posX;
       var playerY = props.playerState.currentPosition.posY;
-      return fieldType.value != 5 && (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1) || props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1));
+      return fieldType.value == 1 && (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1) || props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1));
     });
     var fieldContentPlaceholder = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return fieldType.value == 1 ? "?" : "✓";
