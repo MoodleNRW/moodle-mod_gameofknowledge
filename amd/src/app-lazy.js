@@ -11484,23 +11484,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var boardState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
       boardData: [[{
         question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }], [{
-        question: "Question",
-        type: 4
-      }, {
-        question: "Question",
         type: 5
       }, {
         question: "Question",
         type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
       }], [{
+        question: "Question",
+        type: 4
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }], [{
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 4
+      }, {
         question: "Question",
         type: 1
       }, {
@@ -11517,7 +11535,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         type: 1
       }, {
         question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }], [{
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
         type: 4
+      }, {
+        question: "Question",
+        type: 1
+      }, {
+        question: "Question",
+        type: 1
       }]]
     });
     var respData = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);

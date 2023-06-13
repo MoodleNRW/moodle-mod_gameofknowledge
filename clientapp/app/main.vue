@@ -17,10 +17,11 @@ const playerState = reactive({
 
 const boardState = reactive({
     boardData: [
-        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 4 }, { question: "Question", type: 5 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }]]
+        [{ question: "Question", type: 5 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
+        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }]]
 })
 let respData = ref([]);
 
