@@ -70,7 +70,6 @@ const fieldContentPlaceholder = computed(() => {
 });
 
 const classObj = computed(() => ({
-    "current": fieldType.value == 2,
     "inactive": isNone.value,
     "solved": fieldType.value == 5,
     "is-available": isMovementAvailable.value && !isSolved.value

@@ -49,8 +49,8 @@ const requestPerformAction = async (
 
   let action = JSON.stringify({
     answer: answer,
-    i: posY,
-    j: posX,
+    y: posY,
+    x: posX,
   });
   console.log(action);
   const request = {

@@ -11942,8 +11942,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     sessionPlayerPos: function sessionPlayerPos(state) {
       var pos = state.playerPositions[state.sessionPlayerId];
       return {
-        posX: pos.j,
-        posY: pos.i
+        posX: pos.x,
+        posY: pos.y
       };
     },
     isSessionPlayerTurn: function isSessionPlayerTurn(state) {
@@ -11965,8 +11965,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       return state.activeQuestion !== null;
     },
     isPlayerPos: function isPlayerPos(state, getters) {
-      return function (posX, posY) {
-        return getters.sessionPlayerPos.posX == posX && getters.sessionPlayerPos.posY == posY;
+      return function (posX, posY, id) {
+        var player = getters.getPlayerById(id);
+        return player.x == posX && player.y == posY;
       };
     },
     isMovementAllowed: function isMovementAllowed(state, getters) {
@@ -12100,8 +12101,8 @@ var requestPerformAction = /*#__PURE__*/function () {
           });
           action = JSON.stringify({
             answer: answer,
-            i: posY,
-            j: posX
+            y: posY,
+            x: posX
           });
           console.log(action);
           request = {
@@ -12218,7 +12219,6 @@ __webpack_require__.r(__webpack_exports__);
     });
     var classObj = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return {
-        "current": fieldType.value == 2,
         "inactive": isNone.value,
         "solved": fieldType.value == 5,
         "is-available": isMovementAvailable.value && !isSolved.value
@@ -12303,9 +12303,12 @@ __webpack_require__.r(__webpack_exports__);
     var isModalActive = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return isQuestionActive.value || !isSessionPlayerTurn.value;
     });
+    var players = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.state.players;
+    });
     var isPlayerPos = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return function (posX, posY) {
-        return store.getters.isPlayerPos(posX, posY);
+      return function (posX, posY, id) {
+        return store.getters.isPlayerPos(posX, posY, id);
       };
     });
     var __returned__ = {
@@ -12315,6 +12318,7 @@ __webpack_require__.r(__webpack_exports__);
       isQuestionActive: isQuestionActive,
       isSessionPlayerTurn: isSessionPlayerTurn,
       isModalActive: isModalActive,
+      players: players,
       isPlayerPos: isPlayerPos,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
       get useStore() {
@@ -12627,10 +12631,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         posX: indexX
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [$setup.isPlayerPos(indexX, indexY) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["player"], {
-            key: 0
-          })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+          return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.players, function (player, indexP) {
+            return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.isPlayerPos(indexX, indexY, player.number) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["player"], {
+              key: 0
+            })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
+          }), 256 /* UNKEYED_FRAGMENT */))];
         }),
+
         _: 2 /* DYNAMIC */
       }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["fieldData", "posY", "posX"]);
     }), 256 /* UNKEYED_FRAGMENT */))]);
@@ -12917,7 +12924,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .board {
     border-radius: 0.25rem;
     z-index: 1;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/board/board.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,mBAAmB;EACnB,cAAc;EACd,mBAAmB;EACnB,kBAAkB;AAAA;AALtB;IAQQ,aAAa;IACb,mBAAmB;IACnB,WAAW;IACX,WAAW;AAAA;AAXnB;MAcY,aAAa;MACb,sBAAsB;MACtB,WAAW;MACX,WAAW;AAAA;AAjBvB;IAsBQ,cAAc;IACd,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,aAAa;IACb,sBAAsB;IACtB,UAAU;AAAA","sourcesContent":["\n.board {\n    display: flex;\n    flex-direction: row;\n    flex: 0 1 auto;\n    aspect-ratio: 1 / 1;\n    position: relative;\n\n    .board-x {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 0;\n        gap: 0.25em;\n\n        .board-y {\n            display: flex;\n            flex-direction: column;\n            flex: 1 1 0;\n            gap: 0.25em;\n        }\n    }\n\n    .other-turn {\n        flex: 0 1 auto;\n        display: flex;\n        flex-direction: column;\n        background-color: white;\n        padding: 1rem;\n        border-radius: 0.25rem;\n        z-index: 1;\n    }\n}\n"],"sourceRoot":""}]);
+.mod-gameofknowledge .board .other-turn h3 {
+      margin: 0;
+}
+`, "",{"version":3,"sources":["webpack://./app/components/board/board.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,mBAAmB;EACnB,cAAc;EACd,mBAAmB;EACnB,kBAAkB;AAAA;AALtB;IAQQ,aAAa;IACb,mBAAmB;IACnB,WAAW;IACX,WAAW;AAAA;AAXnB;MAcY,aAAa;MACb,sBAAsB;MACtB,WAAW;MACX,WAAW;AAAA;AAjBvB;IAsBQ,cAAc;IACd,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,aAAa;IACb,sBAAsB;IACtB,UAAU;AAAA;AA5BlB;MA+BY,SAAS;AAAA","sourcesContent":["\n.board {\n    display: flex;\n    flex-direction: row;\n    flex: 0 1 auto;\n    aspect-ratio: 1 / 1;\n    position: relative;\n\n    .board-x {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 0;\n        gap: 0.25em;\n\n        .board-y {\n            display: flex;\n            flex-direction: column;\n            flex: 1 1 0;\n            gap: 0.25em;\n        }\n    }\n\n    .other-turn {\n        flex: 0 1 auto;\n        display: flex;\n        flex-direction: column;\n        background-color: white;\n        padding: 1rem;\n        border-radius: 0.25rem;\n        z-index: 1;\n\n        h3 {\n            margin: 0;\n        }\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

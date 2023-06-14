@@ -109,7 +109,7 @@ const store = createStore({
       if (response) {
         response = JSON.parse(response);
 
-        console.log(response)
+        console.log(response);
 
         commit("setTilesData", { tiles: response.tiles });
         commit("setQuestionsData", { questions: response.questions });
@@ -166,17 +166,23 @@ const store = createStore({
   getters: {
     sessionPlayerPos: (state) => {
       let pos = state.playerPositions[state.sessionPlayerId];
-      return { posX: pos.j, posY: pos.i };
+      return { posX: pos.x, posY: pos.y };
     },
-    isSessionPlayerTurn: (state) => state.sessionPlayerId == state.activePlayerId,
+    isSessionPlayerTurn: (state) =>
+      state.sessionPlayerId == state.activePlayerId,
     isGameInitializing: (state) => state.status == "initializing",
     isGameActive: (state) => state.status == "running",
     isGameFinished: (state) => state.status == "finished",
     isGameError: () => false,
     isQuestionActive: (state) => state.activeQuestion !== null,
-    isPlayerPos: (state, getters) => (posX, posY) =>
-      getters.sessionPlayerPos.posX == posX &&
-      getters.sessionPlayerPos.posY == posY,
+    isPlayerPos: (state, getters) => (posX, posY, id) => {
+      let player = getters.getPlayerById(id);
+
+      return (
+        player.x == posX &&
+        player.y == posY
+      );
+    },
     isMovementAllowed: (state, getters) => (fieldType, posX, posY) => {
       const playerX = getters.sessionPlayerPos.posX;
       const playerY = getters.sessionPlayerPos.posY;

@@ -9,7 +9,9 @@
         <div class="board-x">
             <div class="board-y" v-for="(xrow, indexX) in boardTiles">
                 <tile v-for="(field, indexY) in xrow" :fieldData="field" :posY="indexY" :posX="indexX">
-                    <player v-if="isPlayerPos(indexX, indexY)"></player>
+                    <template v-for="(player, indexP) in players">
+                        <player v-if="isPlayerPos(indexX, indexY, player.number)"></player>
+                    </template>
                 </tile>
             </div>
         </div>
@@ -45,8 +47,10 @@ const isSessionPlayerTurn = computed(() => store.getters.isSessionPlayerTurn)
 
 const isModalActive = computed(() => isQuestionActive.value || !isSessionPlayerTurn.value)
 
+const players = computed(() => { return store.state.players })
+
 const isPlayerPos = computed(() => {
-    return (posX, posY) => store.getters.isPlayerPos(posX, posY)
+    return (posX, posY, id) => store.getters.isPlayerPos(posX, posY, id)
 })
 
 </script>
@@ -81,6 +85,10 @@ const isPlayerPos = computed(() => {
         padding: 1rem;
         border-radius: 0.25rem;
         z-index: 1;
+
+        h3 {
+            margin: 0;
+        }
     }
 }
 </style>
