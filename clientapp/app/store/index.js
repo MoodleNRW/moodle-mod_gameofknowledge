@@ -109,6 +109,8 @@ const store = createStore({
       if (response) {
         response = JSON.parse(response);
 
+        console.log(response)
+
         commit("setTilesData", { tiles: response.tiles });
         commit("setQuestionsData", { questions: response.questions });
         commit("setActivePlayerId", { id: response.activeplayer });
@@ -166,6 +168,7 @@ const store = createStore({
       let pos = state.playerPositions[state.sessionPlayerId];
       return { posX: pos.j, posY: pos.i };
     },
+    isSessionPlayerTurn: (state) => state.sessionPlayerId == state.activePlayerId,
     isGameInitializing: (state) => state.status == "initializing",
     isGameActive: (state) => state.status == "running",
     isGameFinished: (state) => state.status == "finished",

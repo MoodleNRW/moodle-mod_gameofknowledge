@@ -1,12 +1,14 @@
 <template>
     <div class="board">
-        <modalQuestion v-if="isQuestionActive">
-            <question></question>
+        <modalQuestion v-if="isModalActive">
+            <question v-if="isQuestionActive"></question>
+            <div v-if="!isSessionPlayerTurn" class="other-turn">
+                <h3>Please wait for the other player to finish their turn</h3>
+            </div>
         </modalQuestion>
         <div class="board-x">
             <div class="board-y" v-for="(xrow, indexX) in boardTiles">
-                <tile v-for="(field, indexY) in xrow" :fieldData="field" :posY="indexY"
-                    :posX="indexX">
+                <tile v-for="(field, indexY) in xrow" :fieldData="field" :posY="indexY" :posX="indexX">
                     <player v-if="isPlayerPos(indexX, indexY)"></player>
                 </tile>
             </div>
@@ -39,6 +41,10 @@ const isQuestionActive = computed(() => {
     return store.getters.isQuestionActive;
 })
 
+const isSessionPlayerTurn = computed(() => store.getters.isSessionPlayerTurn)
+
+const isModalActive = computed(() => isQuestionActive.value || !isSessionPlayerTurn.value)
+
 const isPlayerPos = computed(() => {
     return (posX, posY) => store.getters.isPlayerPos(posX, posY)
 })
@@ -65,6 +71,16 @@ const isPlayerPos = computed(() => {
             flex: 1 1 0;
             gap: 0.25em;
         }
+    }
+
+    .other-turn {
+        flex: 0 1 auto;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        z-index: 1;
     }
 }
 </style>
