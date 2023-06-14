@@ -13,6 +13,7 @@ const store = createStore({
       tiles: null,
       sessionPlayerId: null,
       activePlayerId: null,
+      winningPlayerId: null,
       players: null,
       playerPositions: null,
       questions: null,
@@ -48,6 +49,9 @@ const store = createStore({
     },
     setActivePlayerId(state, { id }) {
       state.activePlayerId = id;
+    },
+    setWinningPlayerId(state, { id }) {
+      state.winningPlayerId = id;
     },
     setGameStatus(state, { status }) {
       state.status = status;
@@ -92,7 +96,10 @@ const store = createStore({
         commit("setGameStatus", { status: data.status });
       }
     },
-    async requestPerformAction({ commit, state }, { data, posX, posY }) {
+    async requestPerformAction(
+      { commit, dispatch, state },
+      { data, posX, posY }
+    ) {
       let response = await requestPerformAction(state.coursemoduleid, {
         data,
         posX,
@@ -101,7 +108,7 @@ const store = createStore({
 
       if (response) {
         response = JSON.parse(response);
-        console.log(response)
+
         commit("setTilesData", { tiles: response.tiles });
         commit("setQuestionsData", { questions: response.questions });
         commit("setActivePlayerId", { id: response.activeplayer });
@@ -111,6 +118,11 @@ const store = createStore({
           playerPositions: response.playerpositions,
         });
         commit("setGameStatus", { status: response.status });
+
+        await dispatch("handleQuestionResponse", { success: true });
+      } else {
+        // Something illegal happened
+        await dispatch("handleQuestionResponse", { success: false });
       }
     },
     async startGame({ dispatch }) {
@@ -137,13 +149,26 @@ const store = createStore({
         posY: state.activeQuestionPos.posY,
       });
     },
+    async handleQuestionResponse({ commit, state }, { success }) {
+      if (success && state.players[state.sessionPlayerId].lastmark) {
+        // success
+        console.log("Succes");
+      } else {
+        console.log("Wrong");
+      }
+
+      commit("setActiveQuestion", { question: null });
+      commit("setActiveQuestionPos", { posX: null, posY: null });
+    },
   },
   getters: {
     sessionPlayerPos: (state) => {
       let pos = state.playerPositions[state.sessionPlayerId];
       return { posX: pos.j, posY: pos.i };
     },
+    isGameInitializing: (state) => state.status == "initializing",
     isGameActive: (state) => state.status == "running",
+    isGameFinished: (state) => state.status == "finished",
     isGameError: () => false,
     isQuestionActive: (state) => state.activeQuestion !== null,
     isPlayerPos: (state, getters) => (posX, posY) =>
@@ -161,6 +186,7 @@ const store = createStore({
           (posX == playerX && (posY == playerY - 1 || posY == playerY + 1)))
       );
     },
+    getPlayerById: (state) => (id) => state.players[id],
   },
 });
 

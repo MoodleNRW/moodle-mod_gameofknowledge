@@ -1,14 +1,23 @@
 <template>
     <div class="lobby">
-        <h2 class="title">Game of Knowledge</h2>
-        <p v-if="!isGameError" class="welcome">Welcome to the new and exciting Game of Knowledge. <br>When you're ready,
-            please click the "Start New
-            Game" button below!</p>
-        <div class="controls">
-            <button class="btn btn-primary" @click.prevent="startGame">Start Game</button>
+        <div v-if="isGameSetup" class="setup">
+            <h2 class="title">Game of Knowledge</h2>
+            <p v-if="!isGameError" class="welcome">Welcome to the new and exciting Game of Knowledge. <br>When you're ready,
+                please click the "Start New
+                Game" button below!</p>
+            <div class="controls">
+                <button class="btn btn-primary" @click.prevent="startGame">Start Game</button>
+            </div>
+            <p v-if="isGameError" class="error">Whoopsie-daisy! <br />We're sorry, but something didn't work as expected
+                when
+                starting your game. <br />Please give it a few seconds, then try again.</p>
         </div>
-        <p v-if="isGameError" class="error">Whoopsie-daisy! <br />We're sorry, but something didn't work as expected when
-            starting your game. <br />Please give it a few seconds, then try again.</p>
+        <div v-if="isGameInitializing" class="waiting">
+            <h2 class="title">Please wait for others to join</h2>
+        </div>
+        <div v-if="isGameFinished" class="finish">
+            <h2 class="title">Congratulations - We have a winner!</h2>
+        </div>
     </div>
 </template>
 
@@ -22,16 +31,18 @@ const startGame = async () => {
     await store.dispatch("startGame")
 }
 
-const getState = async () => {
-    await store.dispatch("requestGetState")
-}
-
-const performAction = async () => {
-    await store.dispatch("requestPerformAction")
-}
+const isGameSetup = computed(() => !isGameInitializing.value && !isGameFinished.value)
 
 const isGameError = computed(() => {
     return store.getters.isGameError;
+})
+
+const isGameInitializing = computed(() => {
+    return store.getters.isGameInitializing
+})
+
+const isGameFinished = computed(() => {
+    return store.getters.isGameFinished
 })
 
 </script>

@@ -11597,6 +11597,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       tiles: null,
       sessionPlayerId: null,
       activePlayerId: null,
+      winningPlayerId: null,
       players: null,
       playerPositions: null,
       questions: null,
@@ -11642,17 +11643,21 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       var id = _ref9.id;
       state.activePlayerId = id;
     },
-    setGameStatus: function setGameStatus(state, _ref10) {
-      var status = _ref10.status;
+    setWinningPlayerId: function setWinningPlayerId(state, _ref10) {
+      var id = _ref10.id;
+      state.winningPlayerId = id;
+    },
+    setGameStatus: function setGameStatus(state, _ref11) {
+      var status = _ref11.status;
       state.status = status;
     },
-    setActiveQuestion: function setActiveQuestion(state, _ref11) {
-      var question = _ref11.question;
+    setActiveQuestion: function setActiveQuestion(state, _ref12) {
+      var question = _ref12.question;
       state.activeQuestion = question;
     },
-    setActiveQuestionPos: function setActiveQuestionPos(state, _ref12) {
-      var posX = _ref12.posX,
-        posY = _ref12.posY;
+    setActiveQuestionPos: function setActiveQuestionPos(state, _ref13) {
+      var posX = _ref13.posX,
+        posY = _ref13.posY;
       state.activeQuestionPos = {
         posX: posX,
         posY: posY
@@ -11660,13 +11665,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     }
   },
   actions: {
-    requestStartGame: function requestStartGame(_ref13) {
+    requestStartGame: function requestStartGame(_ref14) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref13.commit, state = _ref13.state;
+              commit = _ref14.commit, state = _ref14.state;
               _context.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
@@ -11702,13 +11707,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee);
       }))();
     },
-    requestGetState: function requestGetState(_ref14) {
+    requestGetState: function requestGetState(_ref15) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref14.commit, state = _ref14.state;
+              commit = _ref15.commit, state = _ref15.state;
               _context2.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
@@ -11744,14 +11749,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref15, _ref16) {
+    requestPerformAction: function requestPerformAction(_ref16, _ref17) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var commit, state, data, posX, posY, response;
+        var commit, dispatch, state, data, posX, posY, response;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref15.commit, state = _ref15.state;
-              data = _ref16.data, posX = _ref16.posX, posY = _ref16.posY;
+              commit = _ref16.commit, dispatch = _ref16.dispatch, state = _ref16.state;
+              data = _ref17.data, posX = _ref17.posX, posY = _ref17.posY;
               _context3.next = 4;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid, {
                 data: data,
@@ -11760,45 +11765,58 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               });
             case 4:
               response = _context3.sent;
-              if (response) {
-                response = JSON.parse(response);
-                console.log(response);
-                commit("setTilesData", {
-                  tiles: response.tiles
-                });
-                commit("setQuestionsData", {
-                  questions: response.questions
-                });
-                commit("setActivePlayerId", {
-                  id: response.activeplayer
-                });
-                commit("setSessionPlayerId", {
-                  id: response.player
-                });
-                commit("setPlayersData", {
-                  players: response.playerlist
-                });
-                commit("setPlayerPositionsData", {
-                  playerPositions: response.playerpositions
-                });
-                commit("setGameStatus", {
-                  status: response.status
-                });
+              if (!response) {
+                _context3.next = 18;
+                break;
               }
-            case 6:
+              response = JSON.parse(response);
+              commit("setTilesData", {
+                tiles: response.tiles
+              });
+              commit("setQuestionsData", {
+                questions: response.questions
+              });
+              commit("setActivePlayerId", {
+                id: response.activeplayer
+              });
+              commit("setSessionPlayerId", {
+                id: response.player
+              });
+              commit("setPlayersData", {
+                players: response.playerlist
+              });
+              commit("setPlayerPositionsData", {
+                playerPositions: response.playerpositions
+              });
+              commit("setGameStatus", {
+                status: response.status
+              });
+              _context3.next = 16;
+              return dispatch("handleQuestionResponse", {
+                success: true
+              });
+            case 16:
+              _context3.next = 20;
+              break;
+            case 18:
+              _context3.next = 20;
+              return dispatch("handleQuestionResponse", {
+                success: false
+              });
+            case 20:
             case "end":
               return _context3.stop();
           }
         }, _callee3);
       }))();
     },
-    startGame: function startGame(_ref17) {
+    startGame: function startGame(_ref18) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              dispatch = _ref17.dispatch;
+              dispatch = _ref18.dispatch;
               _context4.next = 3;
               return dispatch("requestStartGame");
             case 3:
@@ -11808,13 +11826,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee4);
       }))();
     },
-    getState: function getState(_ref18) {
+    getState: function getState(_ref19) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              dispatch = _ref18.dispatch;
+              dispatch = _ref19.dispatch;
               _context5.next = 3;
               return dispatch("requestGetState");
             case 3:
@@ -11824,14 +11842,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee5);
       }))();
     },
-    activateQuestion: function activateQuestion(_ref19, _ref20) {
+    activateQuestion: function activateQuestion(_ref20, _ref21) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
         var state, commit, index, posX, posY, question;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              state = _ref19.state, commit = _ref19.commit;
-              index = _ref20.index, posX = _ref20.posX, posY = _ref20.posY;
+              state = _ref20.state, commit = _ref20.commit;
+              index = _ref21.index, posX = _ref21.posX, posY = _ref21.posY;
               question = state.questions[index];
               if (question) {
                 commit("setActiveQuestion", {
@@ -11849,14 +11867,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee6);
       }))();
     },
-    movePlayer: function movePlayer(_ref21, _ref22) {
+    movePlayer: function movePlayer(_ref22, _ref23) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var state, dispatch, posX, posY;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              state = _ref21.state, dispatch = _ref21.dispatch;
-              posX = _ref22.posX, posY = _ref22.posY;
+              state = _ref22.state, dispatch = _ref22.dispatch;
+              posX = _ref23.posX, posY = _ref23.posY;
               _context7.next = 4;
               return dispatch("activateQuestion", {
                 posX: posX,
@@ -11869,14 +11887,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee7);
       }))();
     },
-    submitQuestion: function submitQuestion(_ref23, _ref24) {
+    submitQuestion: function submitQuestion(_ref24, _ref25) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
         var dispatch, state, data;
         return _regeneratorRuntime().wrap(function _callee8$(_context8) {
           while (1) switch (_context8.prev = _context8.next) {
             case 0:
-              dispatch = _ref23.dispatch, state = _ref23.state;
-              data = _ref24.data;
+              dispatch = _ref24.dispatch, state = _ref24.state;
+              data = _ref25.data;
               _context8.next = 4;
               return dispatch("requestPerformAction", {
                 data: data,
@@ -11889,6 +11907,34 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
           }
         }, _callee8);
       }))();
+    },
+    handleQuestionResponse: function handleQuestionResponse(_ref26, _ref27) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+        var commit, state, success;
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
+            case 0:
+              commit = _ref26.commit, state = _ref26.state;
+              success = _ref27.success;
+              if (success && state.players[state.sessionPlayerId].lastmark) {
+                // success
+                console.log("Succes");
+              } else {
+                console.log("Wrong");
+              }
+              commit("setActiveQuestion", {
+                question: null
+              });
+              commit("setActiveQuestionPos", {
+                posX: null,
+                posY: null
+              });
+            case 5:
+            case "end":
+              return _context9.stop();
+          }
+        }, _callee9);
+      }))();
     }
   },
   getters: {
@@ -11899,8 +11945,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         posY: pos.i
       };
     },
+    isGameInitializing: function isGameInitializing(state) {
+      return state.status == "initializing";
+    },
     isGameActive: function isGameActive(state) {
       return state.status == "running";
+    },
+    isGameFinished: function isGameFinished(state) {
+      return state.status == "finished";
     },
     isGameError: function isGameError() {
       return false;
@@ -11918,6 +11970,11 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         var playerX = getters.sessionPlayerPos.posX;
         var playerY = getters.sessionPlayerPos.posY;
         return (fieldType == "question" || fieldType == "empty" || fieldType == "goal") && (posY == playerY && (posX == playerX - 1 || posX == playerX + 1) || posX == playerX && (posY == playerY - 1 || posY == playerY + 1));
+      };
+    },
+    getPlayerById: function getPlayerById(state) {
+      return function (id) {
+        return state.players[id];
       };
     }
   }
@@ -12316,49 +12373,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref2.apply(this, arguments);
       };
     }();
-    var getState = /*#__PURE__*/function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-          while (1) switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return store.dispatch("requestGetState");
-            case 2:
-            case "end":
-              return _context2.stop();
-          }
-        }, _callee2);
-      }));
-      return function getState() {
-        return _ref3.apply(this, arguments);
-      };
-    }();
-    var performAction = /*#__PURE__*/function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-          while (1) switch (_context3.prev = _context3.next) {
-            case 0:
-              _context3.next = 2;
-              return store.dispatch("requestPerformAction");
-            case 2:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }));
-      return function performAction() {
-        return _ref4.apply(this, arguments);
-      };
-    }();
+    var isGameSetup = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return !isGameInitializing.value && !isGameFinished.value;
+    });
     var isGameError = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return store.getters.isGameError;
+    });
+    var isGameInitializing = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.getters.isGameInitializing;
+    });
+    var isGameFinished = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.getters.isGameFinished;
     });
     var __returned__ = {
       store: store,
       startGame: startGame,
-      getState: getState,
-      performAction: performAction,
+      isGameSetup: isGameSetup,
       isGameError: isGameError,
+      isGameInitializing: isGameInitializing,
+      isGameFinished: isGameFinished,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_1__.useStore;
@@ -12602,30 +12635,49 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "lobby"
 };
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+var _hoisted_2 = {
+  key: 0,
+  "class": "setup"
+};
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "title"
 }, "Game of Knowledge", -1 /* HOISTED */);
-var _hoisted_3 = {
+var _hoisted_4 = {
   key: 0,
   "class": "welcome"
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_5 = {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_6 = {
   "class": "controls"
 };
-var _hoisted_6 = ["onClick"];
-var _hoisted_7 = {
+var _hoisted_7 = ["onClick"];
+var _hoisted_8 = {
   key: 1,
   "class": "error"
 };
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_11 = {
+  key: 1,
+  "class": "waiting"
+};
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+  "class": "title"
+}, "Please wait for others to join", -1 /* HOISTED */);
+var _hoisted_13 = [_hoisted_12];
+var _hoisted_14 = {
+  key: 2,
+  "class": "finish"
+};
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
+  "class": "title"
+}, "Congratulations - We have a winner!", -1 /* HOISTED */);
+var _hoisted_16 = [_hoisted_15];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameSetup ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_hoisted_3, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_6)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, _hoisted_16)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
