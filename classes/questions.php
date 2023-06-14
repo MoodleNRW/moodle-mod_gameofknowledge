@@ -44,15 +44,15 @@ class questions {
 
         $questionids = $DB->get_fieldset_sql('
             SELECT q.id
-            FROM m_question q
-            JOIN m_question_versions qv on q.id = qv.questionid
-            JOIN m_question_bank_entries qbe on qv.questionbankentryid = qbe.id
+            FROM {question} q
+            JOIN {question_versions} qv on q.id = qv.questionid
+            JOIN {question_bank_entries} qbe on qv.questionbankentryid = qbe.id
             JOIN (
                 SELECT
                     questionbankentryid,
                     max(version) as current_version
                 FROM
-                    m_question_versions
+                    {question_versions}
                 GROUP BY
                     questionbankentryid
             ) mqv on qv.questionbankentryid = mqv.questionbankentryid

@@ -11598,7 +11598,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       sessionPlayerId: null,
       activePlayerId: null,
       players: null,
-      gameData: null,
+      playerPositions: null,
+      questions: null,
+      status: null,
       playerState: {
         posX: 0,
         posY: 0
@@ -11622,34 +11624,64 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       var tiles = _ref4.tiles;
       state.tiles = tiles;
     },
-    setPlayersData: function setPlayersData(state, _ref5) {
-      var players = _ref5.players;
+    setQuestionsData: function setQuestionsData(state, _ref5) {
+      var questions = _ref5.questions;
+      state.questions = questions;
+    },
+    setPlayersData: function setPlayersData(state, _ref6) {
+      var players = _ref6.players;
       state.players = players;
     },
-    setSessionPlayerId: function setSessionPlayerId(state, _ref6) {
-      var id = _ref6.id;
+    setPlayerPositionsData: function setPlayerPositionsData(state, _ref7) {
+      var playerPositions = _ref7.playerPositions;
+      state.playerPositions = playerPositions;
+    },
+    setSessionPlayerId: function setSessionPlayerId(state, _ref8) {
+      var id = _ref8.id;
       state.sessionPlayerId = id;
     },
-    setActivePlayerId: function setActivePlayerId(state, _ref7) {
-      var id = _ref7.id;
+    setActivePlayerId: function setActivePlayerId(state, _ref9) {
+      var id = _ref9.id;
       state.activePlayerId = id;
+    },
+    setGameStatus: function setGameStatus(state, _ref10) {
+      var status = _ref10.status;
+      state.status = status;
     }
   },
   actions: {
-    requestStartGame: function requestStartGame(_ref8) {
+    requestStartGame: function requestStartGame(_ref11) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref8.commit, state = _ref8.state;
+              commit = _ref11.commit, state = _ref11.state;
               _context.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
               data = _context.sent;
-              commit("setGameData", {
-                gameData: []
-              });
+              if (data) {
+                data = JSON.parse(data);
+                commit("setTilesData", {
+                  tiles: data.tiles
+                });
+                commit("setQuestionsData", {
+                  questions: data.questions
+                });
+                commit("setActivePlayerId", {
+                  id: data.activeplayer
+                });
+                commit("setPlayersData", {
+                  players: data.playerlist
+                });
+                commit("setPlayerPositionsData", {
+                  playerPositions: data.playerpositions
+                });
+                commit("setGameStatus", {
+                  status: data.status
+                });
+              }
               console.log(data);
             case 6:
             case "end":
@@ -11658,13 +11690,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee);
       }))();
     },
-    requestGetState: function requestGetState(_ref9) {
+    requestGetState: function requestGetState(_ref12) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref9.commit, state = _ref9.state;
+              commit = _ref12.commit, state = _ref12.state;
               _context2.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
@@ -11674,11 +11706,20 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                 commit("setTilesData", {
                   tiles: data.tiles
                 });
+                commit("setQuestionsData", {
+                  questions: data.questions
+                });
                 commit("setActivePlayerId", {
                   id: data.activeplayer
                 });
                 commit("setPlayersData", {
                   players: data.playerlist
+                });
+                commit("setPlayerPositionsData", {
+                  playerPositions: data.playerpositions
+                });
+                commit("setGameStatus", {
+                  status: data.status
                 });
               }
               console.log(data);
@@ -11689,13 +11730,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref10) {
+    requestPerformAction: function requestPerformAction(_ref13) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref10.commit, state = _ref10.state;
+              commit = _ref13.commit, state = _ref13.state;
               _context3.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
             case 3:
@@ -11708,36 +11749,49 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee3);
       }))();
     },
-    startGame: function startGame(_ref11) {
+    startGame: function startGame(_ref14) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var commit, dispatch;
+        var dispatch;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref11.commit, dispatch = _ref11.dispatch;
+              dispatch = _ref14.dispatch;
               _context4.next = 3;
               return dispatch("requestStartGame");
             case 3:
-              _context4.next = 5;
-              return dispatch("requestGetState");
-            case 5:
             case "end":
               return _context4.stop();
           }
         }, _callee4);
       }))();
     },
-    movePlayer: function movePlayer(_ref12, _ref13) {
-      var state = _ref12.state;
-      var posX = _ref13.posX,
-        posY = _ref13.posY;
+    getState: function getState(_ref15) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        var dispatch;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) switch (_context5.prev = _context5.next) {
+            case 0:
+              dispatch = _ref15.dispatch;
+              _context5.next = 3;
+              return dispatch("requestGetState");
+            case 3:
+            case "end":
+              return _context5.stop();
+          }
+        }, _callee5);
+      }))();
+    },
+    movePlayer: function movePlayer(_ref16, _ref17) {
+      var state = _ref16.state;
+      var posX = _ref17.posX,
+        posY = _ref17.posY;
       state.playerState.posX = posX;
       state.playerState.posY = posY;
     }
   },
   getters: {
     isGameActive: function isGameActive(state) {
-      return state.gameData !== null;
+      return state.status == "initializing";
     },
     isGameError: function isGameError() {
       return false;
