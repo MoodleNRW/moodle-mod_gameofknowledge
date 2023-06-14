@@ -54,6 +54,7 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
 
         $mform->addElement('questioncategory', 'questioncategory', get_string('category', 'question'),
             ['contexts' => [$this->context, $this->context->get_course_context()], 'top'=>true]);
+        $mform->addRule('questioncategory', null, 'required', null, 'client');
 
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
@@ -69,5 +70,12 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         return $errors;
+    }
+
+    public function set_data($data) {
+        global $DB;
+        $cid = $DB->get_field('question_categories', 'contextid', ['id' => $data->questioncategoryid]);
+        $data->questioncategory = $data->questioncategoryid . ',' . $cid;
+        parent::set_data($data);
     }
 }
