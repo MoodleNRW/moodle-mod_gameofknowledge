@@ -40,7 +40,26 @@ class questions {
     }
 
     private function load_questions(int $questioncategoryid, int $seed) {
-        $questionids = (new \question_finder)->get_questions_from_categories([$questioncategoryid], '');
+        global $DB;
+
+        $questionids = $DB->get_fieldset_sql('
+            SELECT q.id
+            FROM m_question q
+            JOIN m_question_versions qv on q.id = qv.questionid
+            JOIN m_question_bank_entries qbe on qv.questionbankentryid = qbe.id
+            JOIN (
+                SELECT
+                    questionbankentryid,
+                    max(version) as current_version
+                FROM
+                    m_question_versions
+                GROUP BY
+                    questionbankentryid
+            ) mqv on qv.questionbankentryid = mqv.questionbankentryid
+            WHERE
+                qbe.questioncategoryid = ?
+                AND qv.version = mqv.current_version', [$questioncategoryid]);
+
         $questions = question_load_questions($questionids);
 
         srand($seed);
