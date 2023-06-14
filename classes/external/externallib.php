@@ -108,7 +108,7 @@ class externallib extends \external_api {
 
         $player = $manager->get_current_player_record();
         if (!$player) {
-            throw new game_exception('notingame');
+            return 'null';
         }
 
         $game = $manager->get_game($player->gameid);
