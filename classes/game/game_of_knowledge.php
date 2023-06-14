@@ -2,29 +2,112 @@
 
 namespace mod_gameofknowledge\game;
 
+use mod_gameofknowledge\game_exception;
 use mod_gameofknowledge\state_based_game;
-use mod_gameofknowledge\state;
 
 defined('MOODLE_INTERNAL') || die();
 
 public class game_of_knowledge extends state_based_game {
 
+    const DEFAULT_LAYOUT = '
+        S Q Q # Q Q S
+        Q _ _ Q _ _ Q
+        Q _ _ Q _ _ Q
+        # Q Q G Q Q #
+        Q _ _ Q _ _ Q
+        Q _ _ Q _ _ Q
+        S Q Q # Q Q S
+    ';
+
+    const TYPE_NONE = 'none';
+    const TYPE_EMPTY = 'empty';
+    const TYPE_START = 'start';
+    const TYPE_QUESTION = 'question';
+    const TYPE_GOAL = 'goal';
+
     private $tiles;
     private $actviteplayer;
     private $playerlist;
 
-    protected function init_new_game(\stdClass $settings)
-    {
-        for ($i = 0; $i < 10; $i++) {
-            for ($j = 0; $j < 10; $j++) {
-                $this->tiles[$i][$j] = ['question' => 'questiontext', 'answer' => '1'];
+    protected function init_new_game(\stdClass $settings) {
+        $this->maxplayers = 0;
+        $questionids = []; // TODO
+
+        $layout = self::DEFAULT_LAYOUT;
+        $lines = explode("\n", trim($layout));
+        for ($i = 0; $i < sizeof($lines); $i++) {
+            $line = str_replace([' ', "\t"], '', trim($lines[$i]));
+            $this->tiles[$i] = [];
+            for ($j = 0; $j < strlen($line); $j++) {
+                switch ($line[$j]) {
+                    case 'S':
+                        $this->maxplayers++;
+                        $tile = [
+                            'type' => self::TYPE_START
+                        ];
+                        break;
+
+                    case '#':
+                        $tile = [
+                            'type' => self::TYPE_EMPTY
+                        ];
+                        break;
+
+                    case 'Q':
+                        $tile = [
+                            'type' => self::TYPE_QUESTION,
+                            'questionid' => array_pop($questionids)
+                        ];
+                        break;
+
+                    case 'G':
+                        $tile = [
+                            'type' => self::TYPE_GOAL
+                        ];
+                        break;
+
+                    default:
+                        $tile = [
+                            'type' => self::TYPE_NONE
+                        ];
+                        break;
+
+                }
+                $this->tiles[$i][$j] = ['questionid' => array_pop($questionids)];
             }
         }
     }
 
-    protected function init_player(int $player)
-    {
-        $this->playerlist[$player] = ['position' => '0/0'];
+    protected function find_empty_start_position(): ?string {
+        for ($i = 0; $i < sizeof($this->tiles); $i++) {
+            for ($j = 0; $j < strlen($this->tiles[$i]); $j++) {
+                if ($this->tiles[$i][$j]['type'] == self::TYPE_START) {
+                    $position = $i . '/' . $j;
+                    $occupied = false;
+                    foreach ($this->playerlist as $player) {
+                        if ($player['position'] == $position) {
+                            $occupied = true;
+                            break;
+                        }
+                    }
+                    if (!$occupied) {
+                        return $position;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    protected function init_player(int $player) {
+        $position = $this->find_empty_start_position();
+        if (!$position) {
+            throw new game_exception('noemptystartposition');
+        }
+        $this->playerlist[$player] = [
+            'number' => $player,
+            'position' => $position
+        ];
     }
 
     protected function parse_state(array $state)
