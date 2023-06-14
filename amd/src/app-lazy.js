@@ -11767,7 +11767,7 @@ var requestStartGame = /*#__PURE__*/function () {
         case 0:
           args = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
           request = {
-            methodname: "",
+            methodname: REQUEST_START_GAME,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -11801,7 +11801,7 @@ var requestGetState = /*#__PURE__*/function () {
         case 0:
           args = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
           request = {
-            methodname: "",
+            methodname: REQUEST_GET_STATE,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -11835,7 +11835,7 @@ var requestPerformAction = /*#__PURE__*/function () {
         case 0:
           args = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : null;
           request = {
-            methodname: "",
+            methodname: REQUEST_PERFORM_ACTION,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -12146,10 +12146,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   __name: 'main',
   props: {
     coursemoduleid: {
-      type: Number
+      type: String
     },
     contextid: {
-      type: String
+      type: Number
     }
   },
   setup: function setup(__props, _ref) {
