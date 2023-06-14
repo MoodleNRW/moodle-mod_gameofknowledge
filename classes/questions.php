@@ -113,7 +113,19 @@ class questions {
         \question_engine::save_questions_usage_by_activity($this->quba);
 
         $transaction->allow_commit();
-        return $this->quba->get_question_mark($slot);
+        $fraction = $this->quba->get_question_fraction($slot);
+        if ($fraction < 1) {
+            $this->redo_question($slot);
+        }
+        return $fraction;
+    }
+
+    public function redo_question(int $slot) {
+        $oldquestion = $this->quba->get_question($slot);
+        $newquestion = \question_bank::load_question($oldquestion->id, true);
+        $this->quba->add_question_in_place_of_other($slot, $newquestion);
+        $this->quba->start_question($slot);
+        \question_engine::save_questions_usage_by_activity($this->quba);
     }
 
     public static function get_question_display_options() : \question_display_options {
