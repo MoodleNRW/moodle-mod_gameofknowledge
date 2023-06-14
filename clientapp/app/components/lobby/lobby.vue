@@ -17,7 +17,7 @@
         </div>
         <div v-if="isGameFinished" class="finish">
             <h2 class="title">Congratulations - We have a winner!</h2>
-            <button class="btn btn-primary">Finish</button>
+            <button class="btn btn-primary" @click.prevent="finishGame">Finish</button>
         </div>
     </div>
 </template>
@@ -30,6 +30,10 @@ const store = useStore();
 
 const startGame = async () => {
     await store.dispatch("startGame")
+}
+
+const finishGame = async () => {
+    await store.dispatch("finishGame")
 }
 
 const isGameSetup = computed(() => !isGameInitializing.value && !isGameFinished.value)

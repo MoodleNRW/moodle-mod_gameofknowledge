@@ -7,7 +7,15 @@
         </div>
     </div>
 </template>
-<script setup></script>
+<script setup>
+import { defineProps } from 'vue';
+const props = defineProps({
+    id: {
+        type: Number
+    }
+})
+
+</script>
 <style lang="scss">
 .player {
     display: flex;

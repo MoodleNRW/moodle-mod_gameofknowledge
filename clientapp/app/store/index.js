@@ -3,6 +3,7 @@ import {
   requestStartGame,
   requestGetState,
   requestPerformAction,
+  requestFinishGame,
 } from "@/app/utils/requests";
 
 const store = createStore({
@@ -80,20 +81,26 @@ const store = createStore({
         commit("setGameStatus", { status: data.status });
       }
     },
+    async requestFinishGame({ commit, state }) {
+      let data = await requestFinishGame(state.coursemoduleid);
+      commit("setGameStatus", { status: null });
+    },
     async requestGetState({ commit, state }) {
       let data = await requestGetState(state.coursemoduleid);
 
       if (data) {
         data = JSON.parse(data);
-        commit("setTilesData", { tiles: data.tiles });
-        commit("setQuestionsData", { questions: data.questions });
-        commit("setActivePlayerId", { id: data.activeplayer });
-        commit("setSessionPlayerId", { id: data.player });
-        commit("setPlayersData", { players: data.playerlist });
-        commit("setPlayerPositionsData", {
-          playerPositions: data.playerpositions,
-        });
-        commit("setGameStatus", { status: data.status });
+        if (data) {
+          commit("setTilesData", { tiles: data.tiles });
+          commit("setQuestionsData", { questions: data.questions });
+          commit("setActivePlayerId", { id: data.activeplayer });
+          commit("setSessionPlayerId", { id: data.player });
+          commit("setPlayersData", { players: data.playerlist });
+          commit("setPlayerPositionsData", {
+            playerPositions: data.playerpositions,
+          });
+          commit("setGameStatus", { status: data.status });
+        }
       }
     },
     async requestPerformAction(
@@ -130,12 +137,15 @@ const store = createStore({
     async startGame({ dispatch }) {
       await dispatch("requestStartGame");
     },
+    async finishGame({ dispatch }) {
+      await dispatch("requestFinishGame");
+    },
     async getState({ dispatch }) {
       await dispatch("requestGetState");
     },
     async activateQuestion({ state, commit, dispatch }, { index, posX, posY }) {
       if (index !== null) {
-        console.log(1)
+        console.log(1);
         let question = state.questions[index];
 
         if (question) {

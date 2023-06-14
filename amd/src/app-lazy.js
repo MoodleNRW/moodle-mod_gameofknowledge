@@ -11707,7 +11707,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee);
       }))();
     },
-    requestGetState: function requestGetState(_ref15) {
+    requestFinishGame: function requestFinishGame(_ref15) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
@@ -11715,33 +11715,12 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
             case 0:
               commit = _ref15.commit, state = _ref15.state;
               _context2.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestFinishGame)(state.coursemoduleid);
             case 3:
               data = _context2.sent;
-              if (data) {
-                data = JSON.parse(data);
-                commit("setTilesData", {
-                  tiles: data.tiles
-                });
-                commit("setQuestionsData", {
-                  questions: data.questions
-                });
-                commit("setActivePlayerId", {
-                  id: data.activeplayer
-                });
-                commit("setSessionPlayerId", {
-                  id: data.player
-                });
-                commit("setPlayersData", {
-                  players: data.playerlist
-                });
-                commit("setPlayerPositionsData", {
-                  playerPositions: data.playerpositions
-                });
-                commit("setGameStatus", {
-                  status: data.status
-                });
-              }
+              commit("setGameStatus", {
+                status: null
+              });
             case 5:
             case "end":
               return _context2.stop();
@@ -11749,24 +11728,68 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref16, _ref17) {
+    requestGetState: function requestGetState(_ref16) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var commit, dispatch, state, data, posX, posY, response;
+        var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref16.commit, dispatch = _ref16.dispatch, state = _ref16.state;
-              data = _ref17.data, posX = _ref17.posX, posY = _ref17.posY;
-              _context3.next = 4;
+              commit = _ref16.commit, state = _ref16.state;
+              _context3.next = 3;
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
+            case 3:
+              data = _context3.sent;
+              if (data) {
+                data = JSON.parse(data);
+                if (data) {
+                  commit("setTilesData", {
+                    tiles: data.tiles
+                  });
+                  commit("setQuestionsData", {
+                    questions: data.questions
+                  });
+                  commit("setActivePlayerId", {
+                    id: data.activeplayer
+                  });
+                  commit("setSessionPlayerId", {
+                    id: data.player
+                  });
+                  commit("setPlayersData", {
+                    players: data.playerlist
+                  });
+                  commit("setPlayerPositionsData", {
+                    playerPositions: data.playerpositions
+                  });
+                  commit("setGameStatus", {
+                    status: data.status
+                  });
+                }
+              }
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    },
+    requestPerformAction: function requestPerformAction(_ref17, _ref18) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        var commit, dispatch, state, data, posX, posY, response;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref17.commit, dispatch = _ref17.dispatch, state = _ref17.state;
+              data = _ref18.data, posX = _ref18.posX, posY = _ref18.posY;
+              _context4.next = 4;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid, {
                 data: data,
                 posX: posX,
                 posY: posY
               });
             case 4:
-              response = _context3.sent;
+              response = _context4.sent;
               if (!response) {
-                _context3.next = 19;
+                _context4.next = 19;
                 break;
               }
               response = JSON.parse(response);
@@ -11792,42 +11815,26 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               commit("setGameStatus", {
                 status: response.status
               });
-              _context3.next = 17;
+              _context4.next = 17;
               return dispatch("handleQuestionResponse", {
                 success: true
               });
             case 17:
-              _context3.next = 21;
+              _context4.next = 21;
               break;
             case 19:
-              _context3.next = 21;
+              _context4.next = 21;
               return dispatch("handleQuestionResponse", {
                 success: false
               });
             case 21:
-            case "end":
-              return _context3.stop();
-          }
-        }, _callee3);
-      }))();
-    },
-    startGame: function startGame(_ref18) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var dispatch;
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              dispatch = _ref18.dispatch;
-              _context4.next = 3;
-              return dispatch("requestStartGame");
-            case 3:
             case "end":
               return _context4.stop();
           }
         }, _callee4);
       }))();
     },
-    getState: function getState(_ref19) {
+    startGame: function startGame(_ref19) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
@@ -11835,7 +11842,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
             case 0:
               dispatch = _ref19.dispatch;
               _context5.next = 3;
-              return dispatch("requestGetState");
+              return dispatch("requestStartGame");
             case 3:
             case "end":
               return _context5.stop();
@@ -11843,16 +11850,48 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee5);
       }))();
     },
-    activateQuestion: function activateQuestion(_ref20, _ref21) {
+    finishGame: function finishGame(_ref20) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var state, commit, dispatch, index, posX, posY, question;
+        var dispatch;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              state = _ref20.state, commit = _ref20.commit, dispatch = _ref20.dispatch;
-              index = _ref21.index, posX = _ref21.posX, posY = _ref21.posY;
+              dispatch = _ref20.dispatch;
+              _context6.next = 3;
+              return dispatch("requestFinishGame");
+            case 3:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6);
+      }))();
+    },
+    getState: function getState(_ref21) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var dispatch;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              dispatch = _ref21.dispatch;
+              _context7.next = 3;
+              return dispatch("requestGetState");
+            case 3:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7);
+      }))();
+    },
+    activateQuestion: function activateQuestion(_ref22, _ref23) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var state, commit, dispatch, index, posX, posY, question;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              state = _ref22.state, commit = _ref22.commit, dispatch = _ref22.dispatch;
+              index = _ref23.index, posX = _ref23.posX, posY = _ref23.posY;
               if (!(index !== null)) {
-                _context6.next = 8;
+                _context8.next = 8;
                 break;
               }
               console.log(1);
@@ -11866,7 +11905,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                   posY: posY
                 });
               }
-              _context6.next = 11;
+              _context8.next = 11;
               break;
             case 8:
               // Keep Going
@@ -11874,46 +11913,46 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                 posX: posX,
                 posY: posY
               });
-              _context6.next = 11;
+              _context8.next = 11;
               return dispatch("submitQuestion", {
                 data: null
               });
             case 11:
             case "end":
-              return _context6.stop();
+              return _context8.stop();
           }
-        }, _callee6);
+        }, _callee8);
       }))();
     },
-    movePlayer: function movePlayer(_ref22, _ref23) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+    movePlayer: function movePlayer(_ref24, _ref25) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
         var state, dispatch, posX, posY;
-        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-          while (1) switch (_context7.prev = _context7.next) {
+        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+          while (1) switch (_context9.prev = _context9.next) {
             case 0:
-              state = _ref22.state, dispatch = _ref22.dispatch;
-              posX = _ref23.posX, posY = _ref23.posY;
-              _context7.next = 4;
+              state = _ref24.state, dispatch = _ref24.dispatch;
+              posX = _ref25.posX, posY = _ref25.posY;
+              _context9.next = 4;
               return dispatch("activateQuestion", {
                 posX: posX,
                 posY: posY
               });
             case 4:
             case "end":
-              return _context7.stop();
+              return _context9.stop();
           }
-        }, _callee7);
+        }, _callee9);
       }))();
     },
-    submitQuestion: function submitQuestion(_ref24, _ref25) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+    submitQuestion: function submitQuestion(_ref26, _ref27) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
         var dispatch, state, data;
-        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-          while (1) switch (_context8.prev = _context8.next) {
+        return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+          while (1) switch (_context10.prev = _context10.next) {
             case 0:
-              dispatch = _ref24.dispatch, state = _ref24.state;
-              data = _ref25.data;
-              _context8.next = 4;
+              dispatch = _ref26.dispatch, state = _ref26.state;
+              data = _ref27.data;
+              _context10.next = 4;
               return dispatch("requestPerformAction", {
                 data: data,
                 posX: state.activeQuestionPos.posX,
@@ -11921,19 +11960,19 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               });
             case 4:
             case "end":
-              return _context8.stop();
+              return _context10.stop();
           }
-        }, _callee8);
+        }, _callee10);
       }))();
     },
-    handleQuestionResponse: function handleQuestionResponse(_ref26, _ref27) {
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+    handleQuestionResponse: function handleQuestionResponse(_ref28, _ref29) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
         var commit, state, success;
-        return _regeneratorRuntime().wrap(function _callee9$(_context9) {
-          while (1) switch (_context9.prev = _context9.next) {
+        return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+          while (1) switch (_context11.prev = _context11.next) {
             case 0:
-              commit = _ref26.commit, state = _ref26.state;
-              success = _ref27.success;
+              commit = _ref28.commit, state = _ref28.state;
+              success = _ref29.success;
               if (success && state.players[state.sessionPlayerId].lastmark) {
                 // success
                 console.log("Succes");
@@ -11949,9 +11988,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               });
             case 5:
             case "end":
-              return _context9.stop();
+              return _context11.stop();
           }
-        }, _callee9);
+        }, _callee11);
       }))();
     }
   },
@@ -12014,6 +12053,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   requestFinishGame: () => (/* binding */ requestFinishGame),
 /* harmony export */   requestGetState: () => (/* binding */ requestGetState),
 /* harmony export */   requestPerformAction: () => (/* binding */ requestPerformAction),
 /* harmony export */   requestStartGame: () => (/* binding */ requestStartGame)
@@ -12027,6 +12067,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var REQUEST_BASE = "mod_gameofknowledge";
 var REQUEST_START_GAME = "".concat(REQUEST_BASE, "_start_game");
+var REQUEST_FINISH_GAME = "".concat(REQUEST_BASE, "_end_game");
 var REQUEST_GET_STATE = "".concat(REQUEST_BASE, "_get_state");
 var REQUEST_PERFORM_ACTION = "".concat(REQUEST_BASE, "_perform_action");
 var requestStartGame = /*#__PURE__*/function () {
@@ -12063,7 +12104,7 @@ var requestStartGame = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-var requestGetState = /*#__PURE__*/function () {
+var requestFinishGame = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(coursemoduleid) {
     var args,
       request,
@@ -12073,7 +12114,7 @@ var requestGetState = /*#__PURE__*/function () {
         case 0:
           args = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
           request = {
-            methodname: REQUEST_GET_STATE,
+            methodname: REQUEST_FINISH_GAME,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -12093,12 +12134,46 @@ var requestGetState = /*#__PURE__*/function () {
       }
     }, _callee2, null, [[2, 8]]);
   }));
-  return function requestGetState(_x2) {
+  return function requestFinishGame(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
+var requestGetState = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid) {
+    var args,
+      request,
+      _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          args = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
+          request = {
+            methodname: REQUEST_GET_STATE,
+            args: Object.assign({
+              coursemoduleid: coursemoduleid
+            }, args)
+          };
+          _context3.prev = 2;
+          _context3.next = 5;
+          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
+        case 5:
+          return _context3.abrupt("return", _context3.sent);
+        case 8:
+          _context3.prev = 8;
+          _context3.t0 = _context3["catch"](2);
+          console.log(_context3.t0);
+        case 11:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[2, 8]]);
+  }));
+  return function requestGetState(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
 var requestPerformAction = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid, _ref3) {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(coursemoduleid, _ref4) {
     var data,
       posX,
       posY,
@@ -12106,12 +12181,12 @@ var requestPerformAction = /*#__PURE__*/function () {
       answer,
       action,
       request,
-      _args3 = arguments;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+      _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
         case 0:
-          data = _ref3.data, posX = _ref3.posX, posY = _ref3.posY;
-          args = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
+          data = _ref4.data, posX = _ref4.posX, posY = _ref4.posY;
+          args = _args4.length > 2 && _args4[2] !== undefined ? _args4[2] : null;
           answer = {};
           if (data) {
             data.forEach(function (value, key) {
@@ -12131,23 +12206,23 @@ var requestPerformAction = /*#__PURE__*/function () {
               action: action
             }, args)
           };
-          _context3.prev = 7;
-          _context3.next = 10;
+          _context4.prev = 7;
+          _context4.next = 10;
           return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
         case 10:
-          return _context3.abrupt("return", _context3.sent);
+          return _context4.abrupt("return", _context4.sent);
         case 13:
-          _context3.prev = 13;
-          _context3.t0 = _context3["catch"](7);
-          console.log(_context3.t0);
+          _context4.prev = 13;
+          _context4.t0 = _context4["catch"](7);
+          console.log(_context4.t0);
         case 16:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
-    }, _callee3, null, [[7, 13]]);
+    }, _callee4, null, [[7, 13]]);
   }));
-  return function requestPerformAction(_x3, _x4) {
-    return _ref4.apply(this, arguments);
+  return function requestPerformAction(_x4, _x5) {
+    return _ref5.apply(this, arguments);
   };
 }();
 
@@ -12408,6 +12483,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref2.apply(this, arguments);
       };
     }();
+    var finishGame = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return store.dispatch("finishGame");
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      return function finishGame() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
     var isGameSetup = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return !isGameInitializing.value && !isGameFinished.value;
     });
@@ -12423,6 +12515,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var __returned__ = {
       store: store,
       startGame: startGame,
+      finishGame: finishGame,
       isGameSetup: isGameSetup,
       isGameError: isGameError,
       isGameInitializing: isGameInitializing,
@@ -12431,6 +12524,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_1__.useStore;
       }
+    };
+    Object.defineProperty(__returned__, '__isScriptSetup', {
+      enumerable: false,
+      value: true
+    });
+    return __returned__;
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/player/player.vue?vue&type=script&setup=true&lang=js":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/player/player.vue?vue&type=script&setup=true&lang=js ***!
+  \******************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  __name: 'player',
+  props: {
+    id: {
+      type: Number
+    }
+  },
+  setup: function setup(__props, _ref) {
+    var __expose = _ref.expose;
+    __expose();
+    var props = __props;
+    var __returned__ = {
+      props: props
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -12553,10 +12681,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              console.log("poll");
               store.dispatch("getState");
               setTimeout(poll, 1000);
-            case 3:
+            case 2:
             case "end":
               return _context2.stop();
           }
@@ -12566,6 +12693,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref3.apply(this, arguments);
       };
     }();
+    var finishGame = /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return store.dispatch("finishGame");
+            case 2:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }));
+      return function finishGame() {
+        return _ref4.apply(this, arguments);
+      };
+    }();
     var isGameActive = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return store.getters.isGameActive;
     });
@@ -12573,6 +12717,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       props: props,
       store: store,
       poll: poll,
+      finishGame: finishGame,
       isGameActive: isGameActive,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive,
@@ -12672,8 +12817,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.players, function (player, indexP) {
             return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.isPlayerPos(indexX, indexY, player.number) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["player"], {
-              key: 0
-            })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
+              key: 0,
+              id: player.number
+            }, null, 8 /* PROPS */, ["id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64 /* STABLE_FRAGMENT */);
           }), 256 /* UNKEYED_FRAGMENT */))];
         }),
 
@@ -12738,15 +12884,15 @@ var _hoisted_14 = {
 var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "title"
 }, "Congratulations - We have a winner!", -1 /* HOISTED */);
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "btn btn-primary"
-}, "Finish", -1 /* HOISTED */);
-var _hoisted_17 = [_hoisted_15, _hoisted_16];
+var _hoisted_16 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameSetup ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_hoisted_3, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.finishGame, ["prevent"])
+  }, "Finish", 8 /* PROPS */, _hoisted_16)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -12795,7 +12941,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "name"
 }, " PLAYER ")], -1 /* HOISTED */);
 var _hoisted_3 = [_hoisted_2];
-function render(_ctx, _cache) {
+function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_3);
 }
 
@@ -12849,10 +12995,17 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "mod-gameofknowledge"
 };
+var _hoisted_2 = {
+  "class": "controls"
+};
+var _hoisted_3 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["board"], {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 0
-  })) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["lobby"], {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.finishGame, ["prevent"])
+  }, "End Game", 8 /* PROPS */, _hoisted_3)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["board"])], 64 /* STABLE_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["lobby"], {
     key: 1
   }))]);
 }
@@ -13184,6 +13337,39 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .question {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 1rem 0;
+}
+`, "",{"version":3,"sources":["webpack://./app/main.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,mBAAmB;EACnB,yBAAyB;EACzB,eAAe;AAAA","sourcesContent":["\n.controls {\n    display: flex;\n    flex-direction: row;\n    justify-content: flex-end;\n    padding: 1rem 0;\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/runtime/api.js":
 /*!*****************************************************!*\
   !*** ./node_modules/css-loader/dist/runtime/api.js ***!
@@ -13461,15 +13647,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _player_vue_vue_type_template_id_c6c6015c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./player.vue?vue&type=template&id=c6c6015c */ "./app/components/player/player.vue?vue&type=template&id=c6c6015c");
-/* harmony import */ var _player_vue_vue_type_style_index_0_id_c6c6015c_lang_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player.vue?vue&type=style&index=0&id=c6c6015c&lang=scss */ "./app/components/player/player.vue?vue&type=style&index=0&id=c6c6015c&lang=scss");
-/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _player_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player.vue?vue&type=script&setup=true&lang=js */ "./app/components/player/player.vue?vue&type=script&setup=true&lang=js");
+/* harmony import */ var _player_vue_vue_type_style_index_0_id_c6c6015c_lang_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./player.vue?vue&type=style&index=0&id=c6c6015c&lang=scss */ "./app/components/player/player.vue?vue&type=style&index=0&id=c6c6015c&lang=scss");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
-const script = {}
+
+
 
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(script, [['render',_player_vue_vue_type_template_id_c6c6015c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/components/player/player.vue"]])
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_player_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_player_vue_vue_type_template_id_c6c6015c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/components/player/player.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -13522,13 +13710,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _main_vue_vue_type_template_id_20d78a16__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./main.vue?vue&type=template&id=20d78a16 */ "./app/main.vue?vue&type=template&id=20d78a16");
 /* harmony import */ var _main_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main.vue?vue&type=script&setup=true&lang=js */ "./app/main.vue?vue&type=script&setup=true&lang=js");
-/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./main.vue?vue&type=style&index=0&id=20d78a16&lang=scss */ "./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_main_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_main_vue_vue_type_template_id_20d78a16__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/main.vue"]])
+
+
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_main_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_main_vue_vue_type_template_id_20d78a16__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/main.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -13581,6 +13772,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_lobby_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_lobby_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js!../../../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./lobby.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/lobby/lobby.vue?vue&type=script&setup=true&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./app/components/player/player.vue?vue&type=script&setup=true&lang=js":
+/*!*****************************************************************************!*\
+  !*** ./app/components/player/player.vue?vue&type=script&setup=true&lang=js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_player_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_player_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js!../../../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./player.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/player/player.vue?vue&type=script&setup=true&lang=js");
  
 
 /***/ }),
@@ -13831,6 +14038,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss":
+/*!*******************************************************************!*\
+  !*** ./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_4_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_4_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_4_use_3_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-style-loader/index.js!../node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!../node_modules/vue-loader/dist/stylePostLoader.js!../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./main.vue?vue&type=style&index=0&id=20d78a16&lang=scss */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_4_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_4_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_4_use_3_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_4_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_4_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_4_use_3_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_4_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_4_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_4_use_3_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_4_use_1_node_modules_vue_loader_dist_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_4_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_4_use_3_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_main_vue_vue_type_style_index_0_id_20d78a16_lang_scss__WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/board/board-tile.vue?vue&type=style&index=0&id=7a79c94b&lang=scss":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/board/board-tile.vue?vue&type=style&index=0&id=7a79c94b&lang=scss ***!
@@ -13952,6 +14176,27 @@ if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = (__webpack_require__(/*! !../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js")["default"])
 var update = add("8f5e52e2", content, false, {});
+// Hot Module Replacement
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !!../node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!../node_modules/vue-loader/dist/stylePostLoader.js!../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./main.vue?vue&type=style&index=0&id=20d78a16&lang=scss */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-4.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-4.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-4.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/main.vue?vue&type=style&index=0&id=20d78a16&lang=scss");
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.id, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = (__webpack_require__(/*! !../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js")["default"])
+var update = add("2419129f", content, false, {});
 // Hot Module Replacement
 if(false) {}
 

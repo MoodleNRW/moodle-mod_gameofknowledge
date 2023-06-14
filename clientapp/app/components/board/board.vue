@@ -10,7 +10,7 @@
             <div class="board-y" v-for="(xrow, indexX) in boardTiles">
                 <tile v-for="(field, indexY) in xrow" :fieldData="field" :posY="indexY" :posX="indexX">
                     <template v-for="(player, indexP) in players">
-                        <player v-if="isPlayerPos(indexX, indexY, player.number)"></player>
+                        <player v-if="isPlayerPos(indexX, indexY, player.number)" :id="player.number"></player>
                     </template>
                 </tile>
             </div>

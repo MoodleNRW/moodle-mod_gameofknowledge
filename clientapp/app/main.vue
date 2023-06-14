@@ -1,7 +1,11 @@
 <template>
     <div class="mod-gameofknowledge">
-        <board v-if="isGameActive">
-        </board>
+        <template v-if="isGameActive">
+        <div class="controls">
+            <button class="btn btn-primary" @click.prevent="finishGame">End Game</button>
+        </div>
+        <board></board>
+        </template>
         <lobby v-else></lobby>
     </div>
 </template>
@@ -34,9 +38,20 @@ const poll = async () => {
     setTimeout(poll, 1000)
 }
 
+const finishGame = async () => {
+    await store.dispatch("finishGame")
+}
+
 const isGameActive = computed(() => {
     return store.getters.isGameActive
 })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 1rem 0;
+}
+</style>
