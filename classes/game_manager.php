@@ -58,11 +58,14 @@ class game_manager {
         return $this->settings;
     }
 
-    public function create_game(): state_based_game {
+    public function start_new_game(): state_based_game {
         $type = 'game_of_knowledge';
         $settings = $this->get_settings();
 
-        return state_based_game::create_game($type, $settings);
+        $game = state_based_game::create_game($type, $settings);
+        $game->save_game();
+        $this->games[$game->get_id()] = $game;
+        return $game;
     }
 
     public function get_game(int $gameid): state_based_game {
