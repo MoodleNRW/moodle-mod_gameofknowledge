@@ -18,7 +18,6 @@
  * This page is the entry page into the mod.
  *
  * @package    mod_gameofknowledge
- * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 require('../../config.php');

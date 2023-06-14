@@ -18,7 +18,6 @@
  * This file keeps track of upgrades to mod_gameofknowledge.
  *
  * @package    mod_gameofknowledge
- * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 defined('MOODLE_INTERNAL') || die();

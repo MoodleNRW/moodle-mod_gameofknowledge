@@ -16,7 +16,6 @@
 
 /**
  * @package    mod_gameofknowledge
- * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 defined('MOODLE_INTERNAL') || die();
