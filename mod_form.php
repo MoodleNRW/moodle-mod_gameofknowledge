@@ -74,8 +74,11 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
 
     public function set_data($data) {
         global $DB;
-        $cid = $DB->get_field('question_categories', 'contextid', ['id' => $data->questioncategoryid]);
-        $data->questioncategory = $data->questioncategoryid . ',' . $cid;
+
+        if (isset($data->questioncategoryid)) {
+            $cid = $DB->get_field('question_categories', 'contextid', ['id' => $data->questioncategoryid]);
+            $data->questioncategory = $data->questioncategoryid . ',' . $cid;
+        }
         parent::set_data($data);
     }
 }
