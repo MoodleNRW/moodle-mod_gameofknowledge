@@ -11,6 +11,7 @@ const store = createStore({
     return {
       contextid: null,
       coursemoduleid: null,
+      gameData: null,
     };
   },
   mutations: {
@@ -20,6 +21,9 @@ const store = createStore({
     setCourseModuleId(state, { coursemoduleid }) {
       state.coursemoduleid = coursemoduleid;
     },
+    setGameData(state, { gameData }) {
+      state.gameData = gameData;
+    },
   },
   actions: {
     async requestTest({ commit, state }) {
@@ -28,6 +32,7 @@ const store = createStore({
     },
     async requestStartGame({ commit, state }) {
       let data = await requestStartGame(state.coursemoduleid);
+      // commit("setGameData", { gameData: [] });
       console.log(data);
     },
     async requestGetState({ commit, state }) {
@@ -40,8 +45,8 @@ const store = createStore({
     },
   },
   getters: {
-    isGameActive: () => false,
-    isGameError: () => false
+    isGameActive: (state) => state.gameData !== null,
+    isGameError: () => false,
   },
 });
 

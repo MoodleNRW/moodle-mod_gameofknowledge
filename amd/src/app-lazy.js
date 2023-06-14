@@ -11593,7 +11593,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
   state: function state() {
     return {
       contextid: null,
-      coursemoduleid: null
+      coursemoduleid: null,
+      gameData: null
     };
   },
   mutations: {
@@ -11604,16 +11605,20 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     setCourseModuleId: function setCourseModuleId(state, _ref2) {
       var coursemoduleid = _ref2.coursemoduleid;
       state.coursemoduleid = coursemoduleid;
+    },
+    setGameData: function setGameData(state, _ref3) {
+      var gameData = _ref3.gameData;
+      state.gameData = gameData;
     }
   },
   actions: {
-    requestTest: function requestTest(_ref3) {
+    requestTest: function requestTest(_ref4) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref3.commit, state = _ref3.state;
+              commit = _ref4.commit, state = _ref4.state;
               _context.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestTest)(state.coursemoduleid);
             case 3:
@@ -11626,17 +11631,18 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee);
       }))();
     },
-    requestStartGame: function requestStartGame(_ref4) {
+    requestStartGame: function requestStartGame(_ref5) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref4.commit, state = _ref4.state;
+              commit = _ref5.commit, state = _ref5.state;
               _context2.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
               data = _context2.sent;
+              // commit("setGameData", { gameData: [] });
               console.log(data);
             case 5:
             case "end":
@@ -11645,13 +11651,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestGetState: function requestGetState(_ref5) {
+    requestGetState: function requestGetState(_ref6) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref5.commit, state = _ref5.state;
+              commit = _ref6.commit, state = _ref6.state;
               _context3.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
@@ -11664,13 +11670,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee3);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref6) {
+    requestPerformAction: function requestPerformAction(_ref7) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref6.commit, state = _ref6.state;
+              commit = _ref7.commit, state = _ref7.state;
               _context4.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
             case 3:
@@ -11685,8 +11691,8 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     }
   },
   getters: {
-    isGameActive: function isGameActive() {
-      return false;
+    isGameActive: function isGameActive(state) {
+      return state.gameData !== null;
     },
     isGameError: function isGameError() {
       return false;
