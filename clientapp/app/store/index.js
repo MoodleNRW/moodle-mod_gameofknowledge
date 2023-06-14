@@ -12,6 +12,10 @@ const store = createStore({
       contextid: null,
       coursemoduleid: null,
       gameData: null,
+      playerState: {
+        posX: 0,
+        posY: 0
+      }
     };
   },
   mutations: {
@@ -32,7 +36,7 @@ const store = createStore({
     },
     async requestStartGame({ commit, state }) {
       let data = await requestStartGame(state.coursemoduleid);
-      // commit("setGameData", { gameData: [] });
+      commit("setGameData", { gameData: [] });
       console.log(data);
     },
     async requestGetState({ commit, state }) {
@@ -47,6 +51,8 @@ const store = createStore({
   getters: {
     isGameActive: (state) => state.gameData !== null,
     isGameError: () => false,
+    isQuestionActive: (state) => false,
+    isPlayerPos: (state) => (posX, posY) => state.playerState.posX == posX && state.playerState.posY == posY
   },
 });
 

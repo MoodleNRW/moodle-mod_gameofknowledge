@@ -1,6 +1,7 @@
 <template>
     <div class="tile" :class="classObj" @click.prevent="selectTile">
         {{ fieldContentPlaceholder }}
+        <slot></slot>
     </div>
 </template>
 
@@ -40,8 +41,8 @@ const isMovementAvailable = computed(() => {
     const playerX = props.playerState.currentPosition.posX;
     const playerY = props.playerState.currentPosition.posY;
 
-    return fieldType.value == 1 && ( 
-    (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
+    return fieldType.value == 1 && (
+        (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
         (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1)))
 });
 
@@ -67,6 +68,7 @@ const classObj = computed(() => ({
     justify-content: center;
     flex: 1 1 auto;
     cursor: not-allowed;
+    position: relative;
 
     &.inactive {
         opacity: 0;

@@ -38,11 +38,8 @@ const boardState = reactive({
         [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
         [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }]]
 })
-let respData = ref([]);
 
 onMounted(async () => {
-    await getData();
-
     store.commit("setContextId", { contextid: props.contextid })
     store.commit("setCourseModuleId", { coursemoduleid: props.coursemoduleid })
 });
@@ -52,12 +49,6 @@ const movePlayer = (posX, posY) => {
 
     Object.assign(playerState, newPlayerState)
 }
-
-const getData = async () => {
-    try {
-        respData.value = [{ id: 1, name: "Test" }];
-    } catch { }
-};
 
 const isGameActive = computed(() => {
     return store.getters.isGameActive
