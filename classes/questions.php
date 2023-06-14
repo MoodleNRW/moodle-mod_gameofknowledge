@@ -4,7 +4,7 @@ namespace mod_gameofknowledge;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once('../../../lib/questionlib.php');
+require_once($CFG->libdir . '/questionlib.php');
 use \question_display_options;
 
 class questions {
