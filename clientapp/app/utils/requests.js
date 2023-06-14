@@ -45,7 +45,9 @@ const requestPerformAction = async (
   args = null
 ) => {
   let answer = {};
-  data.forEach((value, key) => (answer[key] = value))
+  if (data) {
+    data.forEach((value, key) => (answer[key] = value))
+  }
 
   let action = JSON.stringify({
     answer: answer,

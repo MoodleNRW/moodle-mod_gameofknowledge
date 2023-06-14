@@ -11845,12 +11845,17 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     },
     activateQuestion: function activateQuestion(_ref20, _ref21) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var state, commit, index, posX, posY, question;
+        var state, commit, dispatch, index, posX, posY, question;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              state = _ref20.state, commit = _ref20.commit;
+              state = _ref20.state, commit = _ref20.commit, dispatch = _ref20.dispatch;
               index = _ref21.index, posX = _ref21.posX, posY = _ref21.posY;
+              if (!(index !== null)) {
+                _context6.next = 8;
+                break;
+              }
+              console.log(1);
               question = state.questions[index];
               if (question) {
                 commit("setActiveQuestion", {
@@ -11861,7 +11866,19 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                   posY: posY
                 });
               }
-            case 4:
+              _context6.next = 11;
+              break;
+            case 8:
+              // Keep Going
+              commit("setActiveQuestionPos", {
+                posX: posX,
+                posY: posY
+              });
+              _context6.next = 11;
+              return dispatch("submitQuestion", {
+                data: null
+              });
+            case 11:
             case "end":
               return _context6.stop();
           }
@@ -12096,9 +12113,11 @@ var requestPerformAction = /*#__PURE__*/function () {
           data = _ref3.data, posX = _ref3.posX, posY = _ref3.posY;
           args = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
           answer = {};
-          data.forEach(function (value, key) {
-            return answer[key] = value;
-          });
+          if (data) {
+            data.forEach(function (value, key) {
+              return answer[key] = value;
+            });
+          }
           action = JSON.stringify({
             answer: answer,
             y: posY,

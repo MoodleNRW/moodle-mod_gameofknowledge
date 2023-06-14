@@ -133,12 +133,19 @@ const store = createStore({
     async getState({ dispatch }) {
       await dispatch("requestGetState");
     },
-    async activateQuestion({ state, commit }, { index, posX, posY }) {
-      let question = state.questions[index];
+    async activateQuestion({ state, commit, dispatch }, { index, posX, posY }) {
+      if (index !== null) {
+        console.log(1)
+        let question = state.questions[index];
 
-      if (question) {
-        commit("setActiveQuestion", { question });
+        if (question) {
+          commit("setActiveQuestion", { question });
+          commit("setActiveQuestionPos", { posX, posY });
+        }
+      } else {
+        // Keep Going
         commit("setActiveQuestionPos", { posX, posY });
+        await dispatch("submitQuestion", { data: null });
       }
     },
     async movePlayer({ state, dispatch }, { posX, posY }) {
@@ -178,10 +185,7 @@ const store = createStore({
     isPlayerPos: (state, getters) => (posX, posY, id) => {
       let player = getters.getPlayerById(id);
 
-      return (
-        player.x == posX &&
-        player.y == posY
-      );
+      return player.x == posX && player.y == posY;
     },
     isMovementAllowed: (state, getters) => (fieldType, posX, posY) => {
       const playerX = getters.sessionPlayerPos.posX;
