@@ -4,6 +4,7 @@
             <question v-if="isQuestionActive"></question>
             <div v-if="!isSessionPlayerTurn" class="other-turn">
                 <h3>Please wait for the other player to finish their turn</h3>
+                <p v-if="isLastAnswerWrong">Sorry, your last answer was wrong!</p>
             </div>
         </modalQuestion>
         <div class="board-x">
@@ -51,6 +52,14 @@ const players = computed(() => { return store.state.players })
 
 const isPlayerPos = computed(() => {
     return (posX, posY, id) => store.getters.isPlayerPos(posX, posY, id)
+})
+
+const sessionPlayer = computed(() => {
+    return store.getters.getPlayerById(store.state.sessionPlayerId)
+})
+
+const isLastAnswerWrong = computed(() => {
+    return sessionPlayer.value.lastmark == 0
 })
 
 </script>

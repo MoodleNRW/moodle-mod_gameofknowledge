@@ -12412,6 +12412,12 @@ __webpack_require__.r(__webpack_exports__);
         return store.getters.isPlayerPos(posX, posY, id);
       };
     });
+    var sessionPlayer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.getters.getPlayerById(store.state.sessionPlayerId);
+    });
+    var isLastAnswerWrong = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return sessionPlayer.value.lastmark == 0;
+    });
     var __returned__ = {
       store: store,
       data: data,
@@ -12421,6 +12427,8 @@ __webpack_require__.r(__webpack_exports__);
       isModalActive: isModalActive,
       players: players,
       isPlayerPos: isPlayerPos,
+      sessionPlayer: sessionPlayer,
+      isLastAnswerWrong: isLastAnswerWrong,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_5__.useStore;
@@ -12823,7 +12831,9 @@ var _hoisted_2 = {
   "class": "other-turn"
 };
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Please wait for the other player to finish their turn", -1 /* HOISTED */);
-var _hoisted_4 = [_hoisted_3];
+var _hoisted_4 = {
+  key: 0
+};
 var _hoisted_5 = {
   "class": "board-x"
 };
@@ -12837,7 +12847,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [$setup.isQuestionActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["question"], {
         key: 0
-      })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$setup.isSessionPlayerTurn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, _hoisted_4)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+      })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$setup.isSessionPlayerTurn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_hoisted_3, $setup.isLastAnswerWrong ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_4, "Sorry, your last answer was wrong!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
     }),
     _: 1 /* STABLE */
   })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.boardTiles, function (xrow, indexX) {
