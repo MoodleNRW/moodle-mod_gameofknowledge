@@ -17,6 +17,7 @@ const store = createStore({
       playerPositions: null,
       questions: null,
       activeQuestion: null,
+      activeQuestionPos: null,
       status: null,
       playerState: {
         posX: 0,
@@ -58,6 +59,9 @@ const store = createStore({
     setActiveQuestion(state, { question }) {
       state.activeQuestion = question;
     },
+    setActiveQuestionPos(state, { posX, posY }) {
+      state.activeQuestionPos = { posX, posY };
+    },
   },
   actions: {
     async requestStartGame({ commit, state }) {
@@ -75,8 +79,6 @@ const store = createStore({
         });
         commit("setGameStatus", { status: data.status });
       }
-
-      console.log(data);
     },
     async requestGetState({ commit, state }) {
       let data = await requestGetState(state.coursemoduleid);
@@ -93,12 +95,15 @@ const store = createStore({
         });
         commit("setGameStatus", { status: data.status });
       }
-
-      console.log(data);
     },
-    async requestPerformAction({ commit, state }) {
-      let data = await requestPerformAction(state.coursemoduleid);
-      console.log(data);
+    async requestPerformAction({ commit, state }, { data, posX, posY }) {
+      let response = await requestPerformAction(state.coursemoduleid, {
+        data,
+        posX,
+        posY,
+      });
+
+      console.log(response)
     },
     async startGame({ dispatch }) {
       await dispatch("requestStartGame");
@@ -106,17 +111,23 @@ const store = createStore({
     async getState({ dispatch }) {
       await dispatch("requestGetState");
     },
-    async activateQuestion({ state, commit }, { index }) {
+    async activateQuestion({ state, commit }, { index, posX, posY }) {
       let question = state.questions[index];
 
       if (question) {
         commit("setActiveQuestion", { question });
+        commit("setActiveQuestionPos", { posX, posY });
       }
     },
     async movePlayer({ state, dispatch }, { posX, posY }) {
       await dispatch("activateQuestion", { posX, posY });
-      // state.playerState.posX = posX;
-      // state.playerState.posY = posY;
+    },
+    async submitQuestion({ dispatch, state }, { data }) {
+      await dispatch("requestPerformAction", {
+        data,
+        posX: state.activeQuestionPos.posX,
+        posY: state.activeQuestionPos.posY,
+      });
     },
   },
   getters: {

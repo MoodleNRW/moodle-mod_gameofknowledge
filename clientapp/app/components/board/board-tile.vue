@@ -28,8 +28,7 @@ const props = defineProps({
 
 const selectTile = (() => {
     if (isMovementAvailable.value) {
-        store.dispatch("activateQuestion", { index: props.fieldData.questionindex })
-        store.dispatch("movePlayer", { posX: props.posX, posY: props.posY })
+        store.dispatch("activateQuestion", { index: props.fieldData.questionindex, posX: props.posX, posY: props.posY })
     }
 });
 

@@ -15,9 +15,8 @@ import { useStore } from "vuex"
 const store = useStore();
 
 const submitMoodleForm = ((el) => {
-    console.log(el)
     let data = new FormData(el.target)
-    console.log(data);
+    store.dispatch("submitQuestion", { data: data });
 })
 
 const question = computed(() => store.state.activeQuestion)

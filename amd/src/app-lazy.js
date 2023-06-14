@@ -11601,6 +11601,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       playerPositions: null,
       questions: null,
       activeQuestion: null,
+      activeQuestionPos: null,
       status: null,
       playerState: {
         posX: 0,
@@ -11652,16 +11653,24 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     setActiveQuestion: function setActiveQuestion(state, _ref11) {
       var question = _ref11.question;
       state.activeQuestion = question;
+    },
+    setActiveQuestionPos: function setActiveQuestionPos(state, _ref12) {
+      var posX = _ref12.posX,
+        posY = _ref12.posY;
+      state.activeQuestionPos = {
+        posX: posX,
+        posY: posY
+      };
     }
   },
   actions: {
-    requestStartGame: function requestStartGame(_ref12) {
+    requestStartGame: function requestStartGame(_ref13) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref12.commit, state = _ref12.state;
+              commit = _ref13.commit, state = _ref13.state;
               _context.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
@@ -11690,21 +11699,20 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                   status: data.status
                 });
               }
-              console.log(data);
-            case 6:
+            case 5:
             case "end":
               return _context.stop();
           }
         }, _callee);
       }))();
     },
-    requestGetState: function requestGetState(_ref13) {
+    requestGetState: function requestGetState(_ref14) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref13.commit, state = _ref13.state;
+              commit = _ref14.commit, state = _ref14.state;
               _context2.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
@@ -11733,40 +11741,44 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                   status: data.status
                 });
               }
-              console.log(data);
-            case 6:
+            case 5:
             case "end":
               return _context2.stop();
           }
         }, _callee2);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref14) {
+    requestPerformAction: function requestPerformAction(_ref15, _ref16) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var commit, state, data;
+        var commit, state, data, posX, posY, response;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref14.commit, state = _ref14.state;
-              _context3.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
-            case 3:
-              data = _context3.sent;
-              console.log(data);
-            case 5:
+              commit = _ref15.commit, state = _ref15.state;
+              data = _ref16.data, posX = _ref16.posX, posY = _ref16.posY;
+              _context3.next = 4;
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid, {
+                data: data,
+                posX: posX,
+                posY: posY
+              });
+            case 4:
+              response = _context3.sent;
+              console.log(response);
+            case 6:
             case "end":
               return _context3.stop();
           }
         }, _callee3);
       }))();
     },
-    startGame: function startGame(_ref15) {
+    startGame: function startGame(_ref17) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              dispatch = _ref15.dispatch;
+              dispatch = _ref17.dispatch;
               _context4.next = 3;
               return dispatch("requestStartGame");
             case 3:
@@ -11776,13 +11788,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee4);
       }))();
     },
-    getState: function getState(_ref16) {
+    getState: function getState(_ref18) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              dispatch = _ref16.dispatch;
+              dispatch = _ref18.dispatch;
               _context5.next = 3;
               return dispatch("requestGetState");
             case 3:
@@ -11792,18 +11804,22 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee5);
       }))();
     },
-    activateQuestion: function activateQuestion(_ref17, _ref18) {
+    activateQuestion: function activateQuestion(_ref19, _ref20) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-        var state, commit, index, question;
+        var state, commit, index, posX, posY, question;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) switch (_context6.prev = _context6.next) {
             case 0:
-              state = _ref17.state, commit = _ref17.commit;
-              index = _ref18.index;
+              state = _ref19.state, commit = _ref19.commit;
+              index = _ref20.index, posX = _ref20.posX, posY = _ref20.posY;
               question = state.questions[index];
               if (question) {
                 commit("setActiveQuestion", {
                   question: question
+                });
+                commit("setActiveQuestionPos", {
+                  posX: posX,
+                  posY: posY
                 });
               }
             case 4:
@@ -11813,14 +11829,14 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee6);
       }))();
     },
-    movePlayer: function movePlayer(_ref19, _ref20) {
+    movePlayer: function movePlayer(_ref21, _ref22) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
         var state, dispatch, posX, posY;
         return _regeneratorRuntime().wrap(function _callee7$(_context7) {
           while (1) switch (_context7.prev = _context7.next) {
             case 0:
-              state = _ref19.state, dispatch = _ref19.dispatch;
-              posX = _ref20.posX, posY = _ref20.posY;
+              state = _ref21.state, dispatch = _ref21.dispatch;
+              posX = _ref22.posX, posY = _ref22.posY;
               _context7.next = 4;
               return dispatch("activateQuestion", {
                 posX: posX,
@@ -11831,6 +11847,27 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               return _context7.stop();
           }
         }, _callee7);
+      }))();
+    },
+    submitQuestion: function submitQuestion(_ref23, _ref24) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var dispatch, state, data;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) switch (_context8.prev = _context8.next) {
+            case 0:
+              dispatch = _ref23.dispatch, state = _ref23.state;
+              data = _ref24.data;
+              _context8.next = 4;
+              return dispatch("requestPerformAction", {
+                data: data,
+                posX: state.activeQuestionPos.posX,
+                posY: state.activeQuestionPos.posY
+              });
+            case 4:
+            case "end":
+              return _context8.stop();
+          }
+        }, _callee8);
       }))();
     }
   },
@@ -11955,37 +11992,48 @@ var requestGetState = /*#__PURE__*/function () {
   };
 }();
 var requestPerformAction = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid) {
-    var args,
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid, _ref3) {
+    var data,
+      posX,
+      posY,
+      args,
+      action,
       request,
       _args3 = arguments;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          args = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
+          data = _ref3.data, posX = _ref3.posX, posY = _ref3.posY;
+          args = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
+          action = JSON.stringify({
+            answer: data,
+            i: posY,
+            j: posX
+          });
           request = {
             methodname: REQUEST_PERFORM_ACTION,
             args: Object.assign({
-              coursemoduleid: coursemoduleid
+              coursemoduleid: coursemoduleid,
+              action: action
             }, args)
           };
-          _context3.prev = 2;
-          _context3.next = 5;
+          _context3.prev = 4;
+          _context3.next = 7;
           return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
-        case 5:
+        case 7:
           return _context3.abrupt("return", _context3.sent);
-        case 8:
-          _context3.prev = 8;
-          _context3.t0 = _context3["catch"](2);
+        case 10:
+          _context3.prev = 10;
+          _context3.t0 = _context3["catch"](4);
           console.log(_context3.t0);
-        case 11:
+        case 13:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[2, 8]]);
+    }, _callee3, null, [[4, 10]]);
   }));
-  return function requestPerformAction(_x3) {
-    return _ref3.apply(this, arguments);
+  return function requestPerformAction(_x3, _x4) {
+    return _ref4.apply(this, arguments);
   };
 }();
 
@@ -12029,9 +12077,7 @@ __webpack_require__.r(__webpack_exports__);
     var selectTile = function selectTile() {
       if (isMovementAvailable.value) {
         store.dispatch("activateQuestion", {
-          index: props.fieldData.questionindex
-        });
-        store.dispatch("movePlayer", {
+          index: props.fieldData.questionindex,
           posX: props.posX,
           posY: props.posY
         });
@@ -12317,9 +12363,10 @@ __webpack_require__.r(__webpack_exports__);
     __expose();
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.useStore)();
     var submitMoodleForm = function submitMoodleForm(el) {
-      console.log(el);
       var data = new FormData(el.target);
-      console.log(data);
+      store.dispatch("submitQuestion", {
+        data: data
+      });
     };
     var question = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return store.state.activeQuestion;

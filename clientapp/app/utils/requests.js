@@ -39,12 +39,19 @@ const requestGetState = async (coursemoduleid, args = null) => {
     console.log(e);
   }
 };
-const requestPerformAction = async (coursemoduleid, args = null) => {
+const requestPerformAction = async (
+  coursemoduleid,
+  { data, posX, posY },
+  args = null
+) => {
+  let action = JSON.stringify({ answer: data, i: posY, j: posX });
+
   const request = {
     methodname: REQUEST_PERFORM_ACTION,
     args: Object.assign(
       {
         coursemoduleid: coursemoduleid,
+        action: action
       },
       args
     ),
