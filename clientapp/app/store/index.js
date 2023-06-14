@@ -41,6 +41,7 @@ const store = createStore({
   },
   getters: {
     isGameActive: () => false,
+    isGameError: () => false
   },
 });
 
