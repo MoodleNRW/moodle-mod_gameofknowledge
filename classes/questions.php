@@ -103,7 +103,14 @@ class questions {
      * @return float|null null if answer is invalid and could not be marked (yet)
      */
     public function process_answer_and_get_mark(int $slot, array $submitteddata) {
+        global $DB;
+
+        $transaction = $DB->start_delegated_transaction();
+
         $this->quba->process_action($slot, $submitteddata);
+        \question_engine::save_questions_usage_by_activity($this->quba);
+
+        $transaction->allow_commit();
         return $this->quba->get_question_mark($slot);
     }
 
