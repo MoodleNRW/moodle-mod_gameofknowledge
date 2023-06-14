@@ -151,6 +151,7 @@ class game_of_knowledge extends state_based_game {
         $this->questioncategoryid = $state['questioncategoryid'];
         $this->questioncount = $state['questioncount'];
         $this->seed = $state['seed'];
+        $this->winner = $state['winner'];
     }
 
     public function get_global_state(): array {
