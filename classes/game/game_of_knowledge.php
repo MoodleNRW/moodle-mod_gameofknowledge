@@ -103,7 +103,7 @@ class game_of_knowledge extends state_based_game {
     protected function find_empty_start_position(): ?array {
         for ($y = 0; $y < sizeof($this->tiles); $y++) {
             for ($x = 0; $x < sizeof($this->tiles[0]); $x++) {
-                if ($this->tiles[$y][$x]['type'] == self::TYPE_START) {
+                if ($this->tiles[$x][$y]['type'] == self::TYPE_START) {
                     $occupied = false;
                     foreach ($this->playerlist as $player) {
                         if ($player['x'] == $x && $player['y'] == $y) {
