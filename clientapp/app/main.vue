@@ -1,12 +1,27 @@
 <template>
     <div class="mod-gameofknowledge">
-        <board @movePlayer="movePlayer" :boardData="boardState.boardData" :playerState="playerState"></board>
+        <board v-if="isGameActive" @movePlayer="movePlayer" :boardData="boardState.boardData" :playerState="playerState">
+        </board>
+        <lobby v-else></lobby>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import board from "@/app/components/board/board.vue"
+import { ref, reactive, onMounted, defineProps, computed } from "vue";
+import { useStore } from "vuex";
+import board from "@/app/components/board/board"
+import lobby from "@/app/components/lobby/lobby"
+
+const props = defineProps({
+    coursemoduleid: {
+        type: Number
+    },
+    contextid: {
+        type: String
+    }
+})
+
+const store = useStore();
 
 const playerState = reactive({
     currentPosition: {
@@ -27,6 +42,9 @@ let respData = ref([]);
 
 onMounted(async () => {
     await getData();
+
+    store.commit("setContextId", { contextid: props.contextid })
+    store.commit("setCourseModuleId", { coursemoduleid: props.coursemoduleid })
 });
 
 const movePlayer = (posX, posY) => {
@@ -40,6 +58,10 @@ const getData = async () => {
         respData.value = [{ id: 1, name: "Test" }];
     } catch { }
 };
+
+const isGameActive = computed(() => {
+    return store.getters.isGameActive
+})
 </script>
 
 <style lang="scss"></style>

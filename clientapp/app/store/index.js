@@ -1,16 +1,29 @@
 import { createStore } from "vuex";
+import { requestGameStart } from "@/app/utils/requests";
 
 const store = createStore({
   state() {
     return {
-      count: 0,
+      contextid: null,
+      coursemoduleid: null,
     };
   },
   mutations: {
-    increment(state) {
-      state.count++;
+    setContextId(state, { contextid }) {
+      state.contextid = contextid;
     },
+    setCourseModuleId(state, { coursemoduleid }) {
+      state.coursemoduleid = coursemoduleid;
+    },
+  },
+  actions: {
+    async requestGameStart({ commit, state }) {
+      let data = await requestGameStart(state.coursemoduleid);
+    },
+  },
+  getters: {
+    isGameActive: () => false,
   },
 });
 
-export default store
+export default store;
