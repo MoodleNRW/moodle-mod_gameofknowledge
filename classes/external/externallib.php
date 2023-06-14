@@ -36,10 +36,15 @@ class externallib extends \external_api {
 
         $manager = new game_manager($coursemodule);
 
-        //$gameid = $manager->get_open_gameid();
-        //if (is_null($gameid)) {
+        $game = $manager->get_current_game();
+        if ($game) {
+            $manager->end_game($game->get_id());
+        }
+
+        $gameid = $manager->get_open_gameid();
+        if (is_null($gameid)) {
             $gameid = $manager->start_new_game()->get_id();
-        //}
+        }
 
         $player = $manager->join_game($gameid);
 
@@ -73,11 +78,9 @@ class externallib extends \external_api {
         $manager = new game_manager($coursemodule);
 
         $game = $manager->get_current_game();
-        if (is_null($game)) {
-            throw new game_exception('notingame');
+        if ($game) {
+            $manager->end_game($game->get_id());
         }
-
-        $manager->end_game($game->get_id());
 
         return 'ok';
     }
@@ -150,6 +153,7 @@ class externallib extends \external_api {
         $game = $manager->get_game($player->gameid);
 
         $game->perform_action($player->number, $params['action']);
+        $game->save_game();
 
         $state = $game->get_player_state($player->number);
 

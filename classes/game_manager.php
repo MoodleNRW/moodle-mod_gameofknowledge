@@ -71,7 +71,7 @@ class game_manager {
 
     public function end_game($gameid) {
         global $DB;
-        $DB->delete_records('gameofknowledge_games', ['gameofknowledgeid' => $this->instance, 'gameid' => $gameid]);
+        $DB->delete_records('gameofknowledge_games', ['gameofknowledgeid' => $this->instance, 'id' => $gameid]);
         $DB->delete_records('gameofknowledge_players', ['gameofknowledgeid' => $this->instance, 'gameid' => $gameid]);
     }
 

@@ -4,14 +4,14 @@ $functions = array(
     'mod_gameofknowledge_start_game' => array(
         'classname' => 'mod_gameofknowledge\external\externallib',
         'methodname' => 'start_game',
-        'description' => 'Start a new game.',
+        'description' => 'Start a new game and end the current one if user is in game.',
         'type' => 'write',
         'ajax' => true,
     ),
     'mod_gameofknowledge_end_game' => array(
         'classname' => 'mod_gameofknowledge\external\externallib',
         'methodname' => 'end_game',
-        'description' => 'End a new game.',
+        'description' => 'End current game if user is in game.',
         'type' => 'write',
         'ajax' => true,
     ),
