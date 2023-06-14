@@ -1,6 +1,6 @@
 <template>
     <div class="not-found">
-        <h3>{{strings.route_not_found}}</h3>
+        <h3>{{strings.routenotfound}}</h3>
     </div>
 </template>
 

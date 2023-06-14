@@ -26,7 +26,7 @@ function init(coursemoduleid, contextid) {
             ],
         },
         { path: '/lazy-loading', component: exampleLazyLoading},
-        { path: '*', component: notFound, meta: { title: 'route_not_found' } },
+        { path: '*', component: notFound, meta: { title: 'routenotfound' } },
     ];
 
     // base URL is /mod/vuejsdemo/view.php/[course module id]/

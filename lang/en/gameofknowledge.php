@@ -32,16 +32,4 @@ $string['gameofknowledge:addinstance'] = 'Add a new Game of Knowledge instance';
 $string['gameofknowledge:view'] = 'View Game of Knowledge';
 
 // Vue component route not found.
-$string['route_not_found'] = 'Error: Page (route) not found!';
-
-// Vue component rooms edit.
-$string['rooms_edit_site_name'] = 'Rooms configuration';
-$string['rooms_edit_site_description'] = 'You may add a new room or edit existing rooms.';
-$string['rooms_edit_no_rooms'] = 'There are no rooms to show.';
-
-// Room form.
-$string['room'] = 'Room';
-$string['room_name'] = 'Room name';
-$string['room_description'] = 'Room description';
-$string['room_form_title_add'] = 'Add a new room';
-$string['room_form_title_edit'] = 'Edit a room';
+$string['routenotfound'] = 'Error: Page (route) not found!';
