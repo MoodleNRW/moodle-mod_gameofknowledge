@@ -36,4 +36,9 @@ module.exports = {
     ],
   },
   plugins: [new VueLoaderPlugin()],
+  externals: {
+    "core/ajax": {
+      amd: "core/ajax",
+    },
+  },
 };
