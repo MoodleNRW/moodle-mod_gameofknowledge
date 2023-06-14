@@ -1,5 +1,10 @@
 import { createStore } from "vuex";
-import { requestGameStart } from "@/app/utils/requests";
+import {
+  requestTest,
+  requestStartGame,
+  requestGetState,
+  requestPerformAction,
+} from "@/app/utils/requests";
 
 const store = createStore({
   state() {
@@ -17,8 +22,21 @@ const store = createStore({
     },
   },
   actions: {
-    async requestGameStart({ commit, state }) {
-      let data = await requestGameStart(state.coursemoduleid);
+    async requestTest({ commit, state }) {
+      let data = await requestTest(state.coursemoduleid);
+      console.log(data);
+    },
+    async requestStartGame({ commit, state }) {
+      let data = await requestStartGame(state.coursemoduleid);
+      console.log(data);
+    },
+    async requestGetState({ commit, state }) {
+      let data = await requestGetState(state.coursemoduleid);
+      console.log(data);
+    },
+    async requestPerformAction({ commit, state }) {
+      let data = await requestPerformAction(state.coursemoduleid);
+      console.log(data);
     },
   },
   getters: {

@@ -1,7 +1,12 @@
 <template>
     <div class="lobby">
         <h2>Game of Knowledge</h2>
-        <button @click.prevent="startGame">Start New Game</button>
+        <div class="controls">
+            <button class="btn btn-primary" @click.prevent="test">Test</button>
+            <button class="btn btn-primary" @click.prevent="startGame">Start Game</button>
+            <button class="btn btn-primary" @click.prevent="getState">Get State</button>
+            <button class="btn btn-primary" @click.prevent="performAction">Perform Action</button>
+        </div>
     </div>
 </template>
 
@@ -10,9 +15,21 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-const startGame = async () => {
-    await store.dispatch("requestGameStart")
+const test = async () => {
+    await store.dispatch("requestTest")
     console.log("Start")
+}
+
+const startGame = async () => {
+    await store.dispatch("requestStartGame")
+}
+
+const getState = async () => {
+    await store.dispatch("requestGetState")
+}
+
+const performAction = async () => {
+    await store.dispatch("requestPerformAction")
 }
 </script>
 
@@ -21,6 +38,14 @@ const startGame = async () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    flex: 1 1 auto;
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        flex: 1 1 auto;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
 }
 </style>

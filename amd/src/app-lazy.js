@@ -11607,7 +11607,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     }
   },
   actions: {
-    requestGameStart: function requestGameStart(_ref3) {
+    requestTest: function requestTest(_ref3) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -11615,14 +11615,72 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
             case 0:
               commit = _ref3.commit, state = _ref3.state;
               _context.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGameStart)(state.coursemoduleid);
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestTest)(state.coursemoduleid);
             case 3:
               data = _context.sent;
-            case 4:
+              console.log(data);
+            case 5:
             case "end":
               return _context.stop();
           }
         }, _callee);
+      }))();
+    },
+    requestStartGame: function requestStartGame(_ref4) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var commit, state, data;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref4.commit, state = _ref4.state;
+              _context2.next = 3;
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
+            case 3:
+              data = _context2.sent;
+              console.log(data);
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    },
+    requestGetState: function requestGetState(_ref5) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var commit, state, data;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref5.commit, state = _ref5.state;
+              _context3.next = 3;
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
+            case 3:
+              data = _context3.sent;
+              console.log(data);
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    },
+    requestPerformAction: function requestPerformAction(_ref6) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        var commit, state, data;
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref6.commit, state = _ref6.state;
+              _context4.next = 3;
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
+            case 3:
+              data = _context4.sent;
+              console.log(data);
+            case 5:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
       }))();
     }
   },
@@ -11645,7 +11703,10 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   requestGameStart: () => (/* binding */ requestGameStart)
+/* harmony export */   requestGetState: () => (/* binding */ requestGetState),
+/* harmony export */   requestPerformAction: () => (/* binding */ requestPerformAction),
+/* harmony export */   requestStartGame: () => (/* binding */ requestStartGame),
+/* harmony export */   requestTest: () => (/* binding */ requestTest)
 /* harmony export */ });
 /* harmony import */ var core_ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core/ajax */ "core/ajax");
 /* harmony import */ var core_ajax__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_ajax__WEBPACK_IMPORTED_MODULE_0__);
@@ -11654,18 +11715,145 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var requestGameStart = /*#__PURE__*/function () {
+var REQUEST_BASE = "mod_gameofknowledge";
+var REQUEST_TEST = "".concat(REQUEST_BASE, "_test");
+var REQUEST_START_GAME = "".concat(REQUEST_BASE, "_start_game");
+var REQUEST_GET_STATE = "".concat(REQUEST_BASE, "_get_state");
+var REQUEST_PERFORM_ACTION = "".concat(REQUEST_BASE, "_perform_action");
+var requestTest = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(coursemoduleid) {
+    var args,
+      request,
+      _args = arguments;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          args = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
+          request = {
+            methodname: REQUEST_TEST,
+            args: Object.assign({
+              coursemoduleid: coursemoduleid
+            }, args)
+          };
+          _context.prev = 2;
+          _context.next = 5;
+          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
+        case 5:
+          return _context.abrupt("return", _context.sent);
+        case 8:
+          _context.prev = 8;
+          _context.t0 = _context["catch"](2);
+          console.log(_context.t0);
+        case 11:
         case "end":
           return _context.stop();
       }
-    }, _callee);
+    }, _callee, null, [[2, 8]]);
   }));
-  return function requestGameStart(_x) {
+  return function requestTest(_x) {
     return _ref.apply(this, arguments);
+  };
+}();
+var requestStartGame = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(coursemoduleid) {
+    var args,
+      request,
+      _args2 = arguments;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          args = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
+          request = {
+            methodname: "",
+            args: Object.assign({
+              coursemoduleid: coursemoduleid
+            }, args)
+          };
+          _context2.prev = 2;
+          _context2.next = 5;
+          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
+        case 5:
+          return _context2.abrupt("return", _context2.sent);
+        case 8:
+          _context2.prev = 8;
+          _context2.t0 = _context2["catch"](2);
+          console.log(_context2.t0);
+        case 11:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, null, [[2, 8]]);
+  }));
+  return function requestStartGame(_x2) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+var requestGetState = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid) {
+    var args,
+      request,
+      _args3 = arguments;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          args = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
+          request = {
+            methodname: "",
+            args: Object.assign({
+              coursemoduleid: coursemoduleid
+            }, args)
+          };
+          _context3.prev = 2;
+          _context3.next = 5;
+          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
+        case 5:
+          return _context3.abrupt("return", _context3.sent);
+        case 8:
+          _context3.prev = 8;
+          _context3.t0 = _context3["catch"](2);
+          console.log(_context3.t0);
+        case 11:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[2, 8]]);
+  }));
+  return function requestGetState(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+var requestPerformAction = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(coursemoduleid) {
+    var args,
+      request,
+      _args4 = arguments;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          args = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : null;
+          request = {
+            methodname: "",
+            args: Object.assign({
+              coursemoduleid: coursemoduleid
+            }, args)
+          };
+          _context4.prev = 2;
+          _context4.next = 5;
+          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
+        case 5:
+          return _context4.abrupt("return", _context4.sent);
+        case 8:
+          _context4.prev = 8;
+          _context4.t0 = _context4["catch"](2);
+          console.log(_context4.t0);
+        case 11:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[2, 8]]);
+  }));
+  return function requestPerformAction(_x4) {
+    return _ref4.apply(this, arguments);
   };
 }();
 
@@ -11828,13 +12016,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var __expose = _ref.expose;
     __expose();
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_0__.useStore)();
-    var startGame = /*#__PURE__*/function () {
+    var test = /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return store.dispatch("requestGameStart");
+              return store.dispatch("requestTest");
             case 2:
               console.log("Start");
             case 3:
@@ -11843,13 +12031,67 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }));
-      return function startGame() {
+      return function test() {
         return _ref2.apply(this, arguments);
+      };
+    }();
+    var startGame = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return store.dispatch("requestStartGame");
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      return function startGame() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
+    var getState = /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return store.dispatch("requestGetState");
+            case 2:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }));
+      return function getState() {
+        return _ref4.apply(this, arguments);
+      };
+    }();
+    var performAction = /*#__PURE__*/function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _context4.next = 2;
+              return store.dispatch("requestPerformAction");
+            case 2:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }));
+      return function performAction() {
+        return _ref5.apply(this, arguments);
       };
     }();
     var __returned__ = {
       store: store,
+      test: test,
       startGame: startGame,
+      getState: getState,
+      performAction: performAction,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_0__.useStore;
       }
@@ -12160,11 +12402,27 @@ var _hoisted_1 = {
   "class": "lobby"
 };
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", null, "Game of Knowledge", -1 /* HOISTED */);
-var _hoisted_3 = ["onClick"];
+var _hoisted_3 = {
+  "class": "controls"
+};
+var _hoisted_4 = ["onClick"];
+var _hoisted_5 = ["onClick"];
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.test, ["prevent"])
+  }, "Test", 8 /* PROPS */, _hoisted_4), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start New Game", 8 /* PROPS */, _hoisted_3)]);
+  }, "Start Game", 8 /* PROPS */, _hoisted_5), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.getState, ["prevent"])
+  }, "Get State", 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.performAction, ["prevent"])
+  }, "Perform Action", 8 /* PROPS */, _hoisted_7)])]);
 }
 
 /***/ }),
@@ -12316,9 +12574,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .lobby {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  flex: 1 1 auto;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n}\n"],"sourceRoot":""}]);
+.mod-gameofknowledge .lobby .controls {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,cAAc;AAAA;AAJlB;IAOQ,aAAa;IACb,mBAAmB;IACnB,cAAc;IACd,8BAA8B;IAC9B,gBAAgB;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    flex: 1 1 auto;\n\n    .controls {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 auto;\n        justify-content: space-between;\n        margin-top: 1rem;\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
