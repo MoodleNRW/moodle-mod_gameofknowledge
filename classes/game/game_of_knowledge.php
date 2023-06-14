@@ -53,5 +53,7 @@ public class game_of_knowledge extends state_based_game {
         if ($request->position == $this->playerlist[$player] && $this->activeplayer != $player) {
             return;
         }
+        $this->playerlist[$player] = ['position' => $request->position];
+        $this->activeplayer = (count($this->playerlist) == $player) ? 1 : $player++;
     }
 }
