@@ -26,7 +26,13 @@ const store = useStore();
 onMounted(async () => {
     store.commit("setContextId", { contextid: props.contextid })
     store.commit("setCourseModuleId", { coursemoduleid: props.coursemoduleid })
+    poll()
 });
+
+const poll = async () => {
+    store.dispatch("getState")
+    setTimeout(poll, 1000)
+}
 
 const isGameActive = computed(() => {
     return store.getters.isGameActive

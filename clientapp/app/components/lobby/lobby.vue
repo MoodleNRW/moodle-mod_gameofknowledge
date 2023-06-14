@@ -17,6 +17,7 @@
         </div>
         <div v-if="isGameFinished" class="finish">
             <h2 class="title">Congratulations - We have a winner!</h2>
+            <button class="btn btn-primary">Finish</button>
         </div>
     </div>
 </template>
@@ -64,6 +65,14 @@ const isGameFinished = computed(() => {
 
     .welcome {
         text-align: center;
+    }
+
+    .finish {
+        display: flex;
+        flex-direction: column;
+        flex: 0 1 auto;
+        justify-content: center;
+        margin-top: 1rem;   
     }
 
     .controls {

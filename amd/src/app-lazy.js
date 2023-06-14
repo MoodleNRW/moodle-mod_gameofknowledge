@@ -12239,7 +12239,7 @@ __webpack_require__.r(__webpack_exports__);
     var classObj = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return {
         "inactive": isNone.value,
-        "solved": fieldType.value == 5,
+        "solved": isSolved.value,
         "is-available": isMovementAvailable.value && !isSolved.value
       };
     });
@@ -12541,18 +12541,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             store.commit("setCourseModuleId", {
               coursemoduleid: props.coursemoduleid
             });
-          case 2:
+            poll();
+          case 3:
           case "end":
             return _context.stop();
         }
       }, _callee);
     })));
+    var poll = /*#__PURE__*/function () {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              console.log("poll");
+              store.dispatch("getState");
+              setTimeout(poll, 1000);
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }));
+      return function poll() {
+        return _ref3.apply(this, arguments);
+      };
+    }();
     var isGameActive = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return store.getters.isGameActive;
     });
     var __returned__ = {
       props: props,
       store: store,
+      poll: poll,
       isGameActive: isGameActive,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive,
@@ -12718,12 +12738,15 @@ var _hoisted_14 = {
 var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "title"
 }, "Congratulations - We have a winner!", -1 /* HOISTED */);
-var _hoisted_16 = [_hoisted_15];
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  "class": "btn btn-primary"
+}, "Finish", -1 /* HOISTED */);
+var _hoisted_17 = [_hoisted_15, _hoisted_16];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameSetup ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_hoisted_3, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, _hoisted_16)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -12988,6 +13011,13 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .lobby {
 .mod-gameofknowledge .lobby .welcome {
     text-align: center;
 }
+.mod-gameofknowledge .lobby .finish {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    justify-content: center;
+    margin-top: 1rem;
+}
 .mod-gameofknowledge .lobby .controls {
     display: flex;
     flex-direction: row;
@@ -13000,7 +13030,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .lobby {
     color: red;
     margin: 1rem 0;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,cAAc;EAEd,uBAAuB;EACvB,sBAAsB;EACtB,aAAa;AAAA;AARjB;IAWQ,kBAAkB;AAAA;AAX1B;IAeQ,kBAAkB;AAAA;AAf1B;IAmBQ,aAAa;IACb,mBAAmB;IACnB,cAAc;IACd,uBAAuB;IACvB,gBAAgB;AAAA;AAvBxB;IA2BQ,kBAAkB;IAClB,UAAU;IACV,cAAc;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    flex: 1 1 auto;\n\n    border: 1px solid black;\n    border-radius: 0.25rem;\n    padding: 1rem;\n\n    .title {\n        text-align: center;\n    }\n\n    .welcome {\n        text-align: center;\n    }\n\n    .controls {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 auto;\n        justify-content: center;\n        margin-top: 1rem;\n    }\n\n    .error {\n        text-align: center;\n        color: red;\n        margin: 1rem 0;\n    }\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,cAAc;EAEd,uBAAuB;EACvB,sBAAsB;EACtB,aAAa;AAAA;AARjB;IAWQ,kBAAkB;AAAA;AAX1B;IAeQ,kBAAkB;AAAA;AAf1B;IAmBQ,aAAa;IACb,sBAAsB;IACtB,cAAc;IACd,uBAAuB;IACvB,gBAAgB;AAAA;AAvBxB;IA2BQ,aAAa;IACb,mBAAmB;IACnB,cAAc;IACd,uBAAuB;IACvB,gBAAgB;AAAA;AA/BxB;IAmCQ,kBAAkB;IAClB,UAAU;IACV,cAAc;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    flex: 1 1 auto;\n\n    border: 1px solid black;\n    border-radius: 0.25rem;\n    padding: 1rem;\n\n    .title {\n        text-align: center;\n    }\n\n    .welcome {\n        text-align: center;\n    }\n\n    .finish {\n        display: flex;\n        flex-direction: column;\n        flex: 0 1 auto;\n        justify-content: center;\n        margin-top: 1rem;   \n    }\n\n    .controls {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 auto;\n        justify-content: center;\n        margin-top: 1rem;\n    }\n\n    .error {\n        text-align: center;\n        color: red;\n        margin: 1rem 0;\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

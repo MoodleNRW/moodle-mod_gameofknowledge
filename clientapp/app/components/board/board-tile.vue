@@ -71,7 +71,7 @@ const fieldContentPlaceholder = computed(() => {
 
 const classObj = computed(() => ({
     "inactive": isNone.value,
-    "solved": fieldType.value == 5,
+    "solved": isSolved.value,
     "is-available": isMovementAvailable.value && !isSolved.value
 }))
 </script>
