@@ -14,10 +14,10 @@ import lobby from "@/app/components/lobby/lobby"
 
 const props = defineProps({
     coursemoduleid: {
-        type: Number
+        type: String
     },
     contextid: {
-        type: String
+        type: Number
     }
 })
 

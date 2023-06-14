@@ -26,7 +26,7 @@ const requestTest = async (coursemoduleid, args = null) => {
 
 const requestStartGame = async (coursemoduleid, args = null) => {
   const request = {
-    methodname: "",
+    methodname: REQUEST_START_GAME,
     args: Object.assign(
       {
         coursemoduleid: coursemoduleid,
@@ -43,7 +43,7 @@ const requestStartGame = async (coursemoduleid, args = null) => {
 };
 const requestGetState = async (coursemoduleid, args = null) => {
   const request = {
-    methodname: "",
+    methodname: REQUEST_GET_STATE,
     args: Object.assign(
       {
         coursemoduleid: coursemoduleid,
@@ -60,7 +60,7 @@ const requestGetState = async (coursemoduleid, args = null) => {
 };
 const requestPerformAction = async (coursemoduleid, args = null) => {
   const request = {
-    methodname: "",
+    methodname: REQUEST_PERFORM_ACTION,
     args: Object.assign(
       {
         coursemoduleid: coursemoduleid,
