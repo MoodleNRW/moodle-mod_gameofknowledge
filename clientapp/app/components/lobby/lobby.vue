@@ -16,7 +16,9 @@
             <h2 class="title">Please wait for others to join</h2>
         </div>
         <div v-if="isGameFinished" class="finish">
-            <h2 class="title">Congratulations - We have a winner!</h2>
+            <h2 class="title">Game Over</h2>
+            <p v-if="isSessionPlayerWinner">Congratulations <b>player {{ winningPlayerId }}</b>, you won the game! <br>Fancy another?</p>
+            <p v-else>Sorry, but <b>player {{ winningPlayerId }}</b> won the game! <br>Fancy another?</p>
             <button class="btn btn-primary" @click.prevent="finishGame">Finish</button>
         </div>
     </div>
@@ -50,6 +52,14 @@ const isGameFinished = computed(() => {
     return store.getters.isGameFinished
 })
 
+const gameWinnerId = computed(() => {
+    return store.state.winningPlayerId
+})
+
+const isSessionPlayerWinner = computed(() => {
+    return gameWinnerId.value == store.state.sessionPlayerId
+})
+
 </script>
 
 <style lang="scss">
@@ -76,7 +86,8 @@ const isGameFinished = computed(() => {
         flex-direction: column;
         flex: 0 1 auto;
         justify-content: center;
-        margin-top: 1rem;   
+        margin-top: 1rem;
+        text-align: center;
     }
 
     .controls {

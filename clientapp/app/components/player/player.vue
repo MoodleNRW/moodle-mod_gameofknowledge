@@ -1,19 +1,27 @@
 <template>
     <div class="player">
-        <div class="token">
+        <div class="token" :class="{ 'is-player': isSessionPlayer }">
             <div class="name">
-                PLAYER
+                PLAYER {{ player.number }}
             </div>
         </div>
     </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
+import { useStore } from "vuex";
+
+const store = useStore();
+
 const props = defineProps({
     id: {
         type: Number
     }
 })
+
+const player = computed(() => store.getters.getPlayerById(props.id))
+
+const isSessionPlayer = computed(() => store.state.sessionPlayerId == player.value.number)
 
 </script>
 <style lang="scss">
@@ -35,6 +43,10 @@ const props = defineProps({
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        &.is-player {
+            background-color: orange;
+        }
 
         .name {
             flex: 0 1 auto;

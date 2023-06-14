@@ -116,8 +116,6 @@ const store = createStore({
       if (response) {
         response = JSON.parse(response);
 
-        console.log(response);
-
         commit("setTilesData", { tiles: response.tiles });
         commit("setQuestionsData", { questions: response.questions });
         commit("setActivePlayerId", { id: response.activeplayer });
@@ -145,7 +143,6 @@ const store = createStore({
     },
     async activateQuestion({ state, commit, dispatch }, { index, posX, posY }) {
       if (index !== null) {
-        console.log(1);
         let question = state.questions[index];
 
         if (question) {
