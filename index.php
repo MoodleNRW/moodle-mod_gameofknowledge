@@ -18,7 +18,6 @@
  * This file is meant to list all the instances in a particular course.
  *
  * @package    mod_gameofknowledge
- * @copyright  2019 Martin Gauk, innoCampus, TU Berlin
  */
 
 require_once('../../config.php');
