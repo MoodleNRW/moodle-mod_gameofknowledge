@@ -247,7 +247,7 @@ class game_of_knowledge extends state_based_game {
         if ($newx < 0 || $newx >= sizeof($this->tiles) ||
             $newy < 0 || $newy >= sizeof($this->tiles[0]) ||
             abs($x - $newx) + abs($y - $newy) != 1) {
-y
+
             throw new game_exception('illegalmove');
         }
 
