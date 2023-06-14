@@ -53,8 +53,8 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
         // Adding the standard "intro" and "introformat" fields.
         $this->standard_intro_elements();
 
-            $mform->addElement('questioncategory', 'questioncategory', get_string('category', 'question'),
-                ['contexts' => [$this->context, $this->context->get_course_context()], 'top'=>true]);
+        $mform->addElement('questioncategory', 'questioncategory', get_string('category', 'question'),
+            ['contexts' => [$this->context, $this->context->get_course_context()], 'top'=>true]);
 
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
