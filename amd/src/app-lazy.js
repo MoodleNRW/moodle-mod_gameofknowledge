@@ -11760,7 +11760,31 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               });
             case 4:
               response = _context3.sent;
-              console.log(response);
+              if (response) {
+                response = JSON.parse(response);
+                console.log(response);
+                commit("setTilesData", {
+                  tiles: response.tiles
+                });
+                commit("setQuestionsData", {
+                  questions: response.questions
+                });
+                commit("setActivePlayerId", {
+                  id: response.activeplayer
+                });
+                commit("setSessionPlayerId", {
+                  id: response.player
+                });
+                commit("setPlayersData", {
+                  players: response.playerlist
+                });
+                commit("setPlayerPositionsData", {
+                  playerPositions: response.playerpositions
+                });
+                commit("setGameStatus", {
+                  status: response.status
+                });
+              }
             case 6:
             case "end":
               return _context3.stop();
@@ -11876,7 +11900,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       };
     },
     isGameActive: function isGameActive(state) {
-      return state.status == "initializing";
+      return state.status == "running";
     },
     isGameError: function isGameError() {
       return false;
@@ -12000,6 +12024,7 @@ var requestPerformAction = /*#__PURE__*/function () {
       posX,
       posY,
       args,
+      answer,
       action,
       request,
       _args3 = arguments;
@@ -12008,11 +12033,16 @@ var requestPerformAction = /*#__PURE__*/function () {
         case 0:
           data = _ref3.data, posX = _ref3.posX, posY = _ref3.posY;
           args = _args3.length > 2 && _args3[2] !== undefined ? _args3[2] : null;
+          answer = {};
+          data.forEach(function (value, key) {
+            return answer[key] = value;
+          });
           action = JSON.stringify({
-            answer: data,
+            answer: answer,
             i: posY,
             j: posX
           });
+          console.log(action);
           request = {
             methodname: REQUEST_PERFORM_ACTION,
             args: Object.assign({
@@ -12020,20 +12050,20 @@ var requestPerformAction = /*#__PURE__*/function () {
               action: action
             }, args)
           };
-          _context3.prev = 4;
-          _context3.next = 7;
+          _context3.prev = 7;
+          _context3.next = 10;
           return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
-        case 7:
-          return _context3.abrupt("return", _context3.sent);
         case 10:
-          _context3.prev = 10;
-          _context3.t0 = _context3["catch"](4);
-          console.log(_context3.t0);
+          return _context3.abrupt("return", _context3.sent);
         case 13:
+          _context3.prev = 13;
+          _context3.t0 = _context3["catch"](7);
+          console.log(_context3.t0);
+        case 16:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[4, 10]]);
+    }, _callee3, null, [[7, 13]]);
   }));
   return function requestPerformAction(_x3, _x4) {
     return _ref4.apply(this, arguments);

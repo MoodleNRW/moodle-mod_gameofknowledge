@@ -18,7 +18,7 @@ const store = createStore({
       questions: null,
       activeQuestion: null,
       activeQuestionPos: null,
-      status: null
+      status: null,
     };
   },
   mutations: {
@@ -99,7 +99,19 @@ const store = createStore({
         posY,
       });
 
-      console.log(response);
+      if (response) {
+        response = JSON.parse(response);
+        console.log(response)
+        commit("setTilesData", { tiles: response.tiles });
+        commit("setQuestionsData", { questions: response.questions });
+        commit("setActivePlayerId", { id: response.activeplayer });
+        commit("setSessionPlayerId", { id: response.player });
+        commit("setPlayersData", { players: response.playerlist });
+        commit("setPlayerPositionsData", {
+          playerPositions: response.playerpositions,
+        });
+        commit("setGameStatus", { status: response.status });
+      }
     },
     async startGame({ dispatch }) {
       await dispatch("requestStartGame");
@@ -131,11 +143,12 @@ const store = createStore({
       let pos = state.playerPositions[state.sessionPlayerId];
       return { posX: pos.j, posY: pos.i };
     },
-    isGameActive: (state) => state.status == "initializing",
+    isGameActive: (state) => state.status == "running",
     isGameError: () => false,
     isQuestionActive: (state) => state.activeQuestion !== null,
     isPlayerPos: (state, getters) => (posX, posY) =>
-      getters.sessionPlayerPos.posX == posX && getters.sessionPlayerPos.posY == posY,
+      getters.sessionPlayerPos.posX == posX &&
+      getters.sessionPlayerPos.posY == posY,
     isMovementAllowed: (state, getters) => (fieldType, posX, posY) => {
       const playerX = getters.sessionPlayerPos.posX;
       const playerY = getters.sessionPlayerPos.posY;

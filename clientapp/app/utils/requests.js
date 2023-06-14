@@ -44,14 +44,21 @@ const requestPerformAction = async (
   { data, posX, posY },
   args = null
 ) => {
-  let action = JSON.stringify({ answer: data, i: posY, j: posX });
+  let answer = {};
+  data.forEach((value, key) => (answer[key] = value))
 
+  let action = JSON.stringify({
+    answer: answer,
+    i: posY,
+    j: posX,
+  });
+  console.log(action);
   const request = {
     methodname: REQUEST_PERFORM_ACTION,
     args: Object.assign(
       {
         coursemoduleid: coursemoduleid,
-        action: action
+        action: action,
       },
       args
     ),
