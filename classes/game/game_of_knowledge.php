@@ -177,8 +177,14 @@ class game_of_knowledge extends state_based_game {
             ];
         }, $this->playerlist);
 
+        $statuskeys = [
+            'initializing',
+            'running',
+            'finished'
+        ];
+
         return [
-            'waitingforplayers' => $this->status == self::INITIALIZING,
+            'status' => $statuskeys[$this->status],
             'tiles' => $this->tiles,
             'player' => $player,
             'activeplayer' => $this->activeplayer,
