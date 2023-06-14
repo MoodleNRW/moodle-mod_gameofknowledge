@@ -56,8 +56,8 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
         $this->standard_intro_elements();
 
         $defaultlayout = implode("\n", array_map('trim', explode("\n", trim(game_of_knowledge::DEFAULT_LAYOUT))));
-        $mform->addElement('textarea', 'gamelayout', get_string('gamelayout', 'gameofknowledge'));
-        $mform->setDefault('gamelayout', $defaultlayout, 'rows="10"');
+        $mform->addElement('textarea', 'gamelayout', get_string('gamelayout', 'gameofknowledge'), 'rows="10"');
+        $mform->setDefault('gamelayout', $defaultlayout);
 
         $mform->addElement('questioncategory', 'questioncategory', get_string('category', 'question'),
             ['contexts' => [$this->context, $this->context->get_course_context()], 'top'=>true]);
