@@ -19,6 +19,9 @@
  *
  * @package    mod_gameofknowledge
  */
+
+use mod_gameofknowledge\game\game_of_knowledge;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
@@ -51,6 +54,10 @@ class mod_gameofknowledge_mod_form extends moodleform_mod {
 
         // Adding the standard "intro" and "introformat" fields.
         $this->standard_intro_elements();
+
+        $defaultlayout = implode("\n", array_map('trim', explode("\n", trim(game_of_knowledge::DEFAULT_LAYOUT))));
+        $mform->addElement('textarea', 'gamelayout', get_string('gamelayout', 'gameofknowledge'));
+        $mform->setDefault('gamelayout', $defaultlayout, 'rows="10"');
 
         $mform->addElement('questioncategory', 'questioncategory', get_string('category', 'question'),
             ['contexts' => [$this->context, $this->context->get_course_context()], 'top'=>true]);

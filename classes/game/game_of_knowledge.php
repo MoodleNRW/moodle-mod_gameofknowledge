@@ -10,14 +10,14 @@ use mod_gameofknowledge\state_based_game;
 
 class game_of_knowledge extends state_based_game {
 
-    const DEFAULT_LAYOUT = '
-        # Q Q # Q Q #
+    public const DEFAULT_LAYOUT = '
+        S Q Q # Q Q #
         Q _ _ Q _ _ Q
         Q _ _ Q _ _ Q
         # Q Q G Q Q #
         Q _ _ Q _ _ Q
         Q _ _ Q _ _ Q
-        S Q Q # Q Q #
+        # Q Q # Q Q #
     ';
 
     const TYPE_NONE = 'none';
@@ -39,7 +39,7 @@ class game_of_knowledge extends state_based_game {
         $this->seed = rand();
         $this->questioncategoryid = $settings->questioncategoryid;
 
-        $layout = self::DEFAULT_LAYOUT;
+        $layout = $settings->gamelayout ?? self::DEFAULT_LAYOUT;
 
         $this->maxplayers = 0;
         $this->tiles = [];
@@ -132,7 +132,7 @@ class game_of_knowledge extends state_based_game {
         ];
 
         if ($this->players == $this->maxplayers) {
-            $this->status = self::RUNNING;
+            $this->start_game();
         }
     }
 
@@ -197,6 +197,11 @@ class game_of_knowledge extends state_based_game {
         if ($this->tiles[$i][$j]['type'] == self::TYPE_QUESTION) {
             $this->tiles[$i][$j]['type'] = self::TYPE_SOLVED;
         }
+    }
+
+    protected function start_game() {
+        $this->status = self::RUNNING;
+        $this->activeplayer = 0;
     }
 
     protected function move_player(int $player, int $newi, int $newj) {

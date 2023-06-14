@@ -33,3 +33,5 @@ $string['gameofknowledge:view'] = 'View Game of Knowledge';
 
 // Vue component route not found.
 $string['routenotfound'] = 'Error: Page (route) not found!';
+
+$string['gamelayout'] = 'Game layout';

@@ -53,6 +53,7 @@ class game_manager {
 
             $this->settings = new \stdClass();
             $this->settings->name = $settings->name;
+            $this->settings->gamelayout = $settings->gamelayout;
             $this->settings->questioncategoryid = $settings->questioncategoryid;
         }
 
