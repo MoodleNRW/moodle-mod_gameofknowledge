@@ -4,8 +4,6 @@ namespace mod_gameofknowledge\game;
 
 defined('MOODLE_INTERNAL') || die();
 
-use core\session\exception;
-use mod_data\manager;
 use mod_gameofknowledge\game_exception;
 use mod_gameofknowledge\questions;
 use mod_gameofknowledge\state_based_game;
@@ -13,13 +11,13 @@ use mod_gameofknowledge\state_based_game;
 class game_of_knowledge extends state_based_game {
 
     const DEFAULT_LAYOUT = '
-        S Q Q # Q Q S
+        # Q Q # Q Q #
         Q _ _ Q _ _ Q
         Q _ _ Q _ _ Q
         # Q Q G Q Q #
         Q _ _ Q _ _ Q
         Q _ _ Q _ _ Q
-        S Q Q # Q Q S
+        S Q Q # Q Q #
     ';
 
     const TYPE_NONE = 'none';
