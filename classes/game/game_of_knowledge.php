@@ -129,16 +129,16 @@ public class game_of_knowledge extends state_based_game {
     public function perform_action(int $player, string $action) {
         global $DB;
         $request = json_decode($action, true, 255, JSON_THROW_ON_ERROR);
-        $coordinates = explode('/', $this->playerlist[$player]);
+        $coordinates = explode('/', $this->playerlist[$player]['position']);
         //check if answor correct;
         if ($coordinates[0] < count($this->tiles[0]) && $this->tiles[$coordinates[0]+1][$coordinates[1]] == $request->questionid) {
-            $this->playerlist[$player] = $coordinates[0]+1 . '/' . $coordinates[1];
+            $this->playerlist[$player]['position'] = $coordinates[0]+1 . '/' . $coordinates[1];
         } else if ($coordinates[0] >= 1 && $this->tiles[$coordinates[0]-1][$coordinates[1]] == $request->questionid) {
-            $this->playerlist[$player] = $coordinates[0]-1 . '/' . $coordinates[1];
+            $this->playerlist[$player]['position']= $coordinates[0]-1 . '/' . $coordinates[1];
         } else if ($coordinates[1] < count($this->tiles) && $this->tiles[$coordinates[0]][$coordinates[1]+1] == $request->questionid) {
-            $this->playerlist[$player] = $coordinates[0] . '/' . $coordinates[1]+1;
+            $this->playerlist[$player]['position'] = $coordinates[0] . '/' . $coordinates[1]+1;
         }  else if ($coordinates[1] >= 1 && $this->tiles[$coordinates[0]][$coordinates[1]-1] == $request->questionid) {
-            $this->playerlist[$player] = $coordinates[0] . '/' . $coordinates[1]-1;
+            $this->playerlist[$player]['position'] = $coordinates[0] . '/' . $coordinates[1]-1;
         }
 
         $this->activeplayer = (count($this->playerlist) == $player) ? 1 : $player++;
