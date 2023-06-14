@@ -108,6 +108,7 @@ class questions {
         $transaction = $DB->start_delegated_transaction();
 
         $submitteddata = $this->quba->extract_responses($slot, $submitteddata);
+        $submitteddata['-submit'] = 1; // Always submit submission.
         $this->quba->process_action($slot, $submitteddata);
         \question_engine::save_questions_usage_by_activity($this->quba);
 
