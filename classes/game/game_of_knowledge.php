@@ -42,13 +42,13 @@ class game_of_knowledge extends state_based_game {
         $layout = $settings->gamelayout ?? self::DEFAULT_LAYOUT;
 
         $this->maxplayers = 0;
-        $this->tiles = [];
+        $flippedtiles = [];
         $lines = explode("\n", trim($layout));
         $this->questioncount = 0;
         for ($i = 0; $i < sizeof($lines); $i++) {
-            $line = str_replace([' ', "\t"], '', trim($lines[$i]));
-            $this->tiles[$i] = [];
-            for ($j = 0; $j < strlen($line); $j++) {
+            $line = array_filter(explode(' ', trim($lines[$i])), 'strlen');
+            $flippedtiles[] = [];
+            for ($j = 0; $j < sizeof($line); $j++) {
                 switch ($line[$j]) {
                     case 'S':
                         $this->maxplayers++;
@@ -87,24 +87,32 @@ class game_of_knowledge extends state_based_game {
                         break;
                 }
 
-                $this->tiles[$i][] = $tile;
+                $flippedtiles[$i][] = $tile;
+            }
+        }
+
+        $this->tiles = [];
+        for ($x = 0; $x < sizeof($flippedtiles[0]); $x++) {
+            $this->tiles[] = [];
+            for ($y = 0; $y < sizeof($flippedtiles); $y++) {
+                $this->tiles[$x][] = $flippedtiles[$y][$x];
             }
         }
     }
 
     protected function find_empty_start_position(): ?array {
-        for ($i = 0; $i < sizeof($this->tiles); $i++) {
-            for ($j = 0; $j < sizeof($this->tiles[$i]); $j++) {
-                if ($this->tiles[$i][$j]['type'] == self::TYPE_START) {
+        for ($y = 0; $y < sizeof($this->tiles); $y++) {
+            for ($x = 0; $x < sizeof($this->tiles[0]); $x++) {
+                if ($this->tiles[$y][$x]['type'] == self::TYPE_START) {
                     $occupied = false;
                     foreach ($this->playerlist as $player) {
-                        if ($player['i'] == $i && $player['j'] == $j) {
+                        if ($player['x'] == $x && $player['y'] == $y) {
                             $occupied = true;
                             break;
                         }
                     }
                     if (!$occupied) {
-                        return [$i, $j];
+                        return [$x, $y];
                     }
                 }
             }
@@ -125,8 +133,8 @@ class game_of_knowledge extends state_based_game {
 
         $this->playerlist[$player] = [
             'number' => $player,
-            'i' => $position[0],
-            'j' => $position[1],
+            'x' => $position[0],
+            'y' => $position[1],
             'questionusageid' => $questions->get_questionusageid(),
             'lastmark' => null,
         ];
@@ -170,8 +178,8 @@ class game_of_knowledge extends state_based_game {
 
         $playerpositions = array_map(function($player) {
             return [
-                'i' => $player['i'],
-                'j' => $player['j']
+                'x' => $player['x'],
+                'y' => $player['y']
             ];
         }, $this->playerlist);
 
@@ -193,9 +201,9 @@ class game_of_knowledge extends state_based_game {
         ];
     }
 
-    protected function solve_tile(int $i, int $j) {
-        if ($this->tiles[$i][$j]['type'] == self::TYPE_QUESTION) {
-            $this->tiles[$i][$j]['type'] = self::TYPE_SOLVED;
+    protected function solve_tile(int $x, int $y) {
+        if ($this->tiles[$x][$y]['type'] == self::TYPE_QUESTION) {
+            $this->tiles[$x][$y]['type'] = self::TYPE_SOLVED;
         }
     }
 
@@ -204,9 +212,9 @@ class game_of_knowledge extends state_based_game {
         $this->activeplayer = 0;
     }
 
-    protected function move_player(int $player, int $newi, int $newj) {
-        $this->playerlist[$player]['i'] = $newi;
-        $this->playerlist[$player]['j'] = $newj;
+    protected function move_player(int $player, int $newx, int $newy) {
+        $this->playerlist[$player]['x'] = $newx;
+        $this->playerlist[$player]['y'] = $newy;
     }
 
     protected function end_game(int $winner) {
@@ -229,43 +237,49 @@ class game_of_knowledge extends state_based_game {
 
         $request = json_decode($action, true, 255, JSON_THROW_ON_ERROR);
 
-        $newi = $request['i'];
-        $newj = $request['j'];
+        $newx = $request['x'];
+        $newy = $request['y'];
 
         // Check if neighboring question was answered
-        $i = $this->playerlist[$player]['i'];
-        $j = $this->playerlist[$player]['j'];
+        $x = $this->playerlist[$player]['x'];
+        $y = $this->playerlist[$player]['y'];
 
-        if ($newi < 0 || $newi >= sizeof($this->tiles) ||
-            $newj < 0 || $newj >= sizeof($this->tiles[0]) ||
-            abs($i - $newi) + abs($j - $newj) != 1) {
-
+        if ($newx < 0 || $newx >= sizeof($this->tiles) ||
+            $newy < 0 || $newy >= sizeof($this->tiles[0]) ||
+            abs($x - $newx) + abs($y - $newy) != 1) {
+y
             throw new game_exception('illegalmove');
         }
 
-        $tile = $this->tiles[$newi][$newj];
+        $tile = $this->tiles[$newx][$newy];
 
         switch ($tile['type']) {
             case self::TYPE_QUESTION:
                 $questions = questions::load($this->playerlist[$player]['questionusageid']);
+
+                // TODO var_dump($tile['questionindex'] + 1);
+                // TODO var_dump($request['answer']);
+
                 $mark = $questions->process_answer_and_get_mark($tile['questionindex'] + 1, $request['answer']);
                 $this->playerlist[$player]['lastmark'] = $mark;
 
+                // TODO var_dump($mark);
+
                 if ($mark == 1) {
                     // Correct answer was given.
-                    $this->solve_tile($newi, $newj);
-                    $this->move_player($player, $newi, $newj);
+                    $this->solve_tile($newx, $newy);
+                    $this->move_player($player, $newx, $newy);
                 }
                 $this->next_turn();
                 break;
 
             case self::TYPE_START:
             case self::TYPE_EMPTY:
-                $this->move_player($player, $newi, $newj);
+                $this->move_player($player, $newx, $newy);
                 break;
 
             case self::TYPE_GOAL:
-                $this->move_player($player, $newi, $newj);
+                $this->move_player($player, $newx, $newy);
                 $this->end_game($player);
                 break;
 
