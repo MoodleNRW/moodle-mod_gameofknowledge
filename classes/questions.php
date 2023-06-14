@@ -4,7 +4,7 @@ namespace mod_gameofknowledge;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once('../../../lib/questionlib.php');
+require_once($CFG->libdir . '/questionlib.php');
 use \question_display_options;
 
 class questions {
@@ -76,6 +76,16 @@ class questions {
         $options = self::get_question_display_options();
         $html = $this->quba->render_question($slot, $options, null);
         return [$html, ''];
+    }
+
+    /**
+     * @param int $slot
+     * @param array $submitteddata
+     * @return float|null null if answer is invalid and could not be marked (yet)
+     */
+    public function process_answer_and_get_mark(int $slot, array $submitteddata) {
+        $this->quba->process_action($slot, $submitteddata);
+        return $this->quba->get_question_mark($slot);
     }
 
     public static function get_question_display_options() : \question_display_options {
