@@ -1,6 +1,6 @@
 <template>
     <div class="mod-gameofknowledge">
-        <board v-if="isGameActive" @movePlayer="movePlayer" :boardData="boardState.boardData">
+        <board v-if="isGameActive">
         </board>
         <lobby v-else></lobby>
     </div>
@@ -22,15 +22,6 @@ const props = defineProps({
 })
 
 const store = useStore();
-
-const boardState = reactive({
-    boardData: [
-        [{ question: "Question", type: 5 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
-        [{ question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 4 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }]]
-})
 
 onMounted(async () => {
     store.commit("setContextId", { contextid: props.contextid })

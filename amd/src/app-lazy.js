@@ -11594,6 +11594,10 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     return {
       contextid: null,
       coursemoduleid: null,
+      tiles: null,
+      sessionPlayerId: null,
+      activePlayerId: null,
+      players: null,
       gameData: null,
       playerState: {
         posX: 0,
@@ -11613,42 +11617,70 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     setGameData: function setGameData(state, _ref3) {
       var gameData = _ref3.gameData;
       state.gameData = gameData;
+    },
+    setTilesData: function setTilesData(state, _ref4) {
+      var tiles = _ref4.tiles;
+      state.tiles = tiles;
+    },
+    setPlayersData: function setPlayersData(state, _ref5) {
+      var players = _ref5.players;
+      state.players = players;
+    },
+    setSessionPlayerId: function setSessionPlayerId(state, _ref6) {
+      var id = _ref6.id;
+      state.sessionPlayerId = id;
+    },
+    setActivePlayerId: function setActivePlayerId(state, _ref7) {
+      var id = _ref7.id;
+      state.activePlayerId = id;
     }
   },
   actions: {
-    requestTest: function requestTest(_ref4) {
+    requestStartGame: function requestStartGame(_ref8) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref4.commit, state = _ref4.state;
+              commit = _ref8.commit, state = _ref8.state;
               _context.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestTest)(state.coursemoduleid);
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
               data = _context.sent;
+              commit("setGameData", {
+                gameData: []
+              });
               console.log(data);
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
         }, _callee);
       }))();
     },
-    requestStartGame: function requestStartGame(_ref5) {
+    requestGetState: function requestGetState(_ref9) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref5.commit, state = _ref5.state;
+              commit = _ref9.commit, state = _ref9.state;
               _context2.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
               data = _context2.sent;
-              commit("setGameData", {
-                gameData: []
-              });
+              if (data) {
+                data = JSON.parse(data);
+                commit("setTilesData", {
+                  tiles: data.tiles
+                });
+                commit("setActivePlayerId", {
+                  id: data.activeplayer
+                });
+                commit("setPlayersData", {
+                  players: data.playerlist
+                });
+              }
               console.log(data);
             case 6:
             case "end":
@@ -11657,15 +11689,15 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestGetState: function requestGetState(_ref6) {
+    requestPerformAction: function requestPerformAction(_ref10) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref6.commit, state = _ref6.state;
+              commit = _ref10.commit, state = _ref10.state;
               _context3.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
+              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
             case 3:
               data = _context3.sent;
               console.log(data);
@@ -11676,18 +11708,18 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee3);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref7) {
+    startGame: function startGame(_ref11) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        var commit, state, data;
+        var commit, dispatch;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref7.commit, state = _ref7.state;
+              commit = _ref11.commit, dispatch = _ref11.dispatch;
               _context4.next = 3;
-              return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
+              return dispatch("requestStartGame");
             case 3:
-              data = _context4.sent;
-              console.log(data);
+              _context4.next = 5;
+              return dispatch("requestGetState");
             case 5:
             case "end":
               return _context4.stop();
@@ -11695,10 +11727,10 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee4);
       }))();
     },
-    movePlayer: function movePlayer(_ref8, _ref9) {
-      var state = _ref8.state;
-      var posX = _ref9.posX,
-        posY = _ref9.posY;
+    movePlayer: function movePlayer(_ref12, _ref13) {
+      var state = _ref12.state;
+      var posX = _ref13.posX,
+        posY = _ref13.posY;
       state.playerState.posX = posX;
       state.playerState.posY = posY;
     }
@@ -11722,7 +11754,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       return function (fieldType, posX, posY) {
         var playerX = state.playerState.posX;
         var playerY = state.playerState.posY;
-        return fieldType == "question" && (posY == playerY && (posX == playerX - 1 || posX == playerX + 1) || posX == playerX && (posY == playerY - 1 || posY == playerY + 1));
+        return (fieldType == "question" || fieldType == "empty" || fieldType == "goal") && (posY == playerY && (posX == playerX - 1 || posX == playerX + 1) || posX == playerX && (posY == playerY - 1 || posY == playerY + 1));
       };
     }
   }
@@ -11742,8 +11774,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   requestGetState: () => (/* binding */ requestGetState),
 /* harmony export */   requestPerformAction: () => (/* binding */ requestPerformAction),
-/* harmony export */   requestStartGame: () => (/* binding */ requestStartGame),
-/* harmony export */   requestTest: () => (/* binding */ requestTest)
+/* harmony export */   requestStartGame: () => (/* binding */ requestStartGame)
 /* harmony export */ });
 /* harmony import */ var core_ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core/ajax */ "core/ajax");
 /* harmony import */ var core_ajax__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_ajax__WEBPACK_IMPORTED_MODULE_0__);
@@ -11753,11 +11784,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var REQUEST_BASE = "mod_gameofknowledge";
-var REQUEST_TEST = "".concat(REQUEST_BASE, "_test");
 var REQUEST_START_GAME = "".concat(REQUEST_BASE, "_start_game");
 var REQUEST_GET_STATE = "".concat(REQUEST_BASE, "_get_state");
 var REQUEST_PERFORM_ACTION = "".concat(REQUEST_BASE, "_perform_action");
-var requestTest = /*#__PURE__*/function () {
+var requestStartGame = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(coursemoduleid) {
     var args,
       request,
@@ -11767,7 +11797,7 @@ var requestTest = /*#__PURE__*/function () {
         case 0:
           args = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
           request = {
-            methodname: REQUEST_TEST,
+            methodname: REQUEST_START_GAME,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -11787,11 +11817,11 @@ var requestTest = /*#__PURE__*/function () {
       }
     }, _callee, null, [[2, 8]]);
   }));
-  return function requestTest(_x) {
+  return function requestStartGame(_x) {
     return _ref.apply(this, arguments);
   };
 }();
-var requestStartGame = /*#__PURE__*/function () {
+var requestGetState = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(coursemoduleid) {
     var args,
       request,
@@ -11801,7 +11831,7 @@ var requestStartGame = /*#__PURE__*/function () {
         case 0:
           args = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : null;
           request = {
-            methodname: REQUEST_START_GAME,
+            methodname: REQUEST_GET_STATE,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -11821,11 +11851,11 @@ var requestStartGame = /*#__PURE__*/function () {
       }
     }, _callee2, null, [[2, 8]]);
   }));
-  return function requestStartGame(_x2) {
+  return function requestGetState(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
-var requestGetState = /*#__PURE__*/function () {
+var requestPerformAction = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(coursemoduleid) {
     var args,
       request,
@@ -11835,7 +11865,7 @@ var requestGetState = /*#__PURE__*/function () {
         case 0:
           args = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : null;
           request = {
-            methodname: REQUEST_GET_STATE,
+            methodname: REQUEST_PERFORM_ACTION,
             args: Object.assign({
               coursemoduleid: coursemoduleid
             }, args)
@@ -11855,42 +11885,8 @@ var requestGetState = /*#__PURE__*/function () {
       }
     }, _callee3, null, [[2, 8]]);
   }));
-  return function requestGetState(_x3) {
+  return function requestPerformAction(_x3) {
     return _ref3.apply(this, arguments);
-  };
-}();
-var requestPerformAction = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(coursemoduleid) {
-    var args,
-      request,
-      _args4 = arguments;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-      while (1) switch (_context4.prev = _context4.next) {
-        case 0:
-          args = _args4.length > 1 && _args4[1] !== undefined ? _args4[1] : null;
-          request = {
-            methodname: REQUEST_PERFORM_ACTION,
-            args: Object.assign({
-              coursemoduleid: coursemoduleid
-            }, args)
-          };
-          _context4.prev = 2;
-          _context4.next = 5;
-          return (0,core_ajax__WEBPACK_IMPORTED_MODULE_0__.call)([request])[0];
-        case 5:
-          return _context4.abrupt("return", _context4.sent);
-        case 8:
-          _context4.prev = 8;
-          _context4.t0 = _context4["catch"](2);
-          console.log(_context4.t0);
-        case 11:
-        case "end":
-          return _context4.stop();
-      }
-    }, _callee4, null, [[2, 8]]);
-  }));
-  return function requestPerformAction(_x4) {
-    return _ref4.apply(this, arguments);
   };
 }();
 
@@ -11926,10 +11922,8 @@ __webpack_require__.r(__webpack_exports__);
       type: Number
     }
   },
-  emits: ["selectTile"],
   setup: function setup(__props, _ref) {
-    var __expose = _ref.expose,
-      emit = _ref.emit;
+    var __expose = _ref.expose;
     __expose();
     var props = __props;
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.useStore)();
@@ -11944,19 +11938,46 @@ __webpack_require__.r(__webpack_exports__);
     var fieldType = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return props.fieldData.type;
     });
+    var isStart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return fieldType.value == "start";
+    });
+    var isEmpty = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return fieldType.value == "empty";
+    });
+    var isNone = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return fieldType.value == "none";
+    });
+    var isQuestion = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return fieldType.value == "question";
+    });
     var isSolved = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return fieldType.value == 5;
+      return fieldType.value == "solved";
+    });
+    var isGoal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return fieldType.value == "goal";
     });
     var isMovementAvailable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return store.getters.isMovementAllowed("question", props.posX, props.posY);
+      return store.getters.isMovementAllowed(fieldType.value, props.posX, props.posY);
     });
     var fieldContentPlaceholder = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return fieldType.value == 1 ? "?" : "✓";
+      if (isQuestion.value) {
+        return "?";
+      } else if (isSolved.value) {
+        return "✓";
+      } else if (isEmpty.value) {
+        return "Keep Going";
+      } else if (isStart.value) {
+        return "Start";
+      } else if (isGoal.value) {
+        return "Finish";
+      } else {
+        return " ";
+      }
     });
     var classObj = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return {
         "current": fieldType.value == 2,
-        "inactive": fieldType.value == 4,
+        "inactive": isNone.value,
         "solved": fieldType.value == 5,
         "is-available": isMovementAvailable.value && !isSolved.value
       };
@@ -11964,10 +11985,14 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       store: store,
       props: props,
-      emit: emit,
       selectTile: selectTile,
       fieldType: fieldType,
+      isStart: isStart,
+      isEmpty: isEmpty,
+      isNone: isNone,
+      isQuestion: isQuestion,
       isSolved: isSolved,
+      isGoal: isGoal,
       isMovementAvailable: isMovementAvailable,
       fieldContentPlaceholder: fieldContentPlaceholder,
       classObj: classObj,
@@ -12019,16 +12044,14 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  emits: ["movePlayer"],
   setup: function setup(__props, _ref) {
-    var __expose = _ref.expose,
-      emit = _ref.emit;
+    var __expose = _ref.expose;
     __expose();
     var data = __props;
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_5__.useStore)();
-    var movePlayer = function movePlayer(posX, posY) {
-      emit("movePlayer", posX, posY);
-    };
+    var boardTiles = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.state.tiles;
+    });
     var isQuestionActive = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
       return store.getters.isQuestionActive;
     });
@@ -12040,8 +12063,7 @@ __webpack_require__.r(__webpack_exports__);
     var __returned__ = {
       store: store,
       data: data,
-      emit: emit,
-      movePlayer: movePlayer,
+      boardTiles: boardTiles,
       isQuestionActive: isQuestionActive,
       isPlayerPos: isPlayerPos,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
@@ -12096,72 +12118,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var __expose = _ref.expose;
     __expose();
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.useStore)();
-    var test = /*#__PURE__*/function () {
+    var startGame = /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return store.dispatch("requestTest");
+              return store.dispatch("startGame");
             case 2:
             case "end":
               return _context.stop();
           }
         }, _callee);
       }));
-      return function test() {
+      return function startGame() {
         return _ref2.apply(this, arguments);
       };
     }();
-    var startGame = /*#__PURE__*/function () {
+    var getState = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return store.dispatch("requestStartGame");
+              return store.dispatch("requestGetState");
             case 2:
             case "end":
               return _context2.stop();
           }
         }, _callee2);
       }));
-      return function startGame() {
+      return function getState() {
         return _ref3.apply(this, arguments);
       };
     }();
-    var getState = /*#__PURE__*/function () {
+    var performAction = /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return store.dispatch("requestGetState");
+              return store.dispatch("requestPerformAction");
             case 2:
             case "end":
               return _context3.stop();
           }
         }, _callee3);
       }));
-      return function getState() {
-        return _ref4.apply(this, arguments);
-      };
-    }();
-    var performAction = /*#__PURE__*/function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-          while (1) switch (_context4.prev = _context4.next) {
-            case 0:
-              _context4.next = 2;
-              return store.dispatch("requestPerformAction");
-            case 2:
-            case "end":
-              return _context4.stop();
-          }
-        }, _callee4);
-      }));
       return function performAction() {
-        return _ref5.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       };
     }();
     var isGameError = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
@@ -12169,7 +12174,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     });
     var __returned__ = {
       store: store,
-      test: test,
       startGame: startGame,
       getState: getState,
       performAction: performAction,
@@ -12227,84 +12231,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     __expose();
     var props = __props;
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.useStore)();
-    var boardState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
-      boardData: [[{
-        question: "Question",
-        type: 5
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }], [{
-        question: "Question",
-        type: 4
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }], [{
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 4
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 4
-      }, {
-        question: "Question",
-        type: 1
-      }], [{
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }], [{
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 4
-      }, {
-        question: "Question",
-        type: 1
-      }, {
-        question: "Question",
-        type: 1
-      }]]
-    });
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
@@ -12327,7 +12253,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var __returned__ = {
       props: props,
       store: store,
-      boardState: boardState,
       isGameActive: isGameActive,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive,
@@ -12367,11 +12292,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.runtime.esm-bundler.js");
 
 var _hoisted_1 = ["onClick"];
+var _hoisted_2 = {
+  "class": "description"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["tile", $setup.classObj]),
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.selectTile, ["prevent"])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.fieldContentPlaceholder) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 10 /* CLASS, PROPS */, _hoisted_1);
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.fieldContentPlaceholder), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 10 /* CLASS, PROPS */, _hoisted_1);
 }
 
 /***/ }),
@@ -12406,10 +12334,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["question"])];
     }),
     _: 1 /* STABLE */
-  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.data.boardData, function (xrow, indexX) {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.boardTiles, function (xrow, indexX) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_3, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(xrow, function (field, indexY) {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["tile"], {
-        onSelectTile: $setup.movePlayer,
         fieldData: field,
         posY: indexY,
         posX: indexX
@@ -12456,29 +12383,21 @@ var _hoisted_5 = {
 };
 var _hoisted_6 = ["onClick"];
 var _hoisted_7 = ["onClick"];
-var _hoisted_8 = ["onClick"];
-var _hoisted_9 = ["onClick"];
-var _hoisted_10 = {
+var _hoisted_8 = {
   key: 1,
   "class": "error"
 };
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
-    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.test, ["prevent"])
-  }, "Test", 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_7), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary",
-    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.getState, ["prevent"])
-  }, "Get State", 8 /* PROPS */, _hoisted_8), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, "Start Game", 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.performAction, ["prevent"])
-  }, "Perform Action", 8 /* PROPS */, _hoisted_9)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Perform Action", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -12578,10 +12497,8 @@ var _hoisted_1 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameActive ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["board"], {
-    key: 0,
-    onMovePlayer: _ctx.movePlayer,
-    boardData: $setup.boardState.boardData
-  }, null, 8 /* PROPS */, ["onMovePlayer", "boardData"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["lobby"], {
+    key: 0
+  })) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["lobby"], {
     key: 1
   }))]);
 }
@@ -12631,7 +12548,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .tile {
     background-color: #fae;
     cursor: pointer;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/board/board-tile.vue"],"names":[],"mappings":"AACA;EACI,uBAAuB;EACvB,qBAAqB;EACrB,eAAe;EACf,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,cAAc;EACd,mBAAmB;EACnB,kBAAkB;AAAA;AATtB;IAYQ,UAAU;IACV,8BAA8B;AAAA;AAbtC;IAiBQ,6BAA6B;IAC7B,8BAA8B;AAAA;AAlBtC;IAsBQ,sBAAsB;IACtB,eAAe;AAAA","sourcesContent":["\n.tile {\n    border: 1px solid black;\n    border-radius: 0.25em;\n    padding: 0.25em;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1 1 auto;\n    cursor: not-allowed;\n    position: relative;\n\n    &.inactive {\n        opacity: 0;\n        cursor: not-allowed !important;\n    }\n\n    &.solved {\n        background-color: greenyellow;\n        cursor: not-allowed !important;\n    }\n\n    &.is-available {\n        background-color: #fae;\n        cursor: pointer;\n    }\n}\n"],"sourceRoot":""}]);
+.mod-gameofknowledge .tile .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+`, "",{"version":3,"sources":["webpack://./app/components/board/board-tile.vue"],"names":[],"mappings":"AACA;EACI,uBAAuB;EACvB,qBAAqB;EACrB,eAAe;EACf,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,cAAc;EACd,mBAAmB;EACnB,kBAAkB;AAAA;AATtB;IAYQ,UAAU;IACV,8BAA8B;AAAA;AAbtC;IAiBQ,6BAA6B;IAC7B,8BAA8B;AAAA;AAlBtC;IAsBQ,sBAAsB;IACtB,eAAe;AAAA;AAvBvB;IA2BQ,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;IACnB,kBAAkB;IAClB,WAAW;IACX,YAAY;AAAA","sourcesContent":["\n.tile {\n    border: 1px solid black;\n    border-radius: 0.25em;\n    padding: 0.25em;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex: 1 1 auto;\n    cursor: not-allowed;\n    position: relative;\n\n    &.inactive {\n        opacity: 0;\n        cursor: not-allowed !important;\n    }\n\n    &.solved {\n        background-color: greenyellow;\n        cursor: not-allowed !important;\n    }\n\n    &.is-available {\n        background-color: #fae;\n        cursor: pointer;\n    }\n\n    .description {\n        display: flex;\n        flex-direction: column;\n        justify-content: center;\n        align-items: center;\n        position: absolute;\n        width: 100%;\n        height: 100%;\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12825,8 +12751,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .player {
   height: 100%;
 }
 .mod-gameofknowledge .player .token {
-    width: 50%;
-    height: 50%;
+    width: 75%;
+    height: 75%;
     border-radius: 50%;
     background-color: red;
     display: flex;
@@ -12837,7 +12763,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .player {
 .mod-gameofknowledge .player .token .name {
       flex: 0 1 auto;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/player/player.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;EACnB,kBAAkB;EAClB,WAAW;EACX,YAAY;AAAA;AAPhB;IAUQ,UAAU;IACV,WAAW;IACX,kBAAkB;IAClB,qBAAqB;IACrB,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;AAAA;AAjB3B;MAoBY,cAAc;AAAA","sourcesContent":["\n.player {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n\n    .token {\n        width: 50%;\n        height: 50%;\n        border-radius: 50%;\n        background-color: red;\n        display: flex;\n        flex-direction: column;\n        justify-content: center;\n        align-items: center;\n\n        .name {\n            flex: 0 1 auto;\n        }\n    }\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./app/components/player/player.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,mBAAmB;EACnB,kBAAkB;EAClB,WAAW;EACX,YAAY;AAAA;AAPhB;IAUQ,UAAU;IACV,WAAW;IACX,kBAAkB;IAClB,qBAAqB;IACrB,aAAa;IACb,sBAAsB;IACtB,uBAAuB;IACvB,mBAAmB;AAAA;AAjB3B;MAoBY,cAAc;AAAA","sourcesContent":["\n.player {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n\n    .token {\n        width: 75%;\n        height: 75%;\n        border-radius: 50%;\n        background-color: red;\n        display: flex;\n        flex-direction: column;\n        justify-content: center;\n        align-items: center;\n\n        .name {\n            flex: 0 1 auto;\n        }\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

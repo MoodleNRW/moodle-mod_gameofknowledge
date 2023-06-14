@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import {
-  requestTest,
   requestStartGame,
   requestGetState,
   requestPerformAction,
@@ -11,6 +10,10 @@ const store = createStore({
     return {
       contextid: null,
       coursemoduleid: null,
+      tiles: null,
+      sessionPlayerId: null,
+      activePlayerId: null,
+      players: null,
       gameData: null,
       playerState: {
         posX: 0,
@@ -28,12 +31,20 @@ const store = createStore({
     setGameData(state, { gameData }) {
       state.gameData = gameData;
     },
+    setTilesData(state, { tiles }) {
+      state.tiles = tiles;
+    },
+    setPlayersData(state, { players }) {
+      state.players = players;
+    },
+    setSessionPlayerId(state, { id }) {
+      state.sessionPlayerId = id;
+    },
+    setActivePlayerId(state, { id }) {
+      state.activePlayerId = id;
+    },
   },
   actions: {
-    async requestTest({ commit, state }) {
-      let data = await requestTest(state.coursemoduleid);
-      console.log(data);
-    },
     async requestStartGame({ commit, state }) {
       let data = await requestStartGame(state.coursemoduleid);
       commit("setGameData", { gameData: [] });
@@ -41,11 +52,23 @@ const store = createStore({
     },
     async requestGetState({ commit, state }) {
       let data = await requestGetState(state.coursemoduleid);
+
+      if (data) {
+        data = JSON.parse(data);
+        commit("setTilesData", { tiles: data.tiles });
+        commit("setActivePlayerId", { id: data.activeplayer });
+        commit("setPlayersData", { players: data.playerlist });
+      }
+
       console.log(data);
     },
     async requestPerformAction({ commit, state }) {
       let data = await requestPerformAction(state.coursemoduleid);
       console.log(data);
+    },
+    async startGame({ commit, dispatch }) {
+      await dispatch("requestStartGame");
+      await dispatch("requestGetState");
     },
     movePlayer({ state }, { posX, posY }) {
       state.playerState.posX = posX;
@@ -63,7 +86,7 @@ const store = createStore({
       const playerY = state.playerState.posY;
 
       return (
-        fieldType == "question" &&
+        (fieldType == "question" || fieldType == "empty" || fieldType == "goal") &&
         ((posY == playerY && (posX == playerX - 1 || posX == playerX + 1)) ||
           (posX == playerX && (posY == playerY - 1 || posY == playerY + 1)))
       );

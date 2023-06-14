@@ -5,9 +5,7 @@
             please click the "Start New
             Game" button below!</p>
         <div class="controls">
-            <button class="btn btn-primary" @click.prevent="test">Test</button>
             <button class="btn btn-primary" @click.prevent="startGame">Start Game</button>
-            <button class="btn btn-primary" @click.prevent="getState">Get State</button>
             <button class="btn btn-primary" @click.prevent="performAction">Perform Action</button>
         </div>
         <p v-if="isGameError" class="error">Whoopsie-daisy! <br />We're sorry, but something didn't work as expected when
@@ -21,12 +19,8 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-const test = async () => {
-    await store.dispatch("requestTest")
-}
-
 const startGame = async () => {
-    await store.dispatch("requestStartGame")
+    await store.dispatch("startGame")
 }
 
 const getState = async () => {

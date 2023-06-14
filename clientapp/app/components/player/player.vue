@@ -19,8 +19,8 @@
     height: 100%;
 
     .token {
-        width: 50%;
-        height: 50%;
+        width: 75%;
+        height: 75%;
         border-radius: 50%;
         background-color: red;
         display: flex;

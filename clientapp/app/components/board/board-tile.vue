@@ -1,12 +1,14 @@
 <template>
     <div class="tile" :class="classObj" @click.prevent="selectTile">
-        {{ fieldContentPlaceholder }}
+        <div class="description">
+            {{ fieldContentPlaceholder }}
+        </div>
         <slot></slot>
     </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from "vue";
+import { defineProps, computed } from "vue";
 import { useStore } from "vuex"
 
 const store = useStore();
@@ -24,8 +26,6 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(["selectTile"])
-
 const selectTile = (() => {
     if (isMovementAvailable.value) {
         store.dispatch("movePlayer", { posX: props.posX, posY: props.posY })
@@ -36,21 +36,42 @@ const fieldType = computed(() => {
     return props.fieldData.type
 })
 
-const isSolved = computed(() => {
-    return fieldType.value == 5
-})
+const isStart = computed(() => fieldType.value == "start")
+
+const isEmpty = computed(() => fieldType.value == "empty")
+
+const isNone = computed(() => fieldType.value == "none")
+
+const isQuestion = computed(() => fieldType.value == "question")
+
+const isSolved = computed(() => fieldType.value == "solved")
+
+const isGoal = computed(() => fieldType.value == "goal")
 
 const isMovementAvailable = computed(() => {
-    return store.getters.isMovementAllowed("question", props.posX, props.posY)
+    return store.getters.isMovementAllowed(fieldType.value, props.posX, props.posY)
 });
 
 const fieldContentPlaceholder = computed(() => {
-    return fieldType.value == 1 ? "?" : "✓"
+    if (isQuestion.value) {
+        return "?"
+    } else if (isSolved.value) {
+        return "✓"
+    } else if (isEmpty.value) {
+        return "Keep Going"
+    } else if (isStart.value) {
+        return "Start"
+    } else if (isGoal.value) {
+        return "Finish"
+    }
+    else {
+        return " "
+    }
 });
 
 const classObj = computed(() => ({
     "current": fieldType.value == 2,
-    "inactive": fieldType.value == 4,
+    "inactive": isNone.value,
     "solved": fieldType.value == 5,
     "is-available": isMovementAvailable.value && !isSolved.value
 }))
@@ -81,6 +102,16 @@ const classObj = computed(() => ({
     &.is-available {
         background-color: #fae;
         cursor: pointer;
+    }
+
+    .description {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
 }
 </style>

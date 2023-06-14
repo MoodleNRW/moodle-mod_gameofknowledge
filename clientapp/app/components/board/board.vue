@@ -4,8 +4,8 @@
             <question></question>
         </modalQuestion>
         <div class="board-x">
-            <div class="board-y" v-for="(xrow, indexX) in data.boardData">
-                <tile v-for="(field, indexY) in xrow" @selectTile="movePlayer" :fieldData="field" :posY="indexY"
+            <div class="board-y" v-for="(xrow, indexX) in boardTiles">
+                <tile v-for="(field, indexY) in xrow" :fieldData="field" :posY="indexY"
                     :posX="indexX">
                     <player v-if="isPlayerPos(indexX, indexY)"></player>
                 </tile>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmits } from "vue";
+import { computed, defineProps } from "vue";
 import { useStore } from "vuex";
 import tile from "@/app/components/board/board-tile"
 import modalQuestion from "@/app/components/modal/modal-question"
@@ -31,11 +31,9 @@ const data = defineProps({
     }
 })
 
-const emit = defineEmits(["movePlayer"])
-
-const movePlayer = (posX, posY) => {
-    emit("movePlayer", posX, posY)
-}
+const boardTiles = computed(() => {
+    return store.state.tiles;
+})
 
 const isQuestionActive = computed(() => {
     return store.getters.isQuestionActive;
