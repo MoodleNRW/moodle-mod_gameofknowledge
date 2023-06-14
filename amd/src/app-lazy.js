@@ -11602,11 +11602,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       questions: null,
       activeQuestion: null,
       activeQuestionPos: null,
-      status: null,
-      playerState: {
-        posX: 0,
-        posY: 0
-      }
+      status: null
     };
   },
   mutations: {
@@ -11872,6 +11868,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     }
   },
   getters: {
+    sessionPlayerPos: function sessionPlayerPos(state) {
+      var pos = state.playerPositions[state.sessionPlayerId];
+      return {
+        posX: pos.j,
+        posY: pos.i
+      };
+    },
     isGameActive: function isGameActive(state) {
       return state.status == "initializing";
     },
@@ -11881,15 +11884,15 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     isQuestionActive: function isQuestionActive(state) {
       return state.activeQuestion !== null;
     },
-    isPlayerPos: function isPlayerPos(state) {
+    isPlayerPos: function isPlayerPos(state, getters) {
       return function (posX, posY) {
-        return state.playerState.posX == posX && state.playerState.posY == posY;
+        return getters.sessionPlayerPos.posX == posX && getters.sessionPlayerPos.posY == posY;
       };
     },
-    isMovementAllowed: function isMovementAllowed(state) {
+    isMovementAllowed: function isMovementAllowed(state, getters) {
       return function (fieldType, posX, posY) {
-        var playerX = state.playerState.posX;
-        var playerY = state.playerState.posY;
+        var playerX = getters.sessionPlayerPos.posX;
+        var playerY = getters.sessionPlayerPos.posY;
         return (fieldType == "question" || fieldType == "empty" || fieldType == "goal") && (posY == playerY && (posX == playerX - 1 || posX == playerX + 1) || posX == playerX && (posY == playerY - 1 || posY == playerY + 1));
       };
     }
@@ -12581,22 +12584,18 @@ var _hoisted_5 = {
   "class": "controls"
 };
 var _hoisted_6 = ["onClick"];
-var _hoisted_7 = ["onClick"];
-var _hoisted_8 = {
+var _hoisted_7 = {
   key: 1,
   "class": "error"
 };
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary",
-    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.performAction, ["prevent"])
-  }, "Perform Action", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Start Game", 8 /* PROPS */, _hoisted_6)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -12853,7 +12852,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .lobby {
     display: flex;
     flex-direction: row;
     flex: 1 1 auto;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 1rem;
 }
 .mod-gameofknowledge .lobby .error {
@@ -12861,7 +12860,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .lobby {
     color: red;
     margin: 1rem 0;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,cAAc;EAEd,uBAAuB;EACvB,sBAAsB;EACtB,aAAa;AAAA;AARjB;IAWQ,kBAAkB;AAAA;AAX1B;IAeQ,kBAAkB;AAAA;AAf1B;IAmBQ,aAAa;IACb,mBAAmB;IACnB,cAAc;IACd,8BAA8B;IAC9B,gBAAgB;AAAA;AAvBxB;IA2BQ,kBAAkB;IAClB,UAAU;IACV,cAAc;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    flex: 1 1 auto;\n\n    border: 1px solid black;\n    border-radius: 0.25rem;\n    padding: 1rem;\n\n    .title {\n        text-align: center;\n    }\n\n    .welcome {\n        text-align: center;\n    }\n\n    .controls {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 auto;\n        justify-content: space-between;\n        margin-top: 1rem;\n    }\n\n    .error {\n        text-align: center;\n        color: red;\n        margin: 1rem 0;\n    }\n}\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./app/components/lobby/lobby.vue"],"names":[],"mappings":"AACA;EACI,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,cAAc;EAEd,uBAAuB;EACvB,sBAAsB;EACtB,aAAa;AAAA;AARjB;IAWQ,kBAAkB;AAAA;AAX1B;IAeQ,kBAAkB;AAAA;AAf1B;IAmBQ,aAAa;IACb,mBAAmB;IACnB,cAAc;IACd,uBAAuB;IACvB,gBAAgB;AAAA;AAvBxB;IA2BQ,kBAAkB;IAClB,UAAU;IACV,cAAc;AAAA","sourcesContent":["\n.lobby {\n    display: flex;\n    flex-direction: column;\n    justify-content: center;\n    flex: 1 1 auto;\n\n    border: 1px solid black;\n    border-radius: 0.25rem;\n    padding: 1rem;\n\n    .title {\n        text-align: center;\n    }\n\n    .welcome {\n        text-align: center;\n    }\n\n    .controls {\n        display: flex;\n        flex-direction: row;\n        flex: 1 1 auto;\n        justify-content: center;\n        margin-top: 1rem;\n    }\n\n    .error {\n        text-align: center;\n        color: red;\n        margin: 1rem 0;\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

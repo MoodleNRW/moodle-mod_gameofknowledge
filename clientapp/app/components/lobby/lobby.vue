@@ -6,7 +6,6 @@
             Game" button below!</p>
         <div class="controls">
             <button class="btn btn-primary" @click.prevent="startGame">Start Game</button>
-            <button class="btn btn-primary" @click.prevent="performAction">Perform Action</button>
         </div>
         <p v-if="isGameError" class="error">Whoopsie-daisy! <br />We're sorry, but something didn't work as expected when
             starting your game. <br />Please give it a few seconds, then try again.</p>
@@ -60,7 +59,7 @@ const isGameError = computed(() => {
         display: flex;
         flex-direction: row;
         flex: 1 1 auto;
-        justify-content: space-between;
+        justify-content: center;
         margin-top: 1rem;
     }
 
