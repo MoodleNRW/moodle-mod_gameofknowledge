@@ -2,12 +2,12 @@
 
 namespace mod_gameofknowledge\game;
 
+defined('MOODLE_INTERNAL') || die();
+
 use mod_gameofknowledge\game_exception;
 use mod_gameofknowledge\state_based_game;
 
-defined('MOODLE_INTERNAL') || die();
-
-public class game_of_knowledge extends state_based_game {
+class game_of_knowledge extends state_based_game {
 
     const DEFAULT_LAYOUT = '
         S Q Q # Q Q S
@@ -26,7 +26,7 @@ public class game_of_knowledge extends state_based_game {
     const TYPE_GOAL = 'goal';
 
     private $tiles;
-    private $actviteplayer;
+    private $activeplayer;
     private $playerlist;
 
     protected function init_new_game(\stdClass $settings) {
@@ -35,6 +35,7 @@ public class game_of_knowledge extends state_based_game {
 
         $layout = self::DEFAULT_LAYOUT;
         $lines = explode("\n", trim($layout));
+        $this->tiles = [];
         for ($i = 0; $i < sizeof($lines); $i++) {
             $line = str_replace([' ', "\t"], '', trim($lines[$i]));
             $this->tiles[$i] = [];
@@ -71,16 +72,16 @@ public class game_of_knowledge extends state_based_game {
                             'type' => self::TYPE_NONE
                         ];
                         break;
-
                 }
-                $this->tiles[$i][$j] = ['questionid' => array_pop($questionids)];
+
+                $this->tiles[$i][] = $tile;
             }
         }
     }
 
     protected function find_empty_start_position(): ?string {
         for ($i = 0; $i < sizeof($this->tiles); $i++) {
-            for ($j = 0; $j < strlen($this->tiles[$i]); $j++) {
+            for ($j = 0; $j < sizeof($this->tiles[$i]); $j++) {
                 if ($this->tiles[$i][$j]['type'] == self::TYPE_START) {
                     $position = $i . '/' . $j;
                     $occupied = false;
@@ -112,14 +113,18 @@ public class game_of_knowledge extends state_based_game {
 
     protected function parse_state(array $state)
     {
-        $this->tiles = $state->tiles;
-        $this->activeplayer = $state->activeplayer;
-        $this->playerlist = $state->playerlist;
+        $this->tiles = $state['tiles'];
+        $this->activeplayer = $state['activeplayer'];
+        $this->playerlist = $state['playerlist'];
     }
 
     public function get_global_state(): array
     {
-        return ['tiles' => $this->tiles, 'activeplayer' => $this->actviteplayer, 'playerlist' => $this->playerlist];
+        return [
+            'tiles' => $this->tiles,
+            'activeplayer' => $this->activeplayer,
+            'playerlist' => $this->playerlist
+        ];
     }
     public function get_player_state(int $player): array
     {

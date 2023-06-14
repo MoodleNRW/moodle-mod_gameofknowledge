@@ -6,7 +6,7 @@ defined('MOODLE_INTERNAL') || die();
 
 abstract class state_based_game {
 
-    protected const GAME_TYPE_BASEPATH = '\mod_gameofknowledge\state_based_game\\';
+    protected const GAME_TYPE_BASEPATH = '\\mod_gameofknowledge\\game\\';
 
     public const INITIALIZING = 0;
     public const RUNNING = 1;
@@ -14,6 +14,8 @@ abstract class state_based_game {
 
     /** @var int Game ID. */
     protected $id;
+    /** @var int Game manager ID. */
+    protected $gameofknowledgeid;
     /** @var string Game type. */
     protected $type;
     /** @var int Game status. */
@@ -158,8 +160,10 @@ abstract class state_based_game {
      * @throws \coding_exception
      * @throws game_exception
      */
-    public static function create_game(string $type, \stdClass $settings): state_based_game {
+    public static function create_game(int $gameofknowledgeid, string $type, \stdClass $settings): state_based_game {
         $game = self::construct_game($type);
+        $game->gameofknowledgeid = $gameofknowledgeid;
+        $game->type = $type;
         $game->init_new_game($settings);
         return $game;
     }
@@ -224,6 +228,7 @@ abstract class state_based_game {
      */
     protected function load_from_record(\stdClass $record) {
         $this->id = $record->id;
+        $this->gameofknowledgeid = $record->gameofknowledgeid;
         $this->type = $record->type;
         $this->status = $record->status;
         $this->players = $record->players;
@@ -242,6 +247,7 @@ abstract class state_based_game {
     protected function save_to_record(): \stdClass {
         $record = new \stdClass();
         $record->id = $this->id;
+        $record->gameofknowledgeid = $this->gameofknowledgeid;
         $record->type = $this->type;
         $record->status = $this->status;
         $record->players = $this->players;

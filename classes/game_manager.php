@@ -62,7 +62,7 @@ class game_manager {
         $type = 'game_of_knowledge';
         $settings = $this->get_settings();
 
-        $game = state_based_game::create_game($type, $settings);
+        $game = state_based_game::create_game($this->instance, $type, $settings);
         $game->save_game();
         $this->games[$game->get_id()] = $game;
         return $game;
@@ -96,6 +96,10 @@ class game_manager {
         global $DB, $USER;
         if (is_null($userid)) {
             $userid = $USER->id;
+        }
+
+        if ($this->get_current_player_record($userid)) {
+            throw new game_exception('alreadyingame');
         }
 
         $game = $this->get_game($gameid);
