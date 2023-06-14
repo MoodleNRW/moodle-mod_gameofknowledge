@@ -74,6 +74,7 @@ const store = createStore({
         commit("setQuestionsData", { questions: data.questions });
         commit("setActivePlayerId", { id: data.activeplayer });
         commit("setSessionPlayerId", { id: data.player });
+        commit("setWinningPlayerId", { id: data.winner });
         commit("setPlayersData", { players: data.playerlist });
         commit("setPlayerPositionsData", {
           playerPositions: data.playerpositions,
@@ -95,6 +96,7 @@ const store = createStore({
           commit("setQuestionsData", { questions: data.questions });
           commit("setActivePlayerId", { id: data.activeplayer });
           commit("setSessionPlayerId", { id: data.player });
+          commit("setWinningPlayerId", { id: data.winner });
           commit("setPlayersData", { players: data.playerlist });
           commit("setPlayerPositionsData", {
             playerPositions: data.playerpositions,
@@ -120,6 +122,7 @@ const store = createStore({
         commit("setQuestionsData", { questions: response.questions });
         commit("setActivePlayerId", { id: response.activeplayer });
         commit("setSessionPlayerId", { id: response.player });
+        commit("setWinningPlayerId", { id: data.winner });
         commit("setPlayersData", { players: response.playerlist });
         commit("setPlayerPositionsData", {
           playerPositions: response.playerpositions,

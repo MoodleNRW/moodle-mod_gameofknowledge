@@ -11690,6 +11690,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                 commit("setSessionPlayerId", {
                   id: data.player
                 });
+                commit("setWinningPlayerId", {
+                  id: data.winner
+                });
                 commit("setPlayersData", {
                   players: data.playerlist
                 });
@@ -11754,6 +11757,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                   commit("setSessionPlayerId", {
                     id: data.player
                   });
+                  commit("setWinningPlayerId", {
+                    id: data.winner
+                  });
                   commit("setPlayersData", {
                     players: data.playerlist
                   });
@@ -11789,7 +11795,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
             case 4:
               response = _context4.sent;
               if (!response) {
-                _context4.next = 18;
+                _context4.next = 19;
                 break;
               }
               response = JSON.parse(response);
@@ -11805,6 +11811,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               commit("setSessionPlayerId", {
                 id: response.player
               });
+              commit("setWinningPlayerId", {
+                id: data.winner
+              });
               commit("setPlayersData", {
                 players: response.playerlist
               });
@@ -11814,19 +11823,19 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
               commit("setGameStatus", {
                 status: response.status
               });
-              _context4.next = 16;
+              _context4.next = 17;
               return dispatch("handleQuestionResponse", {
                 success: true
               });
-            case 16:
-              _context4.next = 20;
+            case 17:
+              _context4.next = 21;
               break;
-            case 18:
-              _context4.next = 20;
+            case 19:
+              _context4.next = 21;
               return dispatch("handleQuestionResponse", {
                 success: false
               });
-            case 20:
+            case 21:
             case "end":
               return _context4.stop();
           }
@@ -12511,7 +12520,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return store.getters.isGameFinished;
     });
     var gameWinnerId = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
-      return store.getters.winningPlayerId;
+      return store.state.winningPlayerId;
+    });
+    var isSessionPlayerWinner = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return gameWinnerId.value == store.state.sessionPlayerId;
     });
     var __returned__ = {
       store: store,
@@ -12522,6 +12534,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isGameInitializing: isGameInitializing,
       isGameFinished: isGameFinished,
       gameWinnerId: gameWinnerId,
+      isSessionPlayerWinner: isSessionPlayerWinner,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_1__.useStore;
@@ -12903,17 +12916,24 @@ var _hoisted_14 = {
 };
 var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "title"
-}, "Congratulations - We have a winner!", -1 /* HOISTED */);
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
-var _hoisted_17 = ["onClick"];
+}, "Game Over", -1 /* HOISTED */);
+var _hoisted_16 = {
+  key: 0
+};
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_18 = {
+  key: 1
+};
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1 /* HOISTED */);
+var _hoisted_20 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [$setup.isGameSetup ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [_hoisted_3, !$setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Welcome to the new and exciting Game of Knowledge. "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("When you're ready, please click the \"Start New Game\" button below!")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.startGame, ["prevent"])
-  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Congratulations "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "player " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.winningPlayerId), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(", you won the game! "), _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Fancy another?")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, "Start Game", 8 /* PROPS */, _hoisted_7)]), $setup.isGameError ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Whoopsie-daisy! "), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("We're sorry, but something didn't work as expected when starting your game. "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Please give it a few seconds, then try again.")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameInitializing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, _hoisted_13)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.isGameFinished ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_14, [_hoisted_15, $setup.isSessionPlayerWinner ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Congratulations "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Player " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.gameWinnerId + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(", you won the game! "), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Fancy another?")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Sorry, but "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Player " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.gameWinnerId + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" won the game! "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Fancy another?")])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.finishGame, ["prevent"])
-  }, "Finish", 8 /* PROPS */, _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  }, "Finish", 8 /* PROPS */, _hoisted_20)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),
@@ -12964,7 +12984,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["token", {
       'is-player': $setup.isSessionPlayer
     }])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, " PLAYER " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.player.number), 1 /* TEXT */)], 2 /* CLASS */)]);
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, " PLAYER " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.player.number + 1), 1 /* TEXT */)], 2 /* CLASS */)]);
 }
 
 /***/ }),

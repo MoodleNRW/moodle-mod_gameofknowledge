@@ -17,8 +17,8 @@
         </div>
         <div v-if="isGameFinished" class="finish">
             <h2 class="title">Game Over</h2>
-            <p v-if="isSessionPlayerWinner">Congratulations <b>player {{ winningPlayerId }}</b>, you won the game! <br>Fancy another?</p>
-            <p v-else>Sorry, but <b>player {{ winningPlayerId }}</b> won the game! <br>Fancy another?</p>
+            <p v-if="isSessionPlayerWinner">Congratulations <b>Player {{ gameWinnerId + 1 }}</b>, you won the game! <br>Fancy another?</p>
+            <p v-else>Sorry, but <b>Player {{ gameWinnerId + 1 }}</b> won the game! <br>Fancy another?</p>
             <button class="btn btn-primary" @click.prevent="finishGame">Finish</button>
         </div>
     </div>

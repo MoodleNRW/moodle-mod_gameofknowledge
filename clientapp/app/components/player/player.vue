@@ -2,7 +2,7 @@
     <div class="player">
         <div class="token" :class="{ 'is-player': isSessionPlayer }">
             <div class="name">
-                PLAYER {{ player.number }}
+                PLAYER {{ player.number + 1 }}
             </div>
         </div>
     </div>
