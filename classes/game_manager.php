@@ -53,6 +53,7 @@ class game_manager {
 
             $this->settings = new \stdClass();
             $this->settings->name = $settings->name;
+            $this->settings->questioncategoryid = $settings->questioncategoryid;
         }
 
         return $this->settings;
@@ -62,17 +63,23 @@ class game_manager {
         $type = 'game_of_knowledge';
         $settings = $this->get_settings();
 
-        $game = state_based_game::create_game($this->instance, $type, $settings);
+        $game = state_based_game::create_game($this, $type, $settings);
         $game->save_game();
         $this->games[$game->get_id()] = $game;
         return $game;
+    }
+
+    public function end_game($gameid) {
+        global $DB;
+        $DB->delete_records('gameofknowledge_games', ['gameofknowledgeid' => $this->instance, 'gameid' => $gameid]);
+        $DB->delete_records('gameofknowledge_players', ['gameofknowledgeid' => $this->instance, 'gameid' => $gameid]);
     }
 
     public function get_game(int $gameid): state_based_game {
         if (array_key_exists($gameid, $this->games)) {
             return $this->games[$gameid];
         }
-        $game = state_based_game::load_game_by_id($gameid);
+        $game = state_based_game::load_game_by_id($this, $gameid);
         $this->games[$gameid] = $game;
         return $game;
     }

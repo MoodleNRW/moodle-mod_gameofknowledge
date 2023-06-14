@@ -13,35 +13,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class externallib extends \external_api {
 
-    public static function test_parameters() {
-        return new external_function_parameters([
-            'coursemoduleid' => new external_value(PARAM_INT, 'course module id'),
-        ]);
-    }
-
-    public static function test_returns() {
-        return new external_value(PARAM_RAW, 'response');
-    }
-
-    /**
-     * @param $coursemoduleid
-     * @return bool
-     * @throws \invalid_parameter_exception
-     */
-    public static function test($coursemoduleid) {
-        $params = self::validate_parameters(self::get_state_parameters(), ['coursemoduleid' => $coursemoduleid]);
-
-        list($course, $coursemodule) = get_course_and_cm_from_cmid($params['coursemoduleid'], 'gameofknowledge');
-        self::validate_context($coursemodule->context);
-
-        $state = [
-            'cmid' => $params['coursemoduleid'],
-            'test' => 1
-        ];
-
-        return json_encode($state, JSON_THROW_ON_ERROR);
-    }
-
     public static function start_game_parameters() {
         return new external_function_parameters([
             'coursemoduleid' => new external_value(PARAM_INT, 'course module id'),
@@ -65,10 +36,10 @@ class externallib extends \external_api {
 
         $manager = new game_manager($coursemodule);
 
-        $gameid = $manager->get_open_gameid();
-        if (is_null($gameid)) {
+        //$gameid = $manager->get_open_gameid();
+        //if (is_null($gameid)) {
             $gameid = $manager->start_new_game()->get_id();
-        }
+        //}
 
         $player = $manager->join_game($gameid);
 
@@ -76,6 +47,39 @@ class externallib extends \external_api {
         $state = $game->get_player_state($player);
 
         return json_encode($state, JSON_THROW_ON_ERROR);
+    }
+
+    public static function end_game_parameters() {
+        return new external_function_parameters([
+            'coursemoduleid' => new external_value(PARAM_INT, 'course module id'),
+        ]);
+    }
+
+    public static function end_game_returns() {
+        return new external_value(PARAM_RAW, 'response');
+    }
+
+    /**
+     * @param $coursemoduleid
+     * @return bool
+     * @throws \invalid_parameter_exception
+     */
+    public static function end_game($coursemoduleid) {
+        $params = self::validate_parameters(self::get_state_parameters(), ['coursemoduleid' => $coursemoduleid]);
+
+        list($course, $coursemodule) = get_course_and_cm_from_cmid($params['coursemoduleid'], 'gameofknowledge');
+        self::validate_context($coursemodule->context);
+
+        $manager = new game_manager($coursemodule);
+
+        $game = $manager->get_current_game();
+        if (is_null($game)) {
+            throw new game_exception('notingame');
+        }
+
+        $manager->end_game($game->get_id());
+
+        return 'ok';
     }
 
     public static function get_state_parameters() {

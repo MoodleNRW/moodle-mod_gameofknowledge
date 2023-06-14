@@ -12,10 +12,10 @@ abstract class state_based_game {
     public const RUNNING = 1;
     public const FINISHED = 2;
 
+    /** @var game_manager Game manager. */
+    protected $manager;
     /** @var int Game ID. */
     protected $id;
-    /** @var int Game manager ID. */
-    protected $gameofknowledgeid;
     /** @var string Game type. */
     protected $type;
     /** @var int Game status. */
@@ -28,7 +28,9 @@ abstract class state_based_game {
     /**
      * @deprecated Use {@see self::create_game()} or {@see self::load_game_by_id()}.
      */
-    protected function __construct() {}
+    protected function __construct(game_manager $manager) {
+        $this->manager = $manager;
+    }
 
     /**
      * @return int
@@ -139,7 +141,7 @@ abstract class state_based_game {
      * @throws \coding_exception
      * @throws game_exception
      */
-    protected static function construct_game(string $type) {
+    protected static function construct_game(game_manager $manager, string $type) {
         $type = clean_param($type, PARAM_ALPHANUMEXT);
         $classname = self::GAME_TYPE_BASEPATH . $type;
         if (!class_exists($classname)) {
@@ -148,7 +150,7 @@ abstract class state_based_game {
         if (!is_subclass_of($classname, '\mod_gameofknowledge\state_based_game')) {
             throw new game_exception('invalidgametype');
         }
-        return new $classname();
+        return new $classname($manager);
     }
 
     /**
@@ -160,9 +162,8 @@ abstract class state_based_game {
      * @throws \coding_exception
      * @throws game_exception
      */
-    public static function create_game(int $gameofknowledgeid, string $type, \stdClass $settings): state_based_game {
-        $game = self::construct_game($type);
-        $game->gameofknowledgeid = $gameofknowledgeid;
+    public static function create_game(game_manager $manager, string $type, \stdClass $settings): state_based_game {
+        $game = self::construct_game($manager, $type);
         $game->type = $type;
         $game->init_new_game($settings);
         return $game;
@@ -177,8 +178,8 @@ abstract class state_based_game {
      * @throws \coding_exception
      * @throws game_exception
      */
-    public static function load_game(\stdClass $record): state_based_game {
-        $game = self::construct_game($record->type);
+    public static function load_game(game_manager $manager, \stdClass $record): state_based_game {
+        $game = self::construct_game($manager, $record->type);
         $game->load_from_record($record);
         return $game;
     }
@@ -191,7 +192,7 @@ abstract class state_based_game {
      * @throws \dml_exception
      * @throws game_exception
      */
-    public static function load_game_by_id(int $gameid): state_based_game {
+    public static function load_game_by_id(game_manager $manager, int $gameid): state_based_game {
         global $DB;
 
         $record = $DB->get_record('gameofknowledge_games', ['id' => $gameid]);
@@ -199,7 +200,7 @@ abstract class state_based_game {
             throw new game_exception('unknowngame');
         }
 
-        return self::load_game($record);
+        return self::load_game($manager, $record);
     }
 
     /**
@@ -228,7 +229,6 @@ abstract class state_based_game {
      */
     protected function load_from_record(\stdClass $record) {
         $this->id = $record->id;
-        $this->gameofknowledgeid = $record->gameofknowledgeid;
         $this->type = $record->type;
         $this->status = $record->status;
         $this->players = $record->players;
@@ -247,7 +247,7 @@ abstract class state_based_game {
     protected function save_to_record(): \stdClass {
         $record = new \stdClass();
         $record->id = $this->id;
-        $record->gameofknowledgeid = $this->gameofknowledgeid;
+        $record->gameofknowledgeid = $this->manager->get_id();
         $record->type = $this->type;
         $record->status = $this->status;
         $record->players = $this->players;
