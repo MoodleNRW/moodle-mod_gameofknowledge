@@ -38,6 +38,7 @@ function gameofknowledge_add_instance($gameofknowledge) {
 
     $gameofknowledge->timecreated = time();
     $gameofknowledge->timemodified = time();
+    $gameofknowledge->questioncategoryid = explode(',', $gameofknowledge->questioncategory)[0];
 
     $id = $DB->insert_record('gameofknowledge', $gameofknowledge);
     return $id;
@@ -58,6 +59,7 @@ function gameofknowledge_update_instance($gameofknowledge) {
 
     $gameofknowledge->timemodified = time();
     $gameofknowledge->id = $gameofknowledge->instance;
+    $gameofknowledge->questioncategoryid = explode(',', $gameofknowledge->questioncategory)[0];
 
     $ret = $DB->update_record('gameofknowledge', $gameofknowledge);
     return $ret;
@@ -108,4 +110,53 @@ function gameofknowledge_supports($feature) {
         default:
             return null;
     }
+}
+
+/**
+ * Called via pluginfile.php -> question_pluginfile to serve files belonging to
+ * a question in a question_attempt.
+ *
+ * Mostly copied from moodle-filter_embedquestion.
+ *
+ * @category files
+ * @param stdClass $givencourse course settings object
+ * @param stdClass $context context object
+ * @param string $component the name of the component we are serving files for.
+ * @param string $filearea the name of the file area.
+ * @param int $qubaid the question_usage this image belongs to.
+ * @param int $slot the relevant slot within the usage.
+ * @param array $args the remaining bits of the file path.
+ * @param bool $forcedownload whether the user must be forced to download the file.
+ * @param array $fileoptions additional options affecting the file serving
+ */
+function mod_gameofknowledge_question_pluginfile($givencourse, $context, $component,
+        $filearea, $qubaid, $slot, $args, $forcedownload, $fileoptions) {
+
+    list($context, $course, $cm) = get_context_info_array($context->id);
+    if ($givencourse->id !== $course->id) {
+        send_file_not_found();
+    }
+    require_login($course, false, $cm);
+
+    $quba = question_engine::load_questions_usage_by_activity($qubaid);
+
+    // TODO Check if this $quba belongs to the current user.
+    if ($quba->get_owning_component() != 'mod_gameofknowledge') {
+        send_file_not_found();
+    }
+
+    $options = \mod_gameofknowledge\questions::get_question_display_options();
+    if (!$quba->check_file_access($slot, $options, $component,
+        $filearea, $args, $forcedownload)) {
+        send_file_not_found();
+    }
+
+    $fs = get_file_storage();
+    $relativepath = implode('/', $args);
+    $fullpath = "/{$context->id}/{$component}/{$filearea}/{$relativepath}";
+    if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        send_file_not_found();
+    }
+
+    send_stored_file($file, 0, 0, $forcedownload, $fileoptions);
 }
