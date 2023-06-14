@@ -16,6 +16,7 @@ const store = createStore({
       players: null,
       playerPositions: null,
       questions: null,
+      activeQuestion: null,
       status: null,
       playerState: {
         posX: 0,
@@ -54,6 +55,9 @@ const store = createStore({
     setGameStatus(state, { status }) {
       state.status = status;
     },
+    setActiveQuestion(state, { question }) {
+      state.activeQuestion = question;
+    },
   },
   actions: {
     async requestStartGame({ commit, state }) {
@@ -64,8 +68,11 @@ const store = createStore({
         commit("setTilesData", { tiles: data.tiles });
         commit("setQuestionsData", { questions: data.questions });
         commit("setActivePlayerId", { id: data.activeplayer });
+        commit("setSessionPlayerId", { id: data.player });
         commit("setPlayersData", { players: data.playerlist });
-        commit("setPlayerPositionsData", { playerPositions: data.playerpositions });
+        commit("setPlayerPositionsData", {
+          playerPositions: data.playerpositions,
+        });
         commit("setGameStatus", { status: data.status });
       }
 
@@ -79,8 +86,11 @@ const store = createStore({
         commit("setTilesData", { tiles: data.tiles });
         commit("setQuestionsData", { questions: data.questions });
         commit("setActivePlayerId", { id: data.activeplayer });
+        commit("setSessionPlayerId", { id: data.player });
         commit("setPlayersData", { players: data.playerlist });
-        commit("setPlayerPositionsData", { playerPositions: data.playerpositions });
+        commit("setPlayerPositionsData", {
+          playerPositions: data.playerpositions,
+        });
         commit("setGameStatus", { status: data.status });
       }
 
@@ -96,15 +106,23 @@ const store = createStore({
     async getState({ dispatch }) {
       await dispatch("requestGetState");
     },
-    movePlayer({ state }, { posX, posY }) {
-      state.playerState.posX = posX;
-      state.playerState.posY = posY;
+    async activateQuestion({ state, commit }, { index }) {
+      let question = state.questions[index];
+
+      if (question) {
+        commit("setActiveQuestion", { question });
+      }
+    },
+    async movePlayer({ state, dispatch }, { posX, posY }) {
+      await dispatch("activateQuestion", { posX, posY });
+      // state.playerState.posX = posX;
+      // state.playerState.posY = posY;
     },
   },
   getters: {
     isGameActive: (state) => state.status == "initializing",
     isGameError: () => false,
-    isQuestionActive: (state) => false,
+    isQuestionActive: (state) => state.activeQuestion !== null,
     isPlayerPos: (state) => (posX, posY) =>
       state.playerState.posX == posX && state.playerState.posY == posY,
     isMovementAllowed: (state) => (fieldType, posX, posY) => {

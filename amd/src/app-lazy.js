@@ -11600,6 +11600,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       players: null,
       playerPositions: null,
       questions: null,
+      activeQuestion: null,
       status: null,
       playerState: {
         posX: 0,
@@ -11647,16 +11648,20 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
     setGameStatus: function setGameStatus(state, _ref10) {
       var status = _ref10.status;
       state.status = status;
+    },
+    setActiveQuestion: function setActiveQuestion(state, _ref11) {
+      var question = _ref11.question;
+      state.activeQuestion = question;
     }
   },
   actions: {
-    requestStartGame: function requestStartGame(_ref11) {
+    requestStartGame: function requestStartGame(_ref12) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref11.commit, state = _ref11.state;
+              commit = _ref12.commit, state = _ref12.state;
               _context.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestStartGame)(state.coursemoduleid);
             case 3:
@@ -11671,6 +11676,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                 });
                 commit("setActivePlayerId", {
                   id: data.activeplayer
+                });
+                commit("setSessionPlayerId", {
+                  id: data.player
                 });
                 commit("setPlayersData", {
                   players: data.playerlist
@@ -11690,13 +11698,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee);
       }))();
     },
-    requestGetState: function requestGetState(_ref12) {
+    requestGetState: function requestGetState(_ref13) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref12.commit, state = _ref12.state;
+              commit = _ref13.commit, state = _ref13.state;
               _context2.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestGetState)(state.coursemoduleid);
             case 3:
@@ -11711,6 +11719,9 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
                 });
                 commit("setActivePlayerId", {
                   id: data.activeplayer
+                });
+                commit("setSessionPlayerId", {
+                  id: data.player
                 });
                 commit("setPlayersData", {
                   players: data.playerlist
@@ -11730,13 +11741,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee2);
       }))();
     },
-    requestPerformAction: function requestPerformAction(_ref13) {
+    requestPerformAction: function requestPerformAction(_ref14) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var commit, state, data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
-              commit = _ref13.commit, state = _ref13.state;
+              commit = _ref14.commit, state = _ref14.state;
               _context3.next = 3;
               return (0,_app_utils_requests__WEBPACK_IMPORTED_MODULE_0__.requestPerformAction)(state.coursemoduleid);
             case 3:
@@ -11749,13 +11760,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee3);
       }))();
     },
-    startGame: function startGame(_ref14) {
+    startGame: function startGame(_ref15) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) switch (_context4.prev = _context4.next) {
             case 0:
-              dispatch = _ref14.dispatch;
+              dispatch = _ref15.dispatch;
               _context4.next = 3;
               return dispatch("requestStartGame");
             case 3:
@@ -11765,13 +11776,13 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee4);
       }))();
     },
-    getState: function getState(_ref15) {
+    getState: function getState(_ref16) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
         var dispatch;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
-              dispatch = _ref15.dispatch;
+              dispatch = _ref16.dispatch;
               _context5.next = 3;
               return dispatch("requestGetState");
             case 3:
@@ -11781,12 +11792,46 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
         }, _callee5);
       }))();
     },
-    movePlayer: function movePlayer(_ref16, _ref17) {
-      var state = _ref16.state;
-      var posX = _ref17.posX,
-        posY = _ref17.posY;
-      state.playerState.posX = posX;
-      state.playerState.posY = posY;
+    activateQuestion: function activateQuestion(_ref17, _ref18) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        var state, commit, index, question;
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              state = _ref17.state, commit = _ref17.commit;
+              index = _ref18.index;
+              question = state.questions[index];
+              if (question) {
+                commit("setActiveQuestion", {
+                  question: question
+                });
+              }
+            case 4:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6);
+      }))();
+    },
+    movePlayer: function movePlayer(_ref19, _ref20) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+        var state, dispatch, posX, posY;
+        return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+          while (1) switch (_context7.prev = _context7.next) {
+            case 0:
+              state = _ref19.state, dispatch = _ref19.dispatch;
+              posX = _ref20.posX, posY = _ref20.posY;
+              _context7.next = 4;
+              return dispatch("activateQuestion", {
+                posX: posX,
+                posY: posY
+              });
+            case 4:
+            case "end":
+              return _context7.stop();
+          }
+        }, _callee7);
+      }))();
     }
   },
   getters: {
@@ -11797,7 +11842,7 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.createStore)({
       return false;
     },
     isQuestionActive: function isQuestionActive(state) {
-      return false;
+      return state.activeQuestion !== null;
     },
     isPlayerPos: function isPlayerPos(state) {
       return function (posX, posY) {
@@ -11983,6 +12028,9 @@ __webpack_require__.r(__webpack_exports__);
     var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.useStore)();
     var selectTile = function selectTile() {
       if (isMovementAvailable.value) {
+        store.dispatch("activateQuestion", {
+          index: props.fieldData.questionindex
+        });
         store.dispatch("movePlayer", {
           posX: props.posX,
           posY: props.posY
@@ -12233,6 +12281,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       performAction: performAction,
       isGameError: isGameError,
       computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
+      get useStore() {
+        return vuex__WEBPACK_IMPORTED_MODULE_1__.useStore;
+      }
+    };
+    Object.defineProperty(__returned__, '__isScriptSetup', {
+      enumerable: false,
+      value: true
+    });
+    return __returned__;
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/question/question.vue?vue&type=script&setup=true&lang=js":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/question/question.vue?vue&type=script&setup=true&lang=js ***!
+  \**********************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.runtime.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  __name: 'question',
+  setup: function setup(__props, _ref) {
+    var __expose = _ref.expose;
+    __expose();
+    var store = (0,vuex__WEBPACK_IMPORTED_MODULE_1__.useStore)();
+    var submitMoodleForm = function submitMoodleForm(el) {
+      console.log(el);
+      var data = new FormData(el.target);
+      console.log(data);
+    };
+    var question = (0,vue__WEBPACK_IMPORTED_MODULE_0__.computed)(function () {
+      return store.state.activeQuestion;
+    });
+    var __returned__ = {
+      store: store,
+      submitMoodleForm: submitMoodleForm,
+      question: question,
+      computed: vue__WEBPACK_IMPORTED_MODULE_0__.computed,
+      onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted,
+      ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_1__.useStore;
       }
@@ -12523,12 +12621,17 @@ var _hoisted_1 = {
   "class": "question"
 };
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Question", -1 /* HOISTED */);
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_3 = {
   "class": "content"
-}, null, -1 /* HOISTED */);
-var _hoisted_4 = [_hoisted_2, _hoisted_3];
-function render(_ctx, _cache) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, _hoisted_4);
+};
+var _hoisted_4 = ["onSubmit"];
+var _hoisted_5 = ["innerHTML"];
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+    onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.submitMoodleForm, ["prevent"])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    innerHTML: $setup.question.html
+  }, null, 8 /* PROPS */, _hoisted_5)], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_4)])]);
 }
 
 /***/ }),
@@ -12845,14 +12948,20 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.mod-gameofknowledge .question {
-  flex: 0  1 auto;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   background-color: white;
   padding: 1rem;
   border-radius: 0.25rem;
 }
-`, "",{"version":3,"sources":["webpack://./app/components/question/question.vue"],"names":[],"mappings":"AACA;EACI,eAAe;EACf,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,sBAAsB;AAAA","sourcesContent":["\n.question {\n    flex: 0  1 auto;\n    display: flex;\n    flex-direction: column;\n    background-color: white;\n    padding: 1rem;\n    border-radius: 0.25rem;\n\n    .content {}\n}\n"],"sourceRoot":""}]);
+.mod-gameofknowledge .question .content .content {
+    margin: 0;
+}
+.mod-gameofknowledge .question .content .info {
+    display: none;
+}
+`, "",{"version":3,"sources":["webpack://./app/components/question/question.vue"],"names":[],"mappings":"AACA;EACI,cAAc;EACd,aAAa;EACb,sBAAsB;EACtB,uBAAuB;EACvB,aAAa;EACb,sBAAsB;AAAA;AAN1B;IAUY,SAAS;AAAA;AAVrB;IAcY,aAAa;AAAA","sourcesContent":["\n.question {\n    flex: 0 1 auto;\n    display: flex;\n    flex-direction: column;\n    background-color: white;\n    padding: 1rem;\n    border-radius: 0.25rem;\n\n    .content {\n        .content {\n            margin: 0;\n        }\n\n        .info {\n            display: none;\n        }\n    }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -13165,15 +13274,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _question_vue_vue_type_template_id_465fd81c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./question.vue?vue&type=template&id=465fd81c */ "./app/components/question/question.vue?vue&type=template&id=465fd81c");
-/* harmony import */ var _question_vue_vue_type_style_index_0_id_465fd81c_lang_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./question.vue?vue&type=style&index=0&id=465fd81c&lang=scss */ "./app/components/question/question.vue?vue&type=style&index=0&id=465fd81c&lang=scss");
-/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var _question_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./question.vue?vue&type=script&setup=true&lang=js */ "./app/components/question/question.vue?vue&type=script&setup=true&lang=js");
+/* harmony import */ var _question_vue_vue_type_style_index_0_id_465fd81c_lang_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./question.vue?vue&type=style&index=0&id=465fd81c&lang=scss */ "./app/components/question/question.vue?vue&type=style&index=0&id=465fd81c&lang=scss");
+/* harmony import */ var _node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
-const script = {}
+
+
 
 ;
 
 
-const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(script, [['render',_question_vue_vue_type_template_id_465fd81c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/components/question/question.vue"]])
+const __exports__ = /*#__PURE__*/(0,_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_3__["default"])(_question_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_question_vue_vue_type_template_id_465fd81c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"app/components/question/question.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -13254,6 +13365,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_lobby_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_lobby_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js!../../../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./lobby.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/lobby/lobby.vue?vue&type=script&setup=true&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./app/components/question/question.vue?vue&type=script&setup=true&lang=js":
+/*!*********************************************************************************!*\
+  !*** ./app/components/question/question.vue?vue&type=script&setup=true&lang=js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_question_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_dist_index_js_ruleSet_1_rules_8_use_0_question_vue_vue_type_script_setup_true_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js!../../../node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./question.vue?vue&type=script&setup=true&lang=js */ "./node_modules/babel-loader/lib/index.js!./node_modules/vue-loader/dist/index.js??ruleSet[1].rules[8].use[0]!./app/components/question/question.vue?vue&type=script&setup=true&lang=js");
  
 
 /***/ }),
