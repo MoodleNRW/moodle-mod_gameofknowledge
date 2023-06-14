@@ -1,6 +1,6 @@
 <template>
     <div class="mod-gameofknowledge">
-        <board v-if="isGameActive" @movePlayer="movePlayer" :boardData="boardState.boardData" :playerState="playerState">
+        <board v-if="isGameActive" @movePlayer="movePlayer" :boardData="boardState.boardData">
         </board>
         <lobby v-else></lobby>
     </div>
@@ -23,13 +23,6 @@ const props = defineProps({
 
 const store = useStore();
 
-const playerState = reactive({
-    currentPosition: {
-        posX: 0,
-        posY: 0
-    }
-})
-
 const boardState = reactive({
     boardData: [
         [{ question: "Question", type: 5 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }, { question: "Question", type: 1 }],
@@ -43,12 +36,6 @@ onMounted(async () => {
     store.commit("setContextId", { contextid: props.contextid })
     store.commit("setCourseModuleId", { coursemoduleid: props.coursemoduleid })
 });
-
-const movePlayer = (posX, posY) => {
-    const newPlayerState = { ...playerState, currentPosition: { posX: posX, posY: posY } }
-
-    Object.assign(playerState, newPlayerState)
-}
 
 const isGameActive = computed(() => {
     return store.getters.isGameActive

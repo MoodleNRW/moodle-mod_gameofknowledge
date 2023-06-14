@@ -7,6 +7,9 @@
 
 <script setup>
 import { defineProps, defineEmits, computed } from "vue";
+import { useStore } from "vuex"
+
+const store = useStore();
 
 const props = defineProps({
     fieldData: {
@@ -19,17 +22,13 @@ const props = defineProps({
     posY: {
         type: Number
     },
-    playerState: {
-        type: Object,
-        default: () => { }
-    }
 })
 
 const emit = defineEmits(["selectTile"])
 
 const selectTile = (() => {
     if (isMovementAvailable.value) {
-        emit("selectTile", props.posX, props.posY)
+        store.dispatch("movePlayer", { posX: props.posX, posY: props.posY })
     }
 });
 
@@ -37,13 +36,12 @@ const fieldType = computed(() => {
     return props.fieldData.type
 })
 
-const isMovementAvailable = computed(() => {
-    const playerX = props.playerState.currentPosition.posX;
-    const playerY = props.playerState.currentPosition.posY;
+const isSolved = computed(() => {
+    return fieldType.value == 5
+})
 
-    return fieldType.value == 1 && (
-        (props.posY == playerY && (props.posX == playerX - 1 || props.posX == playerX + 1)) ||
-        (props.posX == playerX && (props.posY == playerY - 1 || props.posY == playerY + 1)))
+const isMovementAvailable = computed(() => {
+    return store.getters.isMovementAllowed("question", props.posX, props.posY)
 });
 
 const fieldContentPlaceholder = computed(() => {
@@ -54,7 +52,7 @@ const classObj = computed(() => ({
     "current": fieldType.value == 2,
     "inactive": fieldType.value == 4,
     "solved": fieldType.value == 5,
-    "is-available": isMovementAvailable.value
+    "is-available": isMovementAvailable.value && !isSolved.value
 }))
 </script>
 

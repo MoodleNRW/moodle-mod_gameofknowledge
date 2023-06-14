@@ -5,8 +5,8 @@
         </modalQuestion>
         <div class="board-x">
             <div class="board-y" v-for="(xrow, indexX) in data.boardData">
-                <tile v-for="(field, indexY) in xrow" @selectTile="movePlayer" :fieldData="field" :playerState="playerState"
-                    :posY="indexY" :posX="indexX">
+                <tile v-for="(field, indexY) in xrow" @selectTile="movePlayer" :fieldData="field" :posY="indexY"
+                    :posX="indexX">
                     <player v-if="isPlayerPos(indexX, indexY)"></player>
                 </tile>
             </div>
@@ -28,10 +28,6 @@ const data = defineProps({
     boardData: {
         type: Array,
         default: () => []
-    },
-    playerState: {
-        type: Object,
-        default: () => { }
     }
 })
 
